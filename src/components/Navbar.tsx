@@ -3,7 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Crosshair } from 'lucide-react';
 import { Button } from './ui/button';
 
-const Navbar = () => {
+interface NavbarProps {
+  onReserveClick?: () => void;
+}
+
+const Navbar = ({ onReserveClick }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const navLinks = [
@@ -38,7 +42,7 @@ const Navbar = () => {
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-neon-blue group-hover:w-full transition-all duration-300" />
               </a>
             ))}
-            <Button variant="neon" size="sm">
+            <Button variant="neon" size="sm" onClick={onReserveClick}>
               Reservar
             </Button>
           </div>
@@ -72,7 +76,7 @@ const Navbar = () => {
                     {link.name}
                   </a>
                 ))}
-                <Button variant="neon" className="mt-2">
+                <Button variant="neon" className="mt-2" onClick={() => { setIsOpen(false); onReserveClick?.(); }}>
                   Reservar Ahora
                 </Button>
               </div>

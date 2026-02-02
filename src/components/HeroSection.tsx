@@ -3,7 +3,11 @@ import { ChevronDown, Zap, Target, Gamepad2 } from 'lucide-react';
 import { Button } from './ui/button';
 import heroBg from '@/assets/hero-bg.jpg';
 
-const HeroSection = () => {
+interface HeroSectionProps {
+  onReserveClick?: () => void;
+}
+
+const HeroSection = ({ onReserveClick }: HeroSectionProps) => {
   return (
     <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
@@ -89,7 +93,7 @@ const HeroSection = () => {
             transition={{ delay: 0.7, duration: 0.5 }}
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
-            <Button variant="hero" size="xl">
+            <Button variant="hero" size="xl" onClick={onReserveClick}>
               Reserva tu experiencia
             </Button>
             <Button variant="outline" size="xl">

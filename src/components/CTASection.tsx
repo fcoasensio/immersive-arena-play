@@ -9,7 +9,11 @@ const contactInfo = [
   { icon: Clock, label: 'Horario', value: 'L-D: 10:00 - 22:00' },
 ];
 
-const CTASection = () => {
+interface CTASectionProps {
+  onReserveClick?: () => void;
+}
+
+const CTASection = ({ onReserveClick }: CTASectionProps) => {
   return (
     <section id="contact" className="py-20 md:py-32 relative overflow-hidden">
       {/* Background gradient */}
@@ -43,7 +47,7 @@ const CTASection = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-            <Button variant="hero" size="xl">
+            <Button variant="hero" size="xl" onClick={onReserveClick}>
               Reservar Ahora
             </Button>
             <Button variant="outline" size="xl">
