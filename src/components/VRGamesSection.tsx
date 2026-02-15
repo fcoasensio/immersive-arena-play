@@ -129,7 +129,7 @@ const games: Game[] = [
   },
   {
     title: 'Zombie Horde',
-    category: 'escape',
+    category: 'shooter',
     minAge: 14,
     maxPlayers: 16,
     description: '¡Une fuerzas para combatir monstruos aterradores y jefes gigantes! Oleadas de ataques con armas únicas. Horror escalofriante.',
