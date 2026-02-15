@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Gamepad2, Crosshair, Ghost, Swords, Users, Baby } from 'lucide-react';
+import { Gamepad2, Crosshair, Ghost, Swords, Users, Baby, DoorOpen } from 'lucide-react';
 import { Badge } from './ui/badge';
 
-type GameCategory = 'all' | 'party' | 'shooter' | 'horror' | 'adventure';
+type GameCategory = 'all' | 'party' | 'shooter' | 'escape' | 'adventure';
 
 interface Game {
   title: string;
@@ -113,15 +113,23 @@ const games: Game[] = [
   },
   {
     title: 'Haunted Park',
-    category: 'horror',
+    category: 'escape',
     minAge: 16,
     maxPlayers: 16,
     description: 'Explora un parque de atracciones abandonado. Trabaja en equipo para resolver acertijos y escapar del espeluznante cautiverio.',
     emoji: '🎪',
   },
   {
+    title: 'B-Block Breakout',
+    category: 'escape',
+    minAge: 14,
+    maxPlayers: 16,
+    description: 'Escapa de una prisión de máxima seguridad resolviendo puzzles y superando desafíos en equipo. ¡El tiempo corre en tu contra!',
+    emoji: '🔓',
+  },
+  {
     title: 'Zombie Horde',
-    category: 'horror',
+    category: 'escape',
     minAge: 14,
     maxPlayers: 16,
     description: '¡Une fuerzas para combatir monstruos aterradores y jefes gigantes! Oleadas de ataques con armas únicas. Horror escalofriante.',
@@ -134,7 +142,7 @@ const categories: { id: GameCategory; label: string; icon: typeof Gamepad2 }[] =
   { id: 'party', label: 'Party Games', icon: Baby },
   { id: 'shooter', label: 'Shooters', icon: Crosshair },
   { id: 'adventure', label: 'Aventura', icon: Swords },
-  { id: 'horror', label: 'Horror', icon: Ghost },
+  { id: 'escape', label: 'Escape Room', icon: DoorOpen },
 ];
 
 const categoryColors: Record<GameCategory, string> = {
@@ -142,7 +150,7 @@ const categoryColors: Record<GameCategory, string> = {
   party: 'neon-green',
   shooter: 'neon-red',
   adventure: 'neon-blue',
-  horror: 'neon-purple',
+  escape: 'neon-purple',
 };
 
 const VRGamesSection = () => {
@@ -247,7 +255,7 @@ const VRGamesSection = () => {
                           </h3>
                           <div className="flex items-center gap-2 mt-1">
                             <Badge variant="outline" className={`text-${color} border-${color}/30 text-[10px] px-2 py-0`}>
-                              {game.category === 'party' ? 'Party' : game.category === 'shooter' ? 'Shooter' : game.category === 'horror' ? 'Horror' : 'Aventura'}
+                              {game.category === 'party' ? 'Party' : game.category === 'shooter' ? 'Shooter' : game.category === 'escape' ? 'Escape Room' : 'Aventura'}
                             </Badge>
                           </div>
                         </div>
