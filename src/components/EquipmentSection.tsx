@@ -28,23 +28,23 @@ const laserFeatures = [
 const vrFeatures = [
   {
     icon: Glasses,
-    title: 'Hiperrealidad',
-    description: 'Tecnología de realidad virtual con efectos 4D que estimulan todos los sentidos.',
+    title: 'Free Roaming',
+    description: 'Juegos de realidad virtual de libre movimiento donde caminas, corres y te agachas en el mundo virtual.',
   },
   {
     icon: Footprints,
-    title: 'Free Roaming',
-    description: 'Libertad de movimiento total en espacios virtuales sin cables ni limitaciones.',
+    title: '+124 Escenarios',
+    description: 'Más de 74 horas de contenido original: party games, shooters tácticos, aventuras y juegos de terror.',
   },
   {
     icon: Cpu,
-    title: 'Multijugador',
-    description: 'Experiencias cooperativas y competitivas para toda la familia y grupos.',
+    title: 'Hasta 16 Jugadores',
+    description: 'Experiencias multijugador simultáneas para toda la familia, desde 5 años hasta adultos.',
   },
   {
     icon: Wifi,
-    title: 'Tracking Avanzado',
-    description: 'Sistema de seguimiento de alta precisión para una inmersión total.',
+    title: 'Software BattleStart',
+    description: 'Plataforma profesional con gestión de sesiones, estadísticas en tiempo real y rankings.',
   },
 ];
 
@@ -188,11 +188,11 @@ const EquipmentSection = () => {
               Realidad Virtual
             </span>
             <h2 className="font-display text-3xl md:text-5xl font-bold text-foreground mb-6">
-              HIPER<span className="text-neon-purple text-glow-purple">REALIDAD</span> VIRTUAL
+              REALIDAD <span className="text-neon-purple text-glow-purple">VIRTUAL</span> FREE ROAMING
             </h2>
             <p className="font-body text-lg text-muted-foreground mb-10 leading-relaxed">
-              Experiencias de hiperrealidad con tecnología Free Roaming y efectos 4D. 
-              Una actividad alucinante que activa todos tus sentidos. ¡El futuro del entretenimiento está aquí!
+              Desarrollamos experiencias con los mejores juegos de realidad virtual de libre movimiento del mercado. 
+              Party games infantiles, shooters tácticos y aventuras de acción para grupos de hasta 16 jugadores.
             </p>
 
             <div className="grid sm:grid-cols-2 gap-6">

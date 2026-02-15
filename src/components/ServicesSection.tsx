@@ -19,13 +19,13 @@ const services = [
   {
     icon: Glasses,
     title: 'Realidad Virtual',
-    description: 'Experiencias de hiperrealidad virtual con tecnología Free Roaming y efectos 4D. Sumérgete en mundos virtuales multijugador donde todos tus sentidos se activan.',
+    description: 'Juegos de realidad virtual de libre movimiento con tecnología Free Roaming. Party games para toda la familia desde 5 años, shooters tácticos y aventuras de acción para hasta 16 jugadores simultáneos.',
     color: 'neon-purple',
     glowClass: 'box-glow-purple',
     image: vrExperience,
     modes: [
-      { icon: Building2, label: 'Indoor', desc: 'Experiencias inmersivas en sala con sistema de tracking de última generación.' },
-      { icon: TreePine, label: 'Outdoor', desc: 'Aventuras VR al aire libre con libertad de movimiento total.' },
+      { icon: Building2, label: 'Indoor', desc: 'Arenas VR desde 36m² con tracking de última generación y hasta 16 jugadores.' },
+      { icon: TreePine, label: 'Outdoor', desc: 'Experiencias VR móviles al aire libre con libertad de movimiento total.' },
     ],
   },
 ];
