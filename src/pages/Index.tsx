@@ -3,6 +3,7 @@ import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
 import ServicesSection from '@/components/ServicesSection';
 import VRGamesSection from '@/components/VRGamesSection';
+import LaserGamesSection from '@/components/LaserGamesSection';
 import EventsSection from '@/components/EventsSection';
 import EquipmentSection from '@/components/EquipmentSection';
 import CTASection from '@/components/CTASection';
@@ -17,6 +18,7 @@ const Index = () => {
       <Navbar onReserveClick={() => setReservationOpen(true)} />
       <HeroSection onReserveClick={() => setReservationOpen(true)} />
       <ServicesSection />
+      <LaserGamesSection />
       <VRGamesSection />
       <EventsSection />
       <EquipmentSection />
