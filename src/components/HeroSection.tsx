@@ -60,9 +60,10 @@ const HeroSection = ({ onReserveClick }: HeroSectionProps) => {
 
           {/* Subtitle */}
           <p className="font-body text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-            Experiencias inmersivas <span className="text-neon-blue font-semibold">INDOOR</span> y{' '}
-            <span className="text-neon-red font-semibold">OUTDOOR</span> para Team Building, 
-            Cumpleaños, Despedidas y Torneos
+            Experiencias inmersivas para Team Building, 
+            Cumpleaños, Despedidas y Torneos.{' '}
+            <span className="text-neon-blue font-semibold">Indoor</span> y{' '}
+            <span className="text-neon-red font-semibold">Outdoor</span>
           </p>
 
           {/* Feature Tags */}
