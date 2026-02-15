@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Shield, Cpu, Wifi, Battery, Glasses, Footprints } from 'lucide-react';
 import vrAdventure from '@/assets/vr-adventure.png';
+import laserTagBlasters from '@/assets/laser-tag-blasters.jpg';
 
 const laserFeatures = [
   {
@@ -109,17 +110,12 @@ const EquipmentSection = () => {
             className="relative"
           >
             <div className="relative aspect-square rounded-2xl overflow-hidden gradient-border">
-              <div className="absolute inset-0 bg-gradient-to-br from-neon-blue/20 via-card to-neon-blue/10">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-neon-blue/20 flex items-center justify-center animate-pulse-glow">
-                      <Cpu className="w-16 h-16 text-neon-blue" />
-                    </div>
-                    <p className="font-display text-2xl font-bold text-foreground">LaserWar X-Gen</p>
-                    <p className="font-body text-sm text-muted-foreground mt-2">Última generación</p>
-                  </div>
-                </div>
-              </div>
+              <img
+                src={laserTagBlasters}
+                alt="Equipamiento LaserWar X-Generation"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent" />
 
               <motion.div
                 animate={{ y: [0, -10, 0] }}
