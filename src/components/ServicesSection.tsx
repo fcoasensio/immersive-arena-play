@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Target, Glasses, Building2, TreePine } from 'lucide-react';
 import vrExperience from '@/assets/vr-experience.jpg';
 import vrAdventure from '@/assets/vr-adventure.png';
+import laserTagEquipment from '@/assets/laser-tag-equipment.jpg';
 
 const services = [
   {
@@ -10,7 +11,7 @@ const services = [
     description: 'Equipamiento militar de última generación con tecnología infrarroja de precisión. Partidas épicas con diferentes modos de juego para todas las edades.',
     color: 'neon-blue',
     glowClass: 'box-glow-blue',
-    image: null,
+    image: laserTagEquipment,
     modes: [
       { icon: Building2, label: 'Indoor', desc: 'Arenas climatizadas con escenografía inmersiva, iluminación UV y efectos especiales.' },
       { icon: TreePine, label: 'Outdoor', desc: 'Campos al aire libre con terrenos naturales y estructuras tácticas.' },
