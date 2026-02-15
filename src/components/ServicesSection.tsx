@@ -1,34 +1,32 @@
 import { motion } from 'framer-motion';
-import { Target, Glasses, TreePine, Building2 } from 'lucide-react';
+import { Target, Glasses, Building2, TreePine } from 'lucide-react';
+import vrExperience from '@/assets/vr-experience.jpg';
+import vrAdventure from '@/assets/vr-adventure.png';
 
 const services = [
   {
     icon: Target,
     title: 'Laser Tag',
-    description: 'Equipamiento militar de última generación con tecnología infrarroja de precisión. Partidas épicas con diferentes modos de juego.',
+    description: 'Equipamiento militar de última generación con tecnología infrarroja de precisión. Partidas épicas con diferentes modos de juego para todas las edades.',
     color: 'neon-blue',
     glowClass: 'box-glow-blue',
+    image: null,
+    modes: [
+      { icon: Building2, label: 'Indoor', desc: 'Arenas climatizadas con escenografía inmersiva, iluminación UV y efectos especiales.' },
+      { icon: TreePine, label: 'Outdoor', desc: 'Campos al aire libre con terrenos naturales y estructuras tácticas.' },
+    ],
   },
   {
     icon: Glasses,
     title: 'Realidad Virtual',
-    description: 'Sumérgete en mundos virtuales con las mejores gafas VR del mercado. Experiencias multijugador increíbles.',
+    description: 'Experiencias de hiperrealidad virtual con tecnología Free Roaming y efectos 4D. Sumérgete en mundos virtuales multijugador donde todos tus sentidos se activan.',
     color: 'neon-purple',
     glowClass: 'box-glow-purple',
-  },
-  {
-    icon: Building2,
-    title: 'Indoor',
-    description: 'Arenas climatizadas con escenografía inmersiva. Iluminación UV, niebla y efectos especiales para una experiencia única.',
-    color: 'neon-red',
-    glowClass: 'box-glow-red',
-  },
-  {
-    icon: TreePine,
-    title: 'Outdoor',
-    description: 'Campos al aire libre con terrenos naturales y estructuras tácticas. Partidas de gran escala con hasta 30 jugadores.',
-    color: 'neon-green',
-    glowClass: '',
+    image: vrExperience,
+    modes: [
+      { icon: Building2, label: 'Indoor', desc: 'Experiencias inmersivas en sala con sistema de tracking de última generación.' },
+      { icon: TreePine, label: 'Outdoor', desc: 'Aventuras VR al aire libre con libertad de movimiento total.' },
+    ],
   },
 ];
 
@@ -56,36 +54,79 @@ const ServicesSection = () => {
             ELIGE TU <span className="text-neon-blue text-glow-blue">AVENTURA</span>
           </h2>
           <p className="font-body text-lg text-muted-foreground max-w-2xl mx-auto">
-            Combina tecnología de vanguardia con adrenalina pura en nuestras modalidades de juego
+            Combina tecnología de vanguardia con adrenalina pura en nuestras dos modalidades de juego
           </p>
         </motion.div>
 
-        {/* Services Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Services Cards */}
+        <div className="grid md:grid-cols-2 gap-8">
           {services.map((service, index) => (
             <motion.div
               key={service.title}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.1, duration: 0.5 }}
+              transition={{ delay: index * 0.15, duration: 0.6 }}
             >
-              <div className="group h-full gradient-border rounded-xl bg-card p-6 hover:scale-105 transition-all duration-300 cursor-pointer">
-                {/* Icon */}
-                <div className={`w-16 h-16 rounded-lg bg-${service.color}/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                  <service.icon className={`w-8 h-8 text-${service.color}`} />
-                </div>
+              <div className="group h-full gradient-border rounded-2xl bg-card overflow-hidden hover:scale-[1.02] transition-all duration-300">
+                {/* Image */}
+                {service.image && (
+                  <div className="relative h-56 overflow-hidden">
+                    <img
+                      src={service.image}
+                      alt={service.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-card via-card/40 to-transparent" />
+                  </div>
+                )}
+                {!service.image && (
+                  <div className={`relative h-56 bg-gradient-to-br from-${service.color}/20 via-card to-${service.color}/5 flex items-center justify-center`}>
+                    <service.icon className={`w-24 h-24 text-${service.color} opacity-30`} />
+                    <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
+                  </div>
+                )}
 
                 {/* Content */}
-                <h3 className="font-display text-xl font-bold text-foreground mb-3 group-hover:text-neon-blue transition-colors duration-300">
-                  {service.title}
-                </h3>
-                <p className="font-body text-muted-foreground text-sm leading-relaxed">
-                  {service.description}
-                </p>
+                <div className="p-8">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className={`w-12 h-12 rounded-lg bg-${service.color}/10 flex items-center justify-center`}>
+                      <service.icon className={`w-6 h-6 text-${service.color}`} />
+                    </div>
+                    <h3 className="font-display text-2xl font-bold text-foreground">
+                      {service.title}
+                    </h3>
+                  </div>
 
-                {/* Hover accent line */}
-                <div className={`mt-6 h-0.5 bg-gradient-to-r from-${service.color} to-transparent w-0 group-hover:w-full transition-all duration-500`} />
+                  <p className="font-body text-muted-foreground leading-relaxed mb-6">
+                    {service.description}
+                  </p>
+
+                  {/* Indoor / Outdoor modes */}
+                  <div className="space-y-3">
+                    <span className="font-body text-xs uppercase tracking-widest text-muted-foreground">
+                      Modalidades disponibles
+                    </span>
+                    <div className="grid grid-cols-2 gap-3">
+                      {service.modes.map((mode) => (
+                        <div
+                          key={mode.label}
+                          className={`p-3 rounded-lg bg-background/50 border border-border hover:border-${service.color}/40 transition-colors`}
+                        >
+                          <div className="flex items-center gap-2 mb-1">
+                            <mode.icon className={`w-4 h-4 text-${service.color}`} />
+                            <span className="font-display text-sm font-semibold text-foreground">
+                              {mode.label}
+                            </span>
+                          </div>
+                          <p className="font-body text-xs text-muted-foreground leading-relaxed">
+                            {mode.desc}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </div>
             </motion.div>
           ))}
