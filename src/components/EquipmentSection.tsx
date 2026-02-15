@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion';
-import { Shield, Cpu, Wifi, Battery } from 'lucide-react';
+import { Shield, Cpu, Wifi, Battery, Glasses, Footprints } from 'lucide-react';
+import vrAdventure from '@/assets/vr-adventure.png';
 
-const features = [
+const laserFeatures = [
   {
     icon: Shield,
     title: 'Tecnología Militar',
@@ -24,13 +25,37 @@ const features = [
   },
 ];
 
+const vrFeatures = [
+  {
+    icon: Glasses,
+    title: 'Hiperrealidad',
+    description: 'Tecnología de realidad virtual con efectos 4D que estimulan todos los sentidos.',
+  },
+  {
+    icon: Footprints,
+    title: 'Free Roaming',
+    description: 'Libertad de movimiento total en espacios virtuales sin cables ni limitaciones.',
+  },
+  {
+    icon: Cpu,
+    title: 'Multijugador',
+    description: 'Experiencias cooperativas y competitivas para toda la familia y grupos.',
+  },
+  {
+    icon: Wifi,
+    title: 'Tracking Avanzado',
+    description: 'Sistema de seguimiento de alta precisión para una inmersión total.',
+  },
+];
+
 const EquipmentSection = () => {
   return (
     <section id="equipment" className="py-20 md:py-32 relative overflow-hidden">
       <div className="absolute inset-0 bg-grid opacity-20" />
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+        {/* Laser Tag Equipment */}
+        <div className="grid lg:grid-cols-2 gap-16 items-center mb-24">
           {/* Left - Content */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -38,20 +63,19 @@ const EquipmentSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <span className="inline-block font-body text-sm uppercase tracking-widest text-neon-purple mb-4">
-              Equipamiento premium
+            <span className="inline-block font-body text-sm uppercase tracking-widest text-neon-blue mb-4">
+              Laser Tag
             </span>
             <h2 className="font-display text-3xl md:text-5xl font-bold text-foreground mb-6">
-              TECNOLOGÍA DE <span className="text-neon-purple text-glow-purple">VANGUARDIA</span>
+              EQUIPAMIENTO <span className="text-neon-blue text-glow-blue">PREMIUM</span>
             </h2>
             <p className="font-body text-lg text-muted-foreground mb-10 leading-relaxed">
               Trabajamos con los mejores proveedores del sector: LaserWar y BattleStart. 
               Nuestro equipamiento ofrece la experiencia más realista y profesional del mercado.
             </p>
 
-            {/* Features Grid */}
             <div className="grid sm:grid-cols-2 gap-6">
-              {features.map((feature, index) => (
+              {laserFeatures.map((feature, index) => (
                 <motion.div
                   key={feature.title}
                   initial={{ opacity: 0, y: 20 }}
@@ -60,8 +84,8 @@ const EquipmentSection = () => {
                   transition={{ delay: index * 0.1, duration: 0.5 }}
                   className="flex gap-4"
                 >
-                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-neon-purple/10 flex items-center justify-center">
-                    <feature.icon className="w-6 h-6 text-neon-purple" />
+                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-neon-blue/10 flex items-center justify-center">
+                    <feature.icon className="w-6 h-6 text-neon-blue" />
                   </div>
                   <div>
                     <h4 className="font-display text-sm font-bold text-foreground mb-1">
@@ -85,12 +109,11 @@ const EquipmentSection = () => {
             className="relative"
           >
             <div className="relative aspect-square rounded-2xl overflow-hidden gradient-border">
-              {/* Placeholder for equipment image */}
-              <div className="absolute inset-0 bg-gradient-to-br from-neon-purple/20 via-card to-neon-blue/20">
+              <div className="absolute inset-0 bg-gradient-to-br from-neon-blue/20 via-card to-neon-blue/10">
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center">
-                    <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-neon-purple/20 flex items-center justify-center animate-pulse-glow">
-                      <Cpu className="w-16 h-16 text-neon-purple" />
+                    <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-neon-blue/20 flex items-center justify-center animate-pulse-glow">
+                      <Cpu className="w-16 h-16 text-neon-blue" />
                     </div>
                     <p className="font-display text-2xl font-bold text-foreground">LaserWar X-Gen</p>
                     <p className="font-body text-sm text-muted-foreground mt-2">Última generación</p>
@@ -98,7 +121,6 @@ const EquipmentSection = () => {
                 </div>
               </div>
 
-              {/* Floating elements */}
               <motion.div
                 animate={{ y: [0, -10, 0] }}
                 transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
@@ -110,10 +132,92 @@ const EquipmentSection = () => {
               <motion.div
                 animate={{ y: [0, 10, 0] }}
                 transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut", delay: 0.5 }}
-                className="absolute bottom-8 left-8 px-4 py-2 rounded-lg bg-card/80 backdrop-blur-sm border border-neon-purple/30"
+                className="absolute bottom-8 left-8 px-4 py-2 rounded-lg bg-card/80 backdrop-blur-sm border border-neon-blue/30"
               >
-                <span className="font-body text-xs text-neon-purple uppercase tracking-wider">+500m alcance</span>
+                <span className="font-body text-xs text-neon-blue uppercase tracking-wider">+500m alcance</span>
               </motion.div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* VR Equipment */}
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          {/* Left - Visual */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="relative order-2 lg:order-1"
+          >
+            <div className="relative aspect-square rounded-2xl overflow-hidden gradient-border">
+              <img
+                src={vrAdventure}
+                alt="VEX Adventure - Realidad Virtual"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent" />
+
+              <motion.div
+                animate={{ y: [0, -10, 0] }}
+                transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+                className="absolute top-8 left-8 px-4 py-2 rounded-lg bg-card/80 backdrop-blur-sm border border-neon-purple/30"
+              >
+                <span className="font-body text-xs text-neon-purple uppercase tracking-wider">Free Roaming</span>
+              </motion.div>
+
+              <motion.div
+                animate={{ y: [0, 10, 0] }}
+                transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut", delay: 0.5 }}
+                className="absolute bottom-8 right-8 px-4 py-2 rounded-lg bg-card/80 backdrop-blur-sm border border-neon-purple/30"
+              >
+                <span className="font-body text-xs text-neon-purple uppercase tracking-wider">Efectos 4D</span>
+              </motion.div>
+            </div>
+          </motion.div>
+
+          {/* Right - Content */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="order-1 lg:order-2"
+          >
+            <span className="inline-block font-body text-sm uppercase tracking-widest text-neon-purple mb-4">
+              Realidad Virtual
+            </span>
+            <h2 className="font-display text-3xl md:text-5xl font-bold text-foreground mb-6">
+              HIPER<span className="text-neon-purple text-glow-purple">REALIDAD</span> VIRTUAL
+            </h2>
+            <p className="font-body text-lg text-muted-foreground mb-10 leading-relaxed">
+              Experiencias de hiperrealidad con tecnología Free Roaming y efectos 4D. 
+              Una actividad alucinante que activa todos tus sentidos. ¡El futuro del entretenimiento está aquí!
+            </p>
+
+            <div className="grid sm:grid-cols-2 gap-6">
+              {vrFeatures.map((feature, index) => (
+                <motion.div
+                  key={feature.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1, duration: 0.5 }}
+                  className="flex gap-4"
+                >
+                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-neon-purple/10 flex items-center justify-center">
+                    <feature.icon className="w-6 h-6 text-neon-purple" />
+                  </div>
+                  <div>
+                    <h4 className="font-display text-sm font-bold text-foreground mb-1">
+                      {feature.title}
+                    </h4>
+                    <p className="font-body text-xs text-muted-foreground leading-relaxed">
+                      {feature.description}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
         </div>
