@@ -25,7 +25,7 @@ const services = [
     glowClass: 'box-glow-purple',
     image: vrExperience,
     modes: [
-      { icon: Building2, label: 'Indoor', desc: 'Arena VR de 100m² con tracking de última generación y hasta 12 jugadores simultáneos.' },
+      { icon: Building2, label: 'Indoor', desc: 'Arena VR de 200m² con tracking de última generación y hasta 12 jugadores simultáneos.' },
       { icon: TreePine, label: 'Outdoor', desc: 'Experiencias VR móviles al aire libre con libertad de movimiento total. Hasta 12 jugadores.' },
     ],
   },
