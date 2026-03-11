@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { Resend } from "https://esm.sh/resend@2.0.0";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
@@ -168,6 +169,34 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
+    // Insert reservation into database server-side (behind rate limiting)
+    const supabaseAdmin = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
+    );
+
+    const { error: dbError } = await supabaseAdmin.from("reservations").insert({
+      customer_name: data.customerName,
+      customer_email: data.customerEmail,
+      customer_phone: data.customerPhone,
+      reservation_date: data.reservationDate,
+      reservation_time: data.reservationTime,
+      number_of_people: data.numberOfPeople,
+      activity_type: data.activityType,
+      event_type: data.eventType,
+      extras: data.extras,
+      video_invitation_theme: data.videoInvitationTheme || null,
+      special_requests: data.specialRequests || null,
+    });
+
+    if (dbError) {
+      console.error("Database insert error:", dbError);
+      return new Response(
+        JSON.stringify({ error: "Error al guardar la reserva. Inténtalo de nuevo." }),
+        { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
     const formattedDate = new Date(data.reservationDate).toLocaleDateString('es-ES', {
       weekday: 'long',
       year: 'numeric',
@@ -317,7 +346,7 @@ const handler = async (req: Request): Promise<Response> => {
       `,
     });
 
-    console.log("Emails sent successfully");
+    console.log("Reservation saved and emails sent successfully");
 
     return new Response(
       JSON.stringify({ success: true }),

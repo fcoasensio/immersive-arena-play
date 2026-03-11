@@ -86,32 +86,15 @@ const ReservationForm = ({ onClose }: ReservationFormProps) => {
     setIsSubmitting(true);
     
     try {
-      // Save reservation to database
-      const { error: dbError } = await supabase.from('reservations').insert({
-        customer_name: data.name,
-        customer_email: data.email,
-        customer_phone: data.phone,
-        reservation_date: format(data.reservation_date, 'yyyy-MM-dd'),
-        reservation_time: data.reservation_time,
-        number_of_people: parseInt(data.number_of_people) || 2,
-        activity_type: data.activity_type,
-        event_type: data.event_type,
-        extras: data.extras,
-        video_invitation_theme: data.video_invitation_theme || null,
-        special_requests: data.special_requests || null,
-      });
-
-      if (dbError) throw dbError;
-
-      // Send notification emails via edge function
-      await supabase.functions.invoke('send-reservation-notification', {
+      // Send reservation to edge function (handles DB insert + email notifications with rate limiting)
+      const { data: responseData, error } = await supabase.functions.invoke('send-reservation-notification', {
         body: {
           customerName: data.name,
           customerEmail: data.email,
           customerPhone: data.phone,
           reservationDate: format(data.reservation_date, 'yyyy-MM-dd'),
           reservationTime: data.reservation_time,
-          numberOfPeople: parseInt(data.number_of_people),
+          numberOfPeople: parseInt(data.number_of_people) || 2,
           activityType: data.activity_type,
           eventType: data.event_type,
           extras: data.extras,
@@ -119,6 +102,14 @@ const ReservationForm = ({ onClose }: ReservationFormProps) => {
           videoInvitationTheme: data.video_invitation_theme,
         },
       });
+
+      if (error) throw error;
+      
+      // Check for rate limit or validation errors returned in body
+      if (responseData?.error) {
+        toast.error(responseData.error);
+        return;
+      }
 
       setIsSuccess(true);
       toast.success('¡Reserva realizada con éxito!');
