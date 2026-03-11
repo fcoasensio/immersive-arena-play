@@ -489,7 +489,7 @@ const ReservationForm = ({ onClose }: ReservationFormProps) => {
                 Reservando...
               </>
             ) : (
-              'Confirmar Reserva'
+              'Enviar'
             )}
           </Button>
         </div>
