@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Users, Cake, PartyPopper, Trophy } from 'lucide-react';
+import { Users, Cake, PartyPopper, Trophy, Landmark, Music, GraduationCap } from 'lucide-react';
 import { Button } from './ui/button';
 
 const events = [
@@ -30,6 +30,27 @@ const events = [
     description: 'Compite en nuestros torneos oficiales o crea el tuyo propio. Premios, clasificaciones y gloria eterna.',
     features: ['Rankings online', 'Premios en metálico', 'Streaming'],
     accent: 'from-neon-green to-neon-blue',
+  },
+  {
+    icon: Landmark,
+    title: 'Eventos Municipales',
+    description: 'Lleva la diversión a tu municipio. Montamos experiencias de laser tag y VR en ferias, fiestas patronales y eventos públicos.',
+    features: ['Montaje completo outdoor', 'Adaptable a cualquier espacio', 'Para todas las edades'],
+    accent: 'from-amber-500 to-neon-red',
+  },
+  {
+    icon: Music,
+    title: 'Festivales',
+    description: 'Añade una atracción única a tu festival. Zonas de juego interactivas que atraen y entretienen a miles de asistentes.',
+    features: ['Gran capacidad', 'Experiencia inmersiva', 'Soporte técnico incluido'],
+    accent: 'from-pink-500 to-neon-purple',
+  },
+  {
+    icon: GraduationCap,
+    title: 'Centros Educativos',
+    description: 'Actividades extraescolares, excursiones y jornadas especiales. Diversión segura que fomenta el trabajo en equipo.',
+    features: ['Adaptado por edades', 'Monitores especializados', 'Precios especiales para colegios'],
+    accent: 'from-cyan-500 to-neon-green',
   },
 ];
 
