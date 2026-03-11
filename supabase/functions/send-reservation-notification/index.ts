@@ -94,9 +94,9 @@ const getExtrasLabels = (extras: string[]) => {
   const labels: Record<string, string> = {
     'snacks': 'Snacks y bebidas',
     'photos': 'Sesión de fotos',
-    'private_room': 'Sala privada',
-    'trophy': 'Trofeo para ganador',
-    'decoration': 'Decoración especial',
+    'private_session': 'Sesión privada',
+    'diploma': 'Diploma para ganador',
+    'video_invitation': 'Videoinvitación',
   };
   return extras.map(e => labels[e] || e).join(', ') || 'Ninguno';
 };
