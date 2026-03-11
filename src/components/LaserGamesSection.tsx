@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Target, Flag, Skull, Shield, MapPin, Users } from 'lucide-react';
+import { Target, Flag, Skull, Shield, MapPin, Users, Biohazard, Ghost } from 'lucide-react';
 import { Badge } from './ui/badge';
 
 type GameMode = 'all' | 'team' | 'solo';
