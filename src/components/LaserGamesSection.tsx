@@ -49,8 +49,8 @@ const games: LaserGame[] = [
     emoji: '📍',
     icon: MapPin,
     description: 'Controla puntos estratégicos del mapa para sumar puntos. Los equipos luchan por mantener el dominio de las zonas clave. ¡Coordinación y posicionamiento táctico son esenciales!',
-    players: '6-30',
-    duration: '15-20 min',
+    players: '6-24',
+    duration: '15 min',
   },
 ];
 

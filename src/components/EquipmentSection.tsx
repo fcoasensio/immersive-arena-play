@@ -188,7 +188,7 @@ const EquipmentSection = () => {
             </h2>
             <p className="font-body text-lg text-muted-foreground mb-10 leading-relaxed">
               Desarrollamos experiencias con los mejores juegos de realidad virtual de libre movimiento del mercado. 
-              Party games infantiles, shooters tácticos y aventuras de acción para grupos de hasta 16 jugadores.
+              Party games infantiles, shooters tácticos y aventuras de acción para grupos de hasta 16 jugadores en indoor.
             </p>
 
             <div className="grid sm:grid-cols-2 gap-6">
