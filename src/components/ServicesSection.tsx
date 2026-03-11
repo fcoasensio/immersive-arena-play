@@ -20,13 +20,13 @@ const services = [
   {
     icon: Glasses,
     title: 'Realidad Virtual',
-    description: 'Juegos de realidad virtual de libre movimiento con tecnología Free Roaming. Party games para toda la familia desde 5 años, shooters tácticos y aventuras de acción para hasta 16 jugadores simultáneos.',
+    description: 'Juegos de realidad virtual de libre movimiento con tecnología Free Roaming. Party games para toda la familia desde 5 años, shooters tácticos y aventuras de acción para hasta 12 jugadores simultáneos.',
     color: 'neon-purple',
     glowClass: 'box-glow-purple',
     image: vrExperience,
     modes: [
-      { icon: Building2, label: 'Indoor', desc: 'Arenas VR desde 36m² con tracking de última generación y hasta 16 jugadores.' },
-      { icon: TreePine, label: 'Outdoor', desc: 'Experiencias VR móviles al aire libre con libertad de movimiento total.' },
+      { icon: Building2, label: 'Indoor', desc: 'Arenas VR desde 36m² con tracking de última generación y hasta 12 jugadores simultáneos.' },
+      { icon: TreePine, label: 'Outdoor', desc: 'Experiencias VR móviles al aire libre con libertad de movimiento total. Hasta 12 jugadores.' },
     ],
   },
 ];

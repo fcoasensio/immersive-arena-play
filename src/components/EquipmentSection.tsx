@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Shield, Cpu, Wifi, Battery, Glasses, Footprints } from 'lucide-react';
-import vrAdventure from '@/assets/vr-adventure.png';
+import vrExperience from '@/assets/vr-experience.jpg';
 import laserTagBlasters from '@/assets/ak-15-laser-tag-gun.png';
 
 const laserFeatures = [
@@ -39,12 +39,12 @@ const vrFeatures = [
   },
   {
     icon: Cpu,
-    title: 'Hasta 24 Jugadores',
-    description: 'Hasta 16 jugadores en indoor y 24 en outdoor. Experiencias multijugador para toda la familia, desde 5 años.',
+    title: 'Hasta 12 Jugadores',
+    description: 'Hasta 12 jugadores simultáneos tanto en indoor como en outdoor. Experiencias multijugador para toda la familia, desde 5 años.',
   },
   {
     icon: Wifi,
-    title: 'Software BattleStart',
+    title: 'Software Profesional',
     description: 'Plataforma profesional con gestión de sesiones, estadísticas en tiempo real y rankings.',
   },
 ];
@@ -148,8 +148,8 @@ const EquipmentSection = () => {
           >
             <div className="relative aspect-square rounded-2xl overflow-hidden gradient-border">
               <img
-                src={vrAdventure}
-                alt="VEX Adventure - Realidad Virtual"
+                src={vrExperience}
+                alt="Experiencia VR Free Roaming"
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent" />
@@ -188,7 +188,7 @@ const EquipmentSection = () => {
             </h2>
             <p className="font-body text-lg text-muted-foreground mb-10 leading-relaxed">
               Desarrollamos experiencias con los mejores juegos de realidad virtual de libre movimiento del mercado. 
-              Party games infantiles, shooters tácticos y aventuras de acción para grupos de hasta 16 jugadores en indoor.
+              Party games infantiles, shooters tácticos y aventuras de acción para grupos de hasta 12 jugadores simultáneos.
             </p>
 
             <div className="grid sm:grid-cols-2 gap-6">
