@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Users, Cake, PartyPopper, Trophy, Landmark, Music, GraduationCap } from 'lucide-react';
+import { Users, Cake, PartyPopper, Trophy, Landmark, GraduationCap } from 'lucide-react';
 import { Button } from './ui/button';
 
 const events = [
