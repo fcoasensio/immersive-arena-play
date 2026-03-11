@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { Target, Glasses, Building2, TreePine } from 'lucide-react';
 import vrExperience from '@/assets/vr-experience.jpg';
 import vrAdventure from '@/assets/vr-adventure.png';
-import laserTagEquipment from '@/assets/laser-tag-equipment.jpg';
+import laserTagEquipment from '@/assets/equipamiento-lasertag-real.png';
 
 const services = [
   {
