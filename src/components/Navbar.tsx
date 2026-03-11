@@ -25,7 +25,7 @@ const Navbar = ({ onReserveClick }: NavbarProps) => {
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <a href="#" className="flex items-center group">
-            <img src={logoImg} alt="Shoot and Run" className="h-10 md:h-12 w-auto" translate="no" />
+            <img src={logoImg} alt="Shoot and Run" className="h-[52px] md:h-[62px] w-auto" translate="no" />
           </a>
 
           {/* Desktop Navigation */}
