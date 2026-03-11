@@ -22,8 +22,8 @@ const games: LaserGame[] = [
     emoji: '🚩',
     icon: Flag,
     description: 'Dos equipos compiten por capturar la bandera del equipo contrario y llevarla a su base. Protege tu bandera mientras atacas al enemigo. ¡Estrategia y trabajo en equipo son la clave!',
-    players: '4-30',
-    duration: '15-20 min',
+    players: '4-24',
+    duration: '15 min',
   },
   {
     title: 'Deathmatch',
