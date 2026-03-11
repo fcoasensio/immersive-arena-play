@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Crosshair } from 'lucide-react';
+import logoSvg from '@/assets/logo-shootandrun.svg';
 import { Button } from './ui/button';
 
 interface NavbarProps {
