@@ -12,7 +12,7 @@ const laserFeatures = [
   {
     icon: Cpu,
     title: 'Software Avanzado',
-    description: 'Sistema BattleStart con estadísticas en tiempo real, rankings y múltiples modos de juego.',
+    description: 'Software de control con estadísticas en tiempo real, rankings y múltiples modos de juego.',
   },
   {
     icon: Wifi,
