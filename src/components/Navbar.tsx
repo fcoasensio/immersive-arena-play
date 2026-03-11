@@ -27,7 +27,6 @@ const Navbar = ({ onReserveClick }: NavbarProps) => {
           <a href="#" className="flex items-center group">
             <img src={logoImg} alt="Shoot and Run" className="h-8 md:h-10 w-auto" translate="no" />
           </a>
-          </a>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">

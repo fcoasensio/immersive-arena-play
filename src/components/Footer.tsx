@@ -12,7 +12,6 @@ const Footer = () => {
           <div className="flex items-center">
             <img src={logoImg} alt="Shoot and Run" className="h-8 w-auto" translate="no" />
           </div>
-          </div>
 
           {/* Links */}
           <div className="flex items-center gap-6">
