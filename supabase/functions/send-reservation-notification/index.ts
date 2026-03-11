@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "https://esm.sh/resend@2.0.0";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
@@ -10,9 +11,7 @@ const corsHeaders = {
 };
 
 interface ReservationNotification {
-  // Admin notification
   adminEmail: string;
-  // Reservation details
   customerName: string;
   customerEmail: string;
   customerPhone: string;
@@ -24,6 +23,51 @@ interface ReservationNotification {
   extras: string[];
   specialRequests?: string;
   reservationId: string;
+}
+
+// Simple validation helpers
+const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+const isValidDate = (date: string) => /^\d{4}-\d{2}-\d{2}$/.test(date);
+const isValidTime = (time: string) => /^\d{2}:\d{2}$/.test(time);
+const isValidUUID = (id: string) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+const VALID_ACTIVITIES = ['laser_tag', 'vr', 'both'];
+const VALID_EVENTS = ['casual', 'birthday', 'corporate', 'team_building', 'other'];
+const VALID_EXTRAS = ['snacks', 'photos', 'private_room', 'trophy', 'decoration'];
+
+const sanitizeHtml = (text: string) =>
+  text.replace(/[<>"'&]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '&': '&amp;' }[c] || c));
+
+function validateInput(data: any): { valid: boolean; error?: string; sanitized?: ReservationNotification } {
+  if (!data || typeof data !== 'object') return { valid: false, error: 'Invalid request body' };
+
+  const { adminEmail, customerName, customerEmail, customerPhone, reservationDate, reservationTime, numberOfPeople, activityType, eventType, extras, specialRequests, reservationId } = data;
+
+  if (!adminEmail || !isValidEmail(adminEmail)) return { valid: false, error: 'Invalid admin email' };
+  if (!customerName || typeof customerName !== 'string' || customerName.length < 2 || customerName.length > 100) return { valid: false, error: 'Invalid customer name' };
+  if (!customerEmail || !isValidEmail(customerEmail)) return { valid: false, error: 'Invalid customer email' };
+  if (!customerPhone || typeof customerPhone !== 'string' || customerPhone.length < 9 || customerPhone.length > 20) return { valid: false, error: 'Invalid phone' };
+  if (!reservationDate || !isValidDate(reservationDate)) return { valid: false, error: 'Invalid date' };
+  if (!reservationTime || !isValidTime(reservationTime)) return { valid: false, error: 'Invalid time' };
+  if (typeof numberOfPeople !== 'number' || numberOfPeople < 1 || numberOfPeople > 100) return { valid: false, error: 'Invalid number of people' };
+  if (!VALID_ACTIVITIES.includes(activityType)) return { valid: false, error: 'Invalid activity type' };
+  if (!VALID_EVENTS.includes(eventType)) return { valid: false, error: 'Invalid event type' };
+  if (!reservationId || !isValidUUID(reservationId)) return { valid: false, error: 'Invalid reservation ID' };
+  if (!Array.isArray(extras) || extras.some((e: string) => !VALID_EXTRAS.includes(e))) return { valid: false, error: 'Invalid extras' };
+  if (specialRequests && (typeof specialRequests !== 'string' || specialRequests.length > 1000)) return { valid: false, error: 'Invalid special requests' };
+
+  return {
+    valid: true,
+    sanitized: {
+      adminEmail, customerEmail,
+      customerName: sanitizeHtml(customerName),
+      customerPhone: sanitizeHtml(customerPhone),
+      reservationDate, reservationTime, numberOfPeople,
+      activityType, eventType,
+      extras,
+      specialRequests: specialRequests ? sanitizeHtml(specialRequests) : undefined,
+      reservationId,
+    },
+  };
 }
 
 const getActivityLabel = (type: string) => {
@@ -63,11 +107,44 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const data: ReservationNotification = await req.json();
+    const rawData = await req.json();
 
-    // Validate required fields
-    if (!data.adminEmail || !data.customerName || !data.customerEmail) {
-      throw new Error("Missing required fields");
+    // Validate and sanitize input
+    const validation = validateInput(rawData);
+    if (!validation.valid || !validation.sanitized) {
+      return new Response(
+        JSON.stringify({ error: validation.error }),
+        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
+    const data = validation.sanitized;
+
+    // Verify the reservation exists in the database
+    const supabaseAdmin = createClient(
+      Deno.env.get("SUPABASE_URL") ?? "",
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
+    );
+
+    const { data: reservation, error: dbError } = await supabaseAdmin
+      .from("reservations")
+      .select("id, email, name")
+      .eq("id", data.reservationId)
+      .single();
+
+    if (dbError || !reservation) {
+      return new Response(
+        JSON.stringify({ error: "Reservation not found" }),
+        { status: 404, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
+    // Verify the email matches the reservation to prevent spoofing
+    if (reservation.email !== data.customerEmail) {
+      return new Response(
+        JSON.stringify({ error: "Email mismatch" }),
+        { status: 403, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
     }
 
     const formattedDate = new Date(data.reservationDate).toLocaleDateString('es-ES', {
@@ -229,7 +306,7 @@ const handler = async (req: Request): Promise<Response> => {
     console.log("Emails sent successfully:", { adminEmailResponse, customerEmailResponse });
 
     return new Response(
-      JSON.stringify({ success: true, adminEmail: adminEmailResponse, customerEmail: customerEmailResponse }),
+      JSON.stringify({ success: true }),
       {
         status: 200,
         headers: { "Content-Type": "application/json", ...corsHeaders },
@@ -238,7 +315,7 @@ const handler = async (req: Request): Promise<Response> => {
   } catch (error: any) {
     console.error("Error in send-reservation-notification function:", error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: "Failed to process notification. Please try again." }),
       {
         status: 500,
         headers: { "Content-Type": "application/json", ...corsHeaders },
