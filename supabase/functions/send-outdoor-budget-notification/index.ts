@@ -3,6 +3,9 @@ import { Resend } from "https://esm.sh/resend@2.0.0";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
+const ADMIN_EMAIL = "outdoor@shootandrun.es";
+const CC_EMAIL = "info@shootandrun.es";
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
@@ -37,10 +40,9 @@ const handler = async (req: Request): Promise<Response> => {
   try {
     const data = await req.json();
 
-    const { adminEmail, customerName, customerEmail, customerPhone, company, location, numberOfPeople, eventType, details } = data;
+    const { customerName, customerEmail, customerPhone, company, location, numberOfPeople, eventType, details } = data;
 
     // Validate
-    if (!adminEmail || !isValidEmail(adminEmail)) return new Response(JSON.stringify({ error: 'Invalid admin email' }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     if (!customerName || typeof customerName !== 'string' || customerName.length < 2 || customerName.length > 100) return new Response(JSON.stringify({ error: 'Invalid name' }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     if (!customerEmail || !isValidEmail(customerEmail)) return new Response(JSON.stringify({ error: 'Invalid email' }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     if (!customerPhone || typeof customerPhone !== 'string' || customerPhone.length < 9) return new Response(JSON.stringify({ error: 'Invalid phone' }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
@@ -57,7 +59,8 @@ const handler = async (req: Request): Promise<Response> => {
     // Send to admin
     await resend.emails.send({
       from: "Shoot&Run Outdoor <outdoor@shootandrun.es>",
-      to: [adminEmail],
+      to: [ADMIN_EMAIL],
+      cc: [CC_EMAIL],
       subject: `🌿 Solicitud Presupuesto Outdoor - ${safeName}`,
       html: `
         <!DOCTYPE html>

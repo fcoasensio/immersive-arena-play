@@ -57,10 +57,8 @@ const OutdoorBudgetForm = ({ onClose }: OutdoorBudgetFormProps) => {
     setIsSubmitting(true);
 
     try {
-      // Send notification via edge function
       const { error } = await supabase.functions.invoke('send-outdoor-budget-notification', {
         body: {
-          adminEmail: OUTDOOR_EMAIL,
           customerName: data.name,
           customerEmail: data.email,
           customerPhone: data.phone,
@@ -72,9 +70,7 @@ const OutdoorBudgetForm = ({ onClose }: OutdoorBudgetFormProps) => {
         },
       });
 
-      if (error) {
-        console.error('Email error:', error);
-      }
+      if (error) throw error;
 
       setIsSuccess(true);
       toast.success('¡Solicitud de presupuesto enviada!');
