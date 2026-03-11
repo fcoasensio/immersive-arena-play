@@ -39,8 +39,8 @@ const vrFeatures = [
   },
   {
     icon: Cpu,
-    title: 'Hasta 24 Jugadores',
-    description: 'Hasta 16 jugadores en indoor y 24 en outdoor. Experiencias multijugador para toda la familia, desde 5 años.',
+    title: 'Hasta 12 Jugadores',
+    description: 'Hasta 12 jugadores simultáneos tanto en indoor como en outdoor. Experiencias multijugador para toda la familia, desde 5 años.',
   },
   {
     icon: Wifi,
