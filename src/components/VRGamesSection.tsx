@@ -131,8 +131,8 @@ const VRGamesSection = () => {
             CATÁLOGO DE <span className="text-neon-purple text-glow-purple">JUEGOS VR</span>
           </h2>
           <p className="font-body text-lg text-muted-foreground max-w-2xl mx-auto">
-            Juegos de realidad virtual de libre movimiento para todas las edades. 
-            Desde party games familiares hasta shooters tácticos intensos.
+            Juegos de realidad virtual de libre movimiento a partir de 12 años. 
+            Shooters tácticos, aventuras de acción y escape rooms inmersivos.
           </p>
         </motion.div>
 
