@@ -14,7 +14,7 @@ interface CTASectionProps {
   onOutdoorClick?: () => void;
 }
 
-const CTASection = ({ onReserveClick }: CTASectionProps) => {
+const CTASection = ({ onReserveClick, onOutdoorClick }: CTASectionProps) => {
   return (
     <section id="contact" className="py-20 md:py-32 relative overflow-hidden">
       {/* Background gradient */}
