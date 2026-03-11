@@ -18,8 +18,6 @@ import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
-const ADMIN_EMAIL = 'reservas@shootandrun.es';
-
 const reservationSchema = z.object({
   name: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
   email: z.string().email('Email inválido'),
@@ -75,30 +73,9 @@ const ReservationForm = ({ onClose }: ReservationFormProps) => {
     setIsSubmitting(true);
     
     try {
-      // Insert reservation into database
-      const { data: reservation, error: dbError } = await supabase
-        .from('reservations')
-        .insert({
-          name: data.name,
-          email: data.email,
-          phone: data.phone,
-          reservation_date: format(data.reservation_date, 'yyyy-MM-dd'),
-          reservation_time: data.reservation_time,
-          number_of_people: parseInt(data.number_of_people),
-          activity_type: data.activity_type,
-          event_type: data.event_type,
-          extras: data.extras,
-          special_requests: data.special_requests || null,
-        })
-        .select()
-        .single();
-
-      if (dbError) throw dbError;
-
-      // Send notification emails
+      // Send notification emails via edge function (no DB storage)
       const { error: emailError } = await supabase.functions.invoke('send-reservation-notification', {
         body: {
-          adminEmail: ADMIN_EMAIL,
           customerName: data.name,
           customerEmail: data.email,
           customerPhone: data.phone,
@@ -109,14 +86,11 @@ const ReservationForm = ({ onClose }: ReservationFormProps) => {
           eventType: data.event_type,
           extras: data.extras,
           specialRequests: data.special_requests,
-          reservationId: reservation.id,
+          videoInvitationTheme: data.video_invitation_theme,
         },
       });
 
-      if (emailError) {
-        console.error('Email error:', emailError);
-        // Don't fail the reservation if email fails
-      }
+      if (emailError) throw emailError;
 
       setIsSuccess(true);
       toast.success('¡Reserva realizada con éxito!');
