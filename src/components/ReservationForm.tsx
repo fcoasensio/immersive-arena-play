@@ -307,6 +307,7 @@ const ReservationForm = ({ onClose }: ReservationFormProps) => {
                           {num} {num === 1 ? 'persona' : 'personas'}
                         </SelectItem>
                       ))}
+                      <SelectItem value="20+">Más de 20 personas</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
