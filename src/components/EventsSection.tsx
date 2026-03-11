@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Users, Cake, PartyPopper, Trophy, Landmark, Music, GraduationCap } from 'lucide-react';
+import { Users, Cake, PartyPopper, Trophy, Landmark, GraduationCap } from 'lucide-react';
 import { Button } from './ui/button';
 
 const events = [
@@ -37,13 +37,6 @@ const events = [
     description: 'Lleva la diversión a tu municipio. Montamos experiencias de laser tag y VR en ferias, fiestas patronales y eventos públicos.',
     features: ['Montaje completo outdoor', 'Adaptable a cualquier espacio', 'Para todas las edades'],
     accent: 'from-amber-500 to-neon-red',
-  },
-  {
-    icon: Music,
-    title: 'Festivales',
-    description: 'Añade una atracción única a tu festival. Zonas de juego interactivas que atraen y entretienen a miles de asistentes.',
-    features: ['Gran capacidad', 'Experiencia inmersiva', 'Soporte técnico incluido'],
-    accent: 'from-pink-500 to-neon-purple',
   },
   {
     icon: GraduationCap,
