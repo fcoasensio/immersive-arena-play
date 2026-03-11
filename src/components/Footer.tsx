@@ -25,15 +25,28 @@ const Footer = () => {
 
           {/* Social */}
           <div className="flex items-center gap-4">
-            {[Instagram, Facebook, Youtube].map((Icon, index) => (
-              <a
-                key={index}
-                href="#"
-                className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-neon-blue hover:border-neon-blue transition-colors duration-300"
-              >
-                <Icon className="w-5 h-5" />
-              </a>
-            ))}
+            <a
+              href="https://www.instagram.com/shootandrunlasertag"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-neon-blue hover:border-neon-blue transition-colors duration-300"
+            >
+              <Instagram className="w-5 h-5" />
+            </a>
+            <a
+              href="https://www.facebook.com/shootandrunlasertag/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-neon-blue hover:border-neon-blue transition-colors duration-300"
+            >
+              <Facebook className="w-5 h-5" />
+            </a>
+            <a
+              href="#"
+              className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-neon-blue hover:border-neon-blue transition-colors duration-300"
+            >
+              <Youtube className="w-5 h-5" />
+            </a>
           </div>
         </div>
 
