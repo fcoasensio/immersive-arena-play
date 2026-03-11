@@ -13,8 +13,8 @@ const services = [
     glowClass: 'box-glow-blue',
     image: laserTagEquipment,
     modes: [
-      { icon: Building2, label: 'Indoor', desc: 'Arenas climatizadas con escenografía inmersiva, iluminación UV y efectos especiales.' },
-      { icon: TreePine, label: 'Outdoor', desc: 'Campos al aire libre con terrenos naturales y estructuras tácticas.' },
+      { icon: Building2, label: 'Indoor', desc: 'Arenas climatizadas con escenografía inmersiva, iluminación UV y efectos especiales. Hasta 16 jugadores.' },
+      { icon: TreePine, label: 'Outdoor', desc: 'Campos al aire libre con terrenos naturales y estructuras tácticas. Hasta 24 jugadores.' },
     ],
   },
   {

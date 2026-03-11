@@ -22,8 +22,8 @@ const games: LaserGame[] = [
     emoji: '🚩',
     icon: Flag,
     description: 'Dos equipos compiten por capturar la bandera del equipo contrario y llevarla a su base. Protege tu bandera mientras atacas al enemigo. ¡Estrategia y trabajo en equipo son la clave!',
-    players: '4-30',
-    duration: '15-20 min',
+    players: '4-24',
+    duration: '15 min',
   },
   {
     title: 'Deathmatch',
@@ -31,8 +31,8 @@ const games: LaserGame[] = [
     emoji: '💀',
     icon: Skull,
     description: 'Batalla total entre dos equipos. Cada eliminación suma puntos para tu equipo. El equipo con más eliminaciones al final del tiempo gana. ¡Acción sin parar de principio a fin!',
-    players: '4-30',
-    duration: '10-15 min',
+    players: '4-24',
+    duration: '15 min',
   },
   {
     title: 'Último Héroe',
@@ -40,8 +40,8 @@ const games: LaserGame[] = [
     emoji: '🦸',
     icon: Shield,
     description: 'Todos contra todos. Cada jugador tiene un número limitado de vidas. El último jugador en pie se corona como el héroe definitivo. ¡Supervivencia en estado puro!',
-    players: '4-20',
-    duration: '10-15 min',
+    players: '4-24',
+    duration: '15 min',
   },
   {
     title: 'Dominación',
@@ -49,8 +49,8 @@ const games: LaserGame[] = [
     emoji: '📍',
     icon: MapPin,
     description: 'Controla puntos estratégicos del mapa para sumar puntos. Los equipos luchan por mantener el dominio de las zonas clave. ¡Coordinación y posicionamiento táctico son esenciales!',
-    players: '6-30',
-    duration: '15-20 min',
+    players: '6-24',
+    duration: '15 min',
   },
 ];
 
