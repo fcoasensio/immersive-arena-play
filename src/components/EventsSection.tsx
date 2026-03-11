@@ -47,7 +47,11 @@ const events = [
   },
 ];
 
-const EventsSection = () => {
+interface EventsSectionProps {
+  onReserveClick?: () => void;
+}
+
+const EventsSection = ({ onReserveClick }: EventsSectionProps) => {
   return (
     <section id="events" className="py-20 md:py-32 bg-gradient-to-b from-background via-card/30 to-background relative overflow-hidden">
       {/* Decorative elements */}
