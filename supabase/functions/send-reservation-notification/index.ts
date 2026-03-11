@@ -12,6 +12,41 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
+// --- Rate Limiting ---
+const IP_WINDOW_MS = 60 * 1000; // 1 minute
+const IP_MAX_REQUESTS = 5;
+const EMAIL_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+const EMAIL_MAX_REQUESTS = 2;
+
+const ipRequests = new Map<string, number[]>();
+const emailRequests = new Map<string, number[]>();
+
+function cleanupEntries(store: Map<string, number[]>, windowMs: number) {
+  const now = Date.now();
+  for (const [key, timestamps] of store.entries()) {
+    const valid = timestamps.filter(t => now - t < windowMs);
+    if (valid.length === 0) store.delete(key);
+    else store.set(key, valid);
+  }
+}
+
+function isRateLimited(store: Map<string, number[]>, key: string, windowMs: number, maxRequests: number): boolean {
+  cleanupEntries(store, windowMs);
+  const now = Date.now();
+  const timestamps = store.get(key) || [];
+  const recentTimestamps = timestamps.filter(t => now - t < windowMs);
+  if (recentTimestamps.length >= maxRequests) return true;
+  recentTimestamps.push(now);
+  store.set(key, recentTimestamps);
+  return false;
+}
+
+function getClientIp(req: Request): string {
+  return req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || 
+         req.headers.get("cf-connecting-ip") || 
+         "unknown";
+}
+
 interface ReservationNotification {
   customerName: string;
   customerEmail: string;
