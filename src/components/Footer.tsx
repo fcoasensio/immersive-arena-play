@@ -1,5 +1,5 @@
 import { Crosshair, Instagram, Facebook, Youtube } from 'lucide-react';
-import logoSvg from '@/assets/logo-shootandrun.svg';
+import logoImg from '@/assets/logo-shootandrun.png';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
