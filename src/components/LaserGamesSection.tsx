@@ -52,6 +52,24 @@ const games: LaserGame[] = [
     players: '6-24',
     duration: '15 min',
   },
+  {
+    title: 'Pandora',
+    mode: 'team',
+    emoji: '☢️',
+    icon: Biohazard,
+    description: 'Abre las cajas de seguridad y extrae las probetas radiactivas para llevarlas a tu base. Por el camino te irán restando vida. Si tu equipo consigue poner a salvo las tres probetas, ¡ganáis! Pero cuidado, el otro equipo intentará robarlas y devolverlas a su sitio.',
+    players: '4-24',
+    duration: '15 min',
+  },
+  {
+    title: 'Zombies vs Vampiros',
+    mode: 'team',
+    emoji: '🧟',
+    icon: Ghost,
+    description: 'Dos bandos sobrenaturales se enfrentan. Cuando te infectan, ¡cambias de bando! La partida es una lucha constante por convertir a los rivales. Gana el equipo que más componentes tenga cuando acabe el tiempo.',
+    players: '4-24',
+    duration: '15 min',
+  },
 ];
 
 const filters: { id: GameMode; label: string }[] = [
