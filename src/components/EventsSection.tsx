@@ -21,14 +21,14 @@ const events = [
     icon: PartyPopper,
     title: 'Despedidas',
     description: 'La despedida de soltero/a más épica. Combina adrenalina, risas y recuerdos inolvidables.',
-    features: ['Experiencia VIP', 'Fotografías incluidas', 'Personalizable'],
+    features: ['Experiencia VIP', 'Fotografías incluidas', 'Posibilidad de picoteo'],
     accent: 'from-neon-red to-orange-500',
   },
   {
     icon: Trophy,
     title: 'Torneos',
     description: 'Compite en nuestros torneos oficiales o crea el tuyo propio. Premios, clasificaciones y gloria eterna.',
-    features: ['Rankings online', 'Premios en metálico', 'Streaming'],
+    features: ['Rankings online', 'Premios importantes', 'Streaming'],
     accent: 'from-neon-green to-neon-blue',
   },
   {
