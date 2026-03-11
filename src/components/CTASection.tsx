@@ -51,8 +51,8 @@ const CTASection = ({ onReserveClick, onOutdoorClick }: CTASectionProps) => {
             <Button variant="hero" size="xl" onClick={onReserveClick}>
               Reservar Ahora
             </Button>
-            <Button variant="outline" size="xl">
-              Solicitar Presupuesto
+            <Button variant="outline" size="xl" onClick={onOutdoorClick}>
+              Presupuesto Outdoor
             </Button>
           </div>
 
