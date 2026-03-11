@@ -361,7 +361,7 @@ const ReservationForm = ({ onClose }: ReservationFormProps) => {
                   <SelectContent>
                     <SelectItem value="casual">😎 Visita casual</SelectItem>
                     <SelectItem value="birthday">🎂 Cumpleaños</SelectItem>
-                    <SelectItem value="corporate">💼 Evento corporativo</SelectItem>
+                    <SelectItem value="corporate">🏫 Centro educativo</SelectItem>
                     <SelectItem value="team_building">🤝 Team Building</SelectItem>
                     <SelectItem value="other">✨ Otro</SelectItem>
                   </SelectContent>
