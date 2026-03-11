@@ -43,9 +43,9 @@ const timeSlots = [
 const extrasOptions = [
   { id: 'snacks', label: 'Snacks y bebidas', icon: '🍿' },
   { id: 'photos', label: 'Sesión de fotos', icon: '📸' },
-  { id: 'private_room', label: 'Sala privada', icon: '🚪' },
-  { id: 'trophy', label: 'Trofeo para ganador', icon: '🏆' },
-  { id: 'decoration', label: 'Decoración especial', icon: '🎈' },
+  { id: 'private_session', label: 'Sesión privada', icon: '🚪' },
+  { id: 'diploma', label: 'Diploma para ganador', icon: '🏆' },
+  { id: 'video_invitation', label: 'Videoinvitación', icon: '🎬' },
 ];
 
 interface ReservationFormProps {
