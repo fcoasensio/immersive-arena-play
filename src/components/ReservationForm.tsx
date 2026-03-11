@@ -54,6 +54,19 @@ interface ReservationFormProps {
 const ReservationForm = ({ onClose }: ReservationFormProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [blockedDates, setBlockedDates] = useState<Date[]>([]);
+
+  // Fetch blocked dates (holidays)
+  useEffect(() => {
+    supabase
+      .from('holidays')
+      .select('date')
+      .then(({ data }) => {
+        if (data) {
+          setBlockedDates(data.map((h: any) => new Date(h.date + 'T00:00:00')));
+        }
+      });
+  }, []);
 
   const form = useForm<ReservationFormData>({
     resolver: zodResolver(reservationSchema),
