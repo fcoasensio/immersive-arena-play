@@ -25,8 +25,8 @@ const services = [
     glowClass: 'box-glow-purple',
     image: vrExperience,
     modes: [
-      { icon: Building2, label: 'Indoor', desc: 'Arenas VR desde 36m² con tracking de última generación y hasta 16 jugadores.' },
-      { icon: TreePine, label: 'Outdoor', desc: 'Experiencias VR móviles al aire libre con libertad de movimiento total.' },
+      { icon: Building2, label: 'Indoor', desc: 'Arenas VR desde 36m² con tracking de última generación y hasta 12 jugadores simultáneos.' },
+      { icon: TreePine, label: 'Outdoor', desc: 'Experiencias VR móviles al aire libre con libertad de movimiento total. Hasta 12 jugadores.' },
     ],
   },
 ];
