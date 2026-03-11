@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ChevronDown, Zap, Target, Gamepad2 } from 'lucide-react';
+import { Zap, Target, Gamepad2 } from 'lucide-react';
 import { Button } from './ui/button';
 import heroBg from '@/assets/hero-bg.jpg';
 
@@ -100,23 +100,6 @@ const HeroSection = ({ onReserveClick }: HeroSectionProps) => {
             <Button variant="outline" size="xl" asChild>
               <a href="#services">Ver experiencias</a>
             </Button>
-          </motion.div>
-        </motion.div>
-
-        {/* Scroll indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2, duration: 0.5 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
-        >
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-            className="flex flex-col items-center gap-2 text-muted-foreground"
-          >
-            <span className="text-xs uppercase tracking-widest font-body">Descubre más</span>
-            <ChevronDown className="w-5 h-5" />
           </motion.div>
         </motion.div>
       </div>
