@@ -1,4 +1,4 @@
-import { Instagram, Facebook } from 'lucide-react';
+import { Instagram, Facebook, MessageCircle } from 'lucide-react';
 import logoImg from '@/assets/logo-shootandrun.png';
 
 const Footer = () => {
