@@ -86,8 +86,25 @@ const ReservationForm = ({ onClose }: ReservationFormProps) => {
     setIsSubmitting(true);
     
     try {
-      // Send notification emails via edge function (no DB storage)
-      const { error: emailError } = await supabase.functions.invoke('send-reservation-notification', {
+      // Save reservation to database
+      const { error: dbError } = await supabase.from('reservations').insert({
+        customer_name: data.name,
+        customer_email: data.email,
+        customer_phone: data.phone,
+        reservation_date: format(data.reservation_date, 'yyyy-MM-dd'),
+        reservation_time: data.reservation_time,
+        number_of_people: parseInt(data.number_of_people) || 2,
+        activity_type: data.activity_type,
+        event_type: data.event_type,
+        extras: data.extras,
+        video_invitation_theme: data.video_invitation_theme || null,
+        special_requests: data.special_requests || null,
+      });
+
+      if (dbError) throw dbError;
+
+      // Send notification emails via edge function
+      await supabase.functions.invoke('send-reservation-notification', {
         body: {
           customerName: data.name,
           customerEmail: data.email,
@@ -102,8 +119,6 @@ const ReservationForm = ({ onClose }: ReservationFormProps) => {
           videoInvitationTheme: data.video_invitation_theme,
         },
       });
-
-      if (emailError) throw emailError;
 
       setIsSuccess(true);
       toast.success('¡Reserva realizada con éxito!');
