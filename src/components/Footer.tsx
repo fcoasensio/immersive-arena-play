@@ -34,6 +34,11 @@ const Footer = () => {
                 Política de Cookies
               </button>
             </CookiesPolicyDialog>
+            <LegalNoticeDialog>
+              <button className="font-body text-sm text-muted-foreground hover:text-neon-blue transition-colors">
+                Aviso Legal
+              </button>
+            </LegalNoticeDialog>
           </div>
 
           {/* Social */}
