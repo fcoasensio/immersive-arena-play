@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Target, Flag, Skull, Shield, MapPin, Users } from 'lucide-react';
+import { Target, Flag, Skull, Shield, MapPin, Users, Biohazard, Ghost } from 'lucide-react';
 import { Badge } from './ui/badge';
 
 type GameMode = 'all' | 'team' | 'solo';
@@ -50,6 +50,24 @@ const games: LaserGame[] = [
     icon: MapPin,
     description: 'Controla puntos estratégicos del mapa para sumar puntos. Los equipos luchan por mantener el dominio de las zonas clave. ¡Coordinación y posicionamiento táctico son esenciales!',
     players: '6-24',
+    duration: '15 min',
+  },
+  {
+    title: 'Pandora',
+    mode: 'team',
+    emoji: '☢️',
+    icon: Biohazard,
+    description: 'Abre las cajas de seguridad y extrae las probetas radiactivas para llevarlas a tu base. Por el camino te irán restando vida. Si tu equipo consigue poner a salvo las tres probetas, ¡ganáis! Pero cuidado, el otro equipo intentará robarlas y devolverlas a su sitio.',
+    players: '4-24',
+    duration: '15 min',
+  },
+  {
+    title: 'Zombies vs Vampiros',
+    mode: 'team',
+    emoji: '🧟',
+    icon: Ghost,
+    description: 'Dos bandos sobrenaturales se enfrentan. Cuando te infectan, ¡cambias de bando! La partida es una lucha constante por convertir a los rivales. Gana el equipo que más componentes tenga cuando acabe el tiempo.',
+    players: '4-24',
     duration: '15 min',
   },
 ];
