@@ -252,9 +252,16 @@ const ReservationForm = ({ onClose }: ReservationFormProps) => {
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
-                        disabled={(date) =>
-                          date < new Date() || date < new Date("1900-01-01")
-                        }
+                        disabled={(date) => {
+                          const today = new Date();
+                          today.setHours(0, 0, 0, 0);
+                          if (date < today) return true;
+                          return blockedDates.some(bd =>
+                            bd.getFullYear() === date.getFullYear() &&
+                            bd.getMonth() === date.getMonth() &&
+                            bd.getDate() === date.getDate()
+                          );
+                        }}
                         initialFocus
                       />
                     </PopoverContent>
