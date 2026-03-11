@@ -30,6 +30,7 @@ const reservationSchema = z.object({
   activity_type: z.enum(['laser_tag', 'vr', 'both'], { required_error: 'Selecciona una actividad' }),
   event_type: z.enum(['casual', 'birthday', 'corporate', 'team_building', 'other'], { required_error: 'Selecciona el tipo de evento' }),
   extras: z.array(z.string()).default([]),
+  video_invitation_theme: z.string().optional(),
   special_requests: z.string().optional(),
 });
 
