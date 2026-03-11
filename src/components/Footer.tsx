@@ -1,5 +1,6 @@
 import { Instagram, Facebook, MessageCircle } from 'lucide-react';
 import logoImg from '@/assets/logo-shootandrun.png';
+import PrivacyPolicyDialog from './PrivacyPolicyDialog';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
