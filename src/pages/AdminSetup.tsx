@@ -35,10 +35,8 @@ const AdminSetup = () => {
       if (error) throw error;
       if (!data.user) throw new Error('No se pudo crear el usuario');
 
-      // Assign admin role via edge function
-      const { error: roleError } = await supabase.functions.invoke('assign-admin-role', {
-        body: { userId: data.user.id },
-      });
+      // Assign admin role via edge function (uses JWT to identify caller)
+      const { error: roleError } = await supabase.functions.invoke('assign-admin-role');
 
       if (roleError) throw roleError;
 

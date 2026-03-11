@@ -18,6 +18,17 @@ serve(async (req: Request) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
+    // Verify caller's JWT and extract user ID
+    const authHeader = req.headers.get("Authorization") ?? "";
+    const jwt = authHeader.replace("Bearer ", "");
+    const { data: { user }, error: authError } = await supabaseAdmin.auth.getUser(jwt);
+    if (authError || !user) {
+      return new Response(
+        JSON.stringify({ error: "No autorizado" }),
+        { status: 401, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
     // Check if any admin already exists
     const { count } = await supabaseAdmin
       .from("user_roles")
@@ -31,18 +42,10 @@ serve(async (req: Request) => {
       );
     }
 
-    const { userId } = await req.json();
-    if (!userId) {
-      return new Response(
-        JSON.stringify({ error: "userId requerido" }),
-        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
-      );
-    }
-
-    // Assign admin role
+    // Assign admin role to the authenticated caller only
     const { error } = await supabaseAdmin
       .from("user_roles")
-      .insert({ user_id: userId, role: "admin" });
+      .insert({ user_id: user.id, role: "admin" });
 
     if (error) throw error;
 
