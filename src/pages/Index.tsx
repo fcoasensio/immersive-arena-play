@@ -22,7 +22,7 @@ const Index = () => {
       <ServicesSection />
       <LaserGamesSection />
       <VRGamesSection />
-      <EventsSection />
+      <EventsSection onReserveClick={() => setReservationOpen(true)} />
       <EquipmentSection />
       <CTASection onReserveClick={() => setReservationOpen(true)} onOutdoorClick={() => setOutdoorOpen(true)} />
       <Footer />

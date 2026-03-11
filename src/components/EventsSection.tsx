@@ -47,7 +47,11 @@ const events = [
   },
 ];
 
-const EventsSection = () => {
+interface EventsSectionProps {
+  onReserveClick?: () => void;
+}
+
+const EventsSection = ({ onReserveClick }: EventsSectionProps) => {
   return (
     <section id="events" className="py-20 md:py-32 bg-gradient-to-b from-background via-card/30 to-background relative overflow-hidden">
       {/* Decorative elements */}
@@ -116,8 +120,8 @@ const EventsSection = () => {
                         ))}
                       </ul>
 
-                      <Button variant="outline" size="sm" className="group-hover:border-neon-blue group-hover:text-neon-blue transition-colors duration-300">
-                        Más información
+                      <Button variant="outline" size="sm" className="group-hover:border-neon-blue group-hover:text-neon-blue transition-colors duration-300" onClick={onReserveClick}>
+                        Solicitar presupuesto
                       </Button>
                     </div>
                   </div>
