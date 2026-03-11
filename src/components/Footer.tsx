@@ -9,9 +9,9 @@ const Footer = () => {
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Logo */}
-          <div className="flex items-center gap-2">
-            <Crosshair className="w-6 h-6 text-neon-blue" />
-            <img src={logoSvg} alt="Shoot and Run" className="h-5 w-auto" translate="no" />
+          <div className="flex items-center">
+            <img src={logoImg} alt="Shoot and Run" className="h-8 w-auto" translate="no" />
+          </div>
           </div>
 
           {/* Links */}
