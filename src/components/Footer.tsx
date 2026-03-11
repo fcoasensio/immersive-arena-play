@@ -66,7 +66,7 @@ const Footer = () => {
 
         <div className="mt-8 pt-8 border-t border-border text-center">
           <p className="font-body text-sm text-muted-foreground">
-            © {currentYear} Shoot & Run. Todos los derechos reservados.
+            © {currentYear} shootandrun. Todos los derechos reservados.
           </p>
         </div>
       </div>
