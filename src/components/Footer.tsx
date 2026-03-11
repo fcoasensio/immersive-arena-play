@@ -1,4 +1,4 @@
-import { Crosshair, Instagram, Facebook, Youtube } from 'lucide-react';
+import { Instagram, Facebook } from 'lucide-react';
 import logoImg from '@/assets/logo-shootandrun.png';
 
 const Footer = () => {
@@ -40,12 +40,6 @@ const Footer = () => {
               className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-neon-blue hover:border-neon-blue transition-colors duration-300"
             >
               <Facebook className="w-5 h-5" />
-            </a>
-            <a
-              href="#"
-              className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-neon-blue hover:border-neon-blue transition-colors duration-300"
-            >
-              <Youtube className="w-5 h-5" />
             </a>
           </div>
         </div>
