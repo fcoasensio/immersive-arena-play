@@ -44,7 +44,7 @@ const vrFeatures = [
   },
   {
     icon: Wifi,
-    title: 'Software BattleStart',
+    title: 'Software Profesional',
     description: 'Plataforma profesional con gestión de sesiones, estadísticas en tiempo real y rankings.',
   },
 ];
