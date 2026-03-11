@@ -73,6 +73,15 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
+    // Rate limit by IP
+    const clientIp = getClientIp(req);
+    if (isRateLimited(ipRequests, clientIp, IP_WINDOW_MS, IP_MAX_REQUESTS)) {
+      return new Response(
+        JSON.stringify({ error: "Demasiadas solicitudes. Inténtalo de nuevo en unos minutos." }),
+        { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     const data = await req.json();
 
     const { customerName, customerEmail, customerPhone, company, location, numberOfPeople, eventType, details } = data;
@@ -84,6 +93,14 @@ const handler = async (req: Request): Promise<Response> => {
     if (!location || typeof location !== 'string' || location.length < 2) return new Response(JSON.stringify({ error: 'Invalid location' }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     if (!VALID_PEOPLE.includes(numberOfPeople)) return new Response(JSON.stringify({ error: 'Invalid number of people' }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     if (!VALID_EVENTS.includes(eventType)) return new Response(JSON.stringify({ error: 'Invalid event type' }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+
+    // Rate limit by email
+    if (isRateLimited(emailRequests, customerEmail.toLowerCase(), EMAIL_WINDOW_MS, EMAIL_MAX_REQUESTS)) {
+      return new Response(
+        JSON.stringify({ error: "Ya has enviado una solicitud recientemente. Inténtalo más tarde." }),
+        { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
 
     const safeName = sanitizeHtml(customerName);
     const safePhone = sanitizeHtml(customerPhone);

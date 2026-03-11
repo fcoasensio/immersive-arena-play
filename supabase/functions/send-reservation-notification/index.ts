@@ -139,6 +139,15 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
+    // Rate limit by IP
+    const clientIp = getClientIp(req);
+    if (isRateLimited(ipRequests, clientIp, IP_WINDOW_MS, IP_MAX_REQUESTS)) {
+      return new Response(
+        JSON.stringify({ error: "Demasiadas solicitudes. Inténtalo de nuevo en unos minutos." }),
+        { status: 429, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
     const rawData = await req.json();
 
     const validation = validateInput(rawData);
@@ -150,6 +159,14 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     const data = validation.sanitized;
+
+    // Rate limit by email
+    if (isRateLimited(emailRequests, data.customerEmail.toLowerCase(), EMAIL_WINDOW_MS, EMAIL_MAX_REQUESTS)) {
+      return new Response(
+        JSON.stringify({ error: "Ya has enviado una solicitud recientemente. Inténtalo más tarde." }),
+        { status: 429, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
 
     const formattedDate = new Date(data.reservationDate).toLocaleDateString('es-ES', {
       weekday: 'long',
