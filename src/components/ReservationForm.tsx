@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -54,6 +54,19 @@ interface ReservationFormProps {
 const ReservationForm = ({ onClose }: ReservationFormProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [blockedDates, setBlockedDates] = useState<Date[]>([]);
+
+  // Fetch blocked dates (holidays)
+  useEffect(() => {
+    supabase
+      .from('holidays')
+      .select('date')
+      .then(({ data }) => {
+        if (data) {
+          setBlockedDates(data.map((h: any) => new Date(h.date + 'T00:00:00')));
+        }
+      });
+  }, []);
 
   const form = useForm<ReservationFormData>({
     resolver: zodResolver(reservationSchema),
@@ -73,8 +86,25 @@ const ReservationForm = ({ onClose }: ReservationFormProps) => {
     setIsSubmitting(true);
     
     try {
-      // Send notification emails via edge function (no DB storage)
-      const { error: emailError } = await supabase.functions.invoke('send-reservation-notification', {
+      // Save reservation to database
+      const { error: dbError } = await supabase.from('reservations').insert({
+        customer_name: data.name,
+        customer_email: data.email,
+        customer_phone: data.phone,
+        reservation_date: format(data.reservation_date, 'yyyy-MM-dd'),
+        reservation_time: data.reservation_time,
+        number_of_people: parseInt(data.number_of_people) || 2,
+        activity_type: data.activity_type,
+        event_type: data.event_type,
+        extras: data.extras,
+        video_invitation_theme: data.video_invitation_theme || null,
+        special_requests: data.special_requests || null,
+      });
+
+      if (dbError) throw dbError;
+
+      // Send notification emails via edge function
+      await supabase.functions.invoke('send-reservation-notification', {
         body: {
           customerName: data.name,
           customerEmail: data.email,
@@ -89,8 +119,6 @@ const ReservationForm = ({ onClose }: ReservationFormProps) => {
           videoInvitationTheme: data.video_invitation_theme,
         },
       });
-
-      if (emailError) throw emailError;
 
       setIsSuccess(true);
       toast.success('¡Reserva realizada con éxito!');
@@ -224,9 +252,16 @@ const ReservationForm = ({ onClose }: ReservationFormProps) => {
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
-                        disabled={(date) =>
-                          date < new Date() || date < new Date("1900-01-01")
-                        }
+                        disabled={(date) => {
+                          const today = new Date();
+                          today.setHours(0, 0, 0, 0);
+                          if (date < today) return true;
+                          return blockedDates.some(bd =>
+                            bd.getFullYear() === date.getFullYear() &&
+                            bd.getMonth() === date.getMonth() &&
+                            bd.getDate() === date.getDate()
+                          );
+                        }}
                         initialFocus
                       />
                     </PopoverContent>
