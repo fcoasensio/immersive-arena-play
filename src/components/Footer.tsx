@@ -1,4 +1,4 @@
-import { Crosshair, Instagram, Facebook, Youtube } from 'lucide-react';
+import { Instagram, Facebook } from 'lucide-react';
 import logoImg from '@/assets/logo-shootandrun.png';
 
 const Footer = () => {
