@@ -7,7 +7,7 @@ const laserFeatures = [
   {
     icon: Shield,
     title: 'Tecnología Militar',
-    description: 'Equipamiento profesional LaserWar X-Generation con precisión infrarroja de grado militar.',
+    description: 'Equipamiento profesional con precisión infrarroja de grado militar.',
   },
   {
     icon: Cpu,
