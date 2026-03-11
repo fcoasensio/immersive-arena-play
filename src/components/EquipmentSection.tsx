@@ -109,11 +109,11 @@ const EquipmentSection = () => {
             transition={{ duration: 0.6 }}
             className="relative"
           >
-            <div className="relative aspect-square rounded-2xl overflow-hidden gradient-border">
+            <div className="relative aspect-square rounded-2xl overflow-hidden gradient-border bg-gradient-to-br from-background via-card to-neon-blue/10">
               <img
                 src={laserTagBlasters}
-                alt="Equipamiento LaserWar X-Generation"
-                className="w-full h-full object-cover"
+                alt="AK-15 Warrior Laser Tag"
+                className="w-full h-full object-contain p-8 drop-shadow-[0_0_30px_rgba(0,195,255,0.3)]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent" />
 
