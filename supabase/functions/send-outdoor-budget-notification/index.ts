@@ -12,6 +12,41 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
+// --- Rate Limiting ---
+const IP_WINDOW_MS = 60 * 1000; // 1 minute
+const IP_MAX_REQUESTS = 5;
+const EMAIL_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+const EMAIL_MAX_REQUESTS = 2;
+
+const ipRequests = new Map<string, number[]>();
+const emailRequests = new Map<string, number[]>();
+
+function cleanupEntries(store: Map<string, number[]>, windowMs: number) {
+  const now = Date.now();
+  for (const [key, timestamps] of store.entries()) {
+    const valid = timestamps.filter(t => now - t < windowMs);
+    if (valid.length === 0) store.delete(key);
+    else store.set(key, valid);
+  }
+}
+
+function isRateLimited(store: Map<string, number[]>, key: string, windowMs: number, maxRequests: number): boolean {
+  cleanupEntries(store, windowMs);
+  const now = Date.now();
+  const timestamps = store.get(key) || [];
+  const recentTimestamps = timestamps.filter(t => now - t < windowMs);
+  if (recentTimestamps.length >= maxRequests) return true;
+  recentTimestamps.push(now);
+  store.set(key, recentTimestamps);
+  return false;
+}
+
+function getClientIp(req: Request): string {
+  return req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || 
+         req.headers.get("cf-connecting-ip") || 
+         "unknown";
+}
+
 const sanitizeHtml = (text: string) =>
   text.replace(/[<>"'&]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '&': '&amp;' }[c] || c));
 
@@ -38,6 +73,15 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
+    // Rate limit by IP
+    const clientIp = getClientIp(req);
+    if (isRateLimited(ipRequests, clientIp, IP_WINDOW_MS, IP_MAX_REQUESTS)) {
+      return new Response(
+        JSON.stringify({ error: "Demasiadas solicitudes. Inténtalo de nuevo en unos minutos." }),
+        { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     const data = await req.json();
 
     const { customerName, customerEmail, customerPhone, company, location, numberOfPeople, eventType, details } = data;
@@ -49,6 +93,14 @@ const handler = async (req: Request): Promise<Response> => {
     if (!location || typeof location !== 'string' || location.length < 2) return new Response(JSON.stringify({ error: 'Invalid location' }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     if (!VALID_PEOPLE.includes(numberOfPeople)) return new Response(JSON.stringify({ error: 'Invalid number of people' }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     if (!VALID_EVENTS.includes(eventType)) return new Response(JSON.stringify({ error: 'Invalid event type' }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+
+    // Rate limit by email
+    if (isRateLimited(emailRequests, customerEmail.toLowerCase(), EMAIL_WINDOW_MS, EMAIL_MAX_REQUESTS)) {
+      return new Response(
+        JSON.stringify({ error: "Ya has enviado una solicitud recientemente. Inténtalo más tarde." }),
+        { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
 
     const safeName = sanitizeHtml(customerName);
     const safePhone = sanitizeHtml(customerPhone);
