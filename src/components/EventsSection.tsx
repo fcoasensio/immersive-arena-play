@@ -39,13 +39,6 @@ const events = [
     accent: 'from-amber-500 to-neon-red',
   },
   {
-    icon: Music,
-    title: 'Festivales',
-    description: 'Añade una atracción única a tu festival. Zonas de juego interactivas que atraen y entretienen a miles de asistentes.',
-    features: ['Gran capacidad', 'Experiencia inmersiva', 'Soporte técnico incluido'],
-    accent: 'from-pink-500 to-neon-purple',
-  },
-  {
     icon: GraduationCap,
     title: 'Centros Educativos',
     description: 'Actividades extraescolares, excursiones y jornadas especiales. Diversión segura que fomenta el trabajo en equipo.',
