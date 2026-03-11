@@ -4,50 +4,50 @@ import vrExperience from '@/assets/vr-experience.jpg';
 import laserTagBlasters from '@/assets/ak-15-laser-tag-gun.png';
 
 const laserFeatures = [
-  {
-    icon: Shield,
-    title: 'Tecnología Militar',
-    description: 'Equipamiento profesional con precisión infrarroja de grado militar.',
-  },
-  {
-    icon: Cpu,
-    title: 'Software Avanzado',
-    description: 'Software de control con estadísticas en tiempo real, rankings y múltiples modos de juego.',
-  },
-  {
-    icon: Wifi,
-    title: 'Conexión Total',
-    description: 'Todos los dispositivos conectados para partidas sincronizadas y experiencias inmersivas.',
-  },
-  {
-    icon: Battery,
-    title: 'Autonomía Extrema',
-    description: 'Baterías de larga duración para sesiones de juego ininterrumpidas.',
-  },
-];
+{
+  icon: Shield,
+  title: 'Tecnología Militar',
+  description: 'Equipamiento profesional con precisión infrarroja de grado militar.'
+},
+{
+  icon: Cpu,
+  title: 'Software Avanzado',
+  description: 'Software de control con estadísticas en tiempo real, rankings y múltiples modos de juego.'
+},
+{
+  icon: Wifi,
+  title: 'Conexión Total',
+  description: 'Todos los dispositivos conectados para partidas sincronizadas y experiencias inmersivas.'
+},
+{
+  icon: Battery,
+  title: 'Autonomía Extrema',
+  description: 'Baterías de larga duración para sesiones de juego ininterrumpidas.'
+}];
+
 
 const vrFeatures = [
-  {
-    icon: Glasses,
-    title: 'Free Roaming',
-    description: 'Juegos de realidad virtual de libre movimiento donde caminas, corres y te agachas en el mundo virtual.',
-  },
-  {
-    icon: Footprints,
-    title: '+124 Escenarios',
-    description: 'Más de 74 horas de contenido original: party games, shooters tácticos, aventuras y juegos de terror.',
-  },
-  {
-    icon: Cpu,
-    title: 'Hasta 12 Jugadores',
-    description: 'Hasta 12 jugadores simultáneos tanto en indoor como en outdoor. Experiencias multijugador para toda la familia, desde 5 años.',
-  },
-  {
-    icon: Wifi,
-    title: 'Software Profesional',
-    description: 'Plataforma profesional con gestión de sesiones, estadísticas en tiempo real y rankings.',
-  },
-];
+{
+  icon: Glasses,
+  title: 'Free Roaming',
+  description: 'Juegos de realidad virtual de libre movimiento donde caminas, corres y te agachas en el mundo virtual.'
+},
+{
+  icon: Footprints,
+  title: '+124 Escenarios',
+  description: 'Más de 74 horas de contenido original: party games, shooters tácticos, aventuras y juegos de terror.'
+},
+{
+  icon: Cpu,
+  title: 'Hasta 12 Jugadores',
+  description: 'Hasta 12 jugadores simultáneos tanto en indoor como en outdoor. Experiencias multijugador para toda la familia, desde 5 años.'
+},
+{
+  icon: Wifi,
+  title: 'Software Profesional',
+  description: 'Plataforma profesional con gestión de sesiones, estadísticas en tiempo real y rankings.'
+}];
+
 
 const EquipmentSection = () => {
   return (
@@ -62,8 +62,8 @@ const EquipmentSection = () => {
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+            transition={{ duration: 0.6 }}>
+            
             <span className="inline-block font-body text-sm uppercase tracking-widest text-neon-blue mb-4">
               Laser Tag
             </span>
@@ -76,15 +76,15 @@ const EquipmentSection = () => {
             </p>
 
             <div className="grid sm:grid-cols-2 gap-6">
-              {laserFeatures.map((feature, index) => (
-                <motion.div
-                  key={feature.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1, duration: 0.5 }}
-                  className="flex gap-4"
-                >
+              {laserFeatures.map((feature, index) =>
+              <motion.div
+                key={feature.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1, duration: 0.5 }}
+                className="flex gap-4">
+                
                   <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-neon-blue/10 flex items-center justify-center">
                     <feature.icon className="w-6 h-6 text-neon-blue" />
                   </div>
@@ -97,7 +97,7 @@ const EquipmentSection = () => {
                     </p>
                   </div>
                 </motion.div>
-              ))}
+              )}
             </div>
           </motion.div>
 
@@ -107,29 +107,29 @@ const EquipmentSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="relative"
-          >
+            className="relative">
+            
             <div className="relative aspect-square rounded-2xl overflow-hidden gradient-border bg-gradient-to-br from-background via-card to-neon-blue/10">
               <img
                 src={laserTagBlasters}
                 alt="AK-15 Warrior Laser Tag"
-                className="w-full h-full object-contain p-8 drop-shadow-[0_0_30px_rgba(0,195,255,0.3)]"
-              />
+                className="w-full h-full object-contain p-8 drop-shadow-[0_0_30px_rgba(0,195,255,0.3)]" />
+              
               <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent" />
 
               <motion.div
                 animate={{ y: [0, -10, 0] }}
                 transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-                className="absolute top-8 right-8 px-4 py-2 rounded-lg bg-card/80 backdrop-blur-sm border border-neon-blue/30"
-              >
+                className="absolute top-8 right-8 px-4 py-2 rounded-lg bg-card/80 backdrop-blur-sm border border-neon-blue/30">
+                
                 <span className="font-body text-xs text-neon-blue uppercase tracking-wider">Precisión 99.9%</span>
               </motion.div>
 
               <motion.div
                 animate={{ y: [0, 10, 0] }}
                 transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut", delay: 0.5 }}
-                className="absolute bottom-8 left-8 px-4 py-2 rounded-lg bg-card/80 backdrop-blur-sm border border-neon-blue/30"
-              >
+                className="absolute bottom-8 left-8 px-4 py-2 rounded-lg bg-card/80 backdrop-blur-sm border border-neon-blue/30">
+                
                 <span className="font-body text-xs text-neon-blue uppercase tracking-wider">+500m alcance</span>
               </motion.div>
             </div>
@@ -144,21 +144,21 @@ const EquipmentSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="relative order-2 lg:order-1"
-          >
+            className="relative order-2 lg:order-1">
+            
             <div className="relative aspect-square rounded-2xl overflow-hidden gradient-border">
               <img
                 src={vrExperience}
                 alt="Experiencia VR Free Roaming"
-                className="w-full h-full object-cover"
-              />
+                className="w-full h-full object-cover" />
+              
               <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent" />
 
               <motion.div
                 animate={{ y: [0, -10, 0] }}
                 transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-                className="absolute top-8 left-8 px-4 py-2 rounded-lg bg-card/80 backdrop-blur-sm border border-neon-purple/30"
-              >
+                className="absolute top-8 left-8 px-4 py-2 rounded-lg bg-card/80 backdrop-blur-sm border border-neon-purple/30">
+                
                 <span className="font-body text-xs text-neon-purple uppercase tracking-wider">Free Roaming</span>
               </motion.div>
 
@@ -171,29 +171,29 @@ const EquipmentSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="order-1 lg:order-2"
-          >
+            className="order-1 lg:order-2">
+            
             <span className="inline-block font-body text-sm uppercase tracking-widest text-neon-purple mb-4">
               Realidad Virtual
             </span>
             <h2 className="font-display text-3xl md:text-5xl font-bold text-foreground mb-6">
               REALIDAD <span className="text-neon-purple text-glow-purple">VIRTUAL</span> FREE ROAMING
             </h2>
-            <p className="font-body text-lg text-muted-foreground mb-10 leading-relaxed">
-              Desarrollamos experiencias con los mejores juegos de realidad virtual de libre movimiento del mercado. 
-              Party games infantiles, shooters tácticos y aventuras de acción para grupos de hasta 12 jugadores simultáneos.
+            <p className="font-body text-lg text-muted-foreground mb-10 leading-relaxed">Desarrollamos experiencias con los mejores juegos de realidad virtual de libre movimiento del mercado. Escape rooms, shooters tácticos y aventuras de acción para grupos de hasta 12 jugadores simultáneos.
+
+
             </p>
 
             <div className="grid sm:grid-cols-2 gap-6">
-              {vrFeatures.map((feature, index) => (
-                <motion.div
-                  key={feature.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1, duration: 0.5 }}
-                  className="flex gap-4"
-                >
+              {vrFeatures.map((feature, index) =>
+              <motion.div
+                key={feature.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1, duration: 0.5 }}
+                className="flex gap-4">
+                
                   <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-neon-purple/10 flex items-center justify-center">
                     <feature.icon className="w-6 h-6 text-neon-purple" />
                   </div>
@@ -206,13 +206,13 @@ const EquipmentSection = () => {
                     </p>
                   </div>
                 </motion.div>
-              ))}
+              )}
             </div>
           </motion.div>
         </div>
       </div>
-    </section>
-  );
+    </section>);
+
 };
 
 export default EquipmentSection;
