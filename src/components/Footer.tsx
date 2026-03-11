@@ -16,9 +16,11 @@ const Footer = () => {
 
           {/* Links */}
           <div className="flex items-center gap-6">
-            <a href="#" className="font-body text-sm text-muted-foreground hover:text-neon-blue transition-colors">
-              Política de Privacidad
-            </a>
+            <PrivacyPolicyDialog>
+              <button className="font-body text-sm text-muted-foreground hover:text-neon-blue transition-colors">
+                Política de Privacidad
+              </button>
+            </PrivacyPolicyDialog>
             <a href="#" className="font-body text-sm text-muted-foreground hover:text-neon-blue transition-colors">
               Términos y Condiciones
             </a>
