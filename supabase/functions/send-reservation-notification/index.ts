@@ -32,7 +32,7 @@ const isValidTime = (time: string) => /^\d{2}:\d{2}$/.test(time);
 const isValidUUID = (id: string) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
 const VALID_ACTIVITIES = ['laser_tag', 'vr', 'both'];
 const VALID_EVENTS = ['casual', 'birthday', 'corporate', 'team_building', 'other'];
-const VALID_EXTRAS = ['snacks', 'photos', 'private_room', 'trophy', 'decoration'];
+const VALID_EXTRAS = ['snacks', 'photos', 'private_session', 'diploma', 'video_invitation'];
 
 const sanitizeHtml = (text: string) =>
   text.replace(/[<>"'&]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '&': '&amp;' }[c] || c));
