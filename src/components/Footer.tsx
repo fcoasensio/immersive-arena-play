@@ -3,6 +3,7 @@ import logoImg from '@/assets/logo-shootandrun.png';
 import PrivacyPolicyDialog from './PrivacyPolicyDialog';
 import TermsDialog from './TermsDialog';
 import CookiesPolicyDialog from './CookiesPolicyDialog';
+import LegalNoticeDialog from './LegalNoticeDialog';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
