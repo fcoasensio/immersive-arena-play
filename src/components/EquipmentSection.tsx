@@ -162,13 +162,6 @@ const EquipmentSection = () => {
                 <span className="font-body text-xs text-neon-purple uppercase tracking-wider">Free Roaming</span>
               </motion.div>
 
-              <motion.div
-                animate={{ y: [0, 10, 0] }}
-                transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut", delay: 0.5 }}
-                className="absolute bottom-8 right-8 px-4 py-2 rounded-lg bg-card/80 backdrop-blur-sm border border-neon-purple/30"
-              >
-                <span className="font-body text-xs text-neon-purple uppercase tracking-wider">Efectos 4D</span>
-              </motion.div>
             </div>
           </motion.div>
 
