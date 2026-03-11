@@ -1,6 +1,7 @@
 import { Instagram, Facebook, MessageCircle } from 'lucide-react';
 import logoImg from '@/assets/logo-shootandrun.png';
 import PrivacyPolicyDialog from './PrivacyPolicyDialog';
+import TermsDialog from './TermsDialog';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -21,9 +22,11 @@ const Footer = () => {
                 Política de Privacidad
               </button>
             </PrivacyPolicyDialog>
-            <a href="#" className="font-body text-sm text-muted-foreground hover:text-neon-blue transition-colors">
-              Términos y Condiciones
-            </a>
+            <TermsDialog>
+              <button className="font-body text-sm text-muted-foreground hover:text-neon-blue transition-colors">
+                Términos y Condiciones
+              </button>
+            </TermsDialog>
           </div>
 
           {/* Social */}
