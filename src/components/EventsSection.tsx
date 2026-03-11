@@ -14,7 +14,7 @@ const events = [
     icon: Cake,
     title: 'Cumpleaños',
     description: 'Celebra tu día especial con una fiesta llena de acción. Packs completos con merienda y tiempo de juego ilimitado.',
-    features: ['Desde 8 invitados', 'Zona privada', 'Tarta incluida'],
+    features: ['Desde 8 invitados', 'Sesión privada', 'Diploma'],
     accent: 'from-neon-purple to-neon-red',
   },
   {
