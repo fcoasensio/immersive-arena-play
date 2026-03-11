@@ -83,7 +83,7 @@ const getEventLabel = (type: string) => {
   switch (type) {
     case 'casual': return 'Visita casual';
     case 'birthday': return 'Cumpleaños';
-    case 'corporate': return 'Evento corporativo';
+    case 'corporate': return 'Centro educativo';
     case 'team_building': return 'Team Building';
     case 'other': return 'Otro';
     default: return type;
