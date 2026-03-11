@@ -40,8 +40,8 @@ const games: LaserGame[] = [
     emoji: '🦸',
     icon: Shield,
     description: 'Todos contra todos. Cada jugador tiene un número limitado de vidas. El último jugador en pie se corona como el héroe definitivo. ¡Supervivencia en estado puro!',
-    players: '4-20',
-    duration: '10-15 min',
+    players: '4-24',
+    duration: '15 min',
   },
   {
     title: 'Dominación',
