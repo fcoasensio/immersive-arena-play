@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ChevronDown, Zap, Target, Gamepad2 } from 'lucide-react';
+import { Zap, Target, Gamepad2 } from 'lucide-react';
 import { Button } from './ui/button';
 import heroBg from '@/assets/hero-bg.jpg';
 
