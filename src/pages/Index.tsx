@@ -9,9 +9,11 @@ import EquipmentSection from '@/components/EquipmentSection';
 import CTASection from '@/components/CTASection';
 import Footer from '@/components/Footer';
 import ReservationDialog from '@/components/ReservationDialog';
+import OutdoorBudgetDialog from '@/components/OutdoorBudgetDialog';
 
 const Index = () => {
   const [reservationOpen, setReservationOpen] = useState(false);
+  const [outdoorOpen, setOutdoorOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-background">
@@ -22,9 +24,10 @@ const Index = () => {
       <VRGamesSection />
       <EventsSection />
       <EquipmentSection />
-      <CTASection onReserveClick={() => setReservationOpen(true)} />
+      <CTASection onReserveClick={() => setReservationOpen(true)} onOutdoorClick={() => setOutdoorOpen(true)} />
       <Footer />
       <ReservationDialog open={reservationOpen} onOpenChange={setReservationOpen} />
+      <OutdoorBudgetDialog open={outdoorOpen} onOpenChange={setOutdoorOpen} />
     </div>
   );
 };

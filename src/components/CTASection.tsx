@@ -11,9 +11,10 @@ const contactInfo = [
 
 interface CTASectionProps {
   onReserveClick?: () => void;
+  onOutdoorClick?: () => void;
 }
 
-const CTASection = ({ onReserveClick }: CTASectionProps) => {
+const CTASection = ({ onReserveClick, onOutdoorClick }: CTASectionProps) => {
   return (
     <section id="contact" className="py-20 md:py-32 relative overflow-hidden">
       {/* Background gradient */}
@@ -50,8 +51,8 @@ const CTASection = ({ onReserveClick }: CTASectionProps) => {
             <Button variant="hero" size="xl" onClick={onReserveClick}>
               Reservar Ahora
             </Button>
-            <Button variant="outline" size="xl">
-              Solicitar Presupuesto
+            <Button variant="outline" size="xl" onClick={onOutdoorClick}>
+              Presupuesto Outdoor
             </Button>
           </div>
 

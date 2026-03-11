@@ -32,7 +32,7 @@ const isValidTime = (time: string) => /^\d{2}:\d{2}$/.test(time);
 const isValidUUID = (id: string) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
 const VALID_ACTIVITIES = ['laser_tag', 'vr', 'both'];
 const VALID_EVENTS = ['casual', 'birthday', 'corporate', 'team_building', 'other'];
-const VALID_EXTRAS = ['snacks', 'photos', 'private_room', 'trophy', 'decoration'];
+const VALID_EXTRAS = ['snacks', 'photos', 'private_session', 'diploma', 'video_invitation'];
 
 const sanitizeHtml = (text: string) =>
   text.replace(/[<>"'&]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '&': '&amp;' }[c] || c));
@@ -83,7 +83,7 @@ const getEventLabel = (type: string) => {
   switch (type) {
     case 'casual': return 'Visita casual';
     case 'birthday': return 'Cumpleaños';
-    case 'corporate': return 'Evento corporativo';
+    case 'corporate': return 'Centro educativo';
     case 'team_building': return 'Team Building';
     case 'other': return 'Otro';
     default: return type;
@@ -94,9 +94,9 @@ const getExtrasLabels = (extras: string[]) => {
   const labels: Record<string, string> = {
     'snacks': 'Snacks y bebidas',
     'photos': 'Sesión de fotos',
-    'private_room': 'Sala privada',
-    'trophy': 'Trofeo para ganador',
-    'decoration': 'Decoración especial',
+    'private_session': 'Sesión privada',
+    'diploma': 'Diploma para ganador',
+    'video_invitation': 'Videoinvitación',
   };
   return extras.map(e => labels[e] || e).join(', ') || 'Ninguno';
 };
