@@ -3,6 +3,7 @@ import logoImg from '@/assets/logo-shootandrun.png';
 import PrivacyPolicyDialog from './PrivacyPolicyDialog';
 import TermsDialog from './TermsDialog';
 import CookiesPolicyDialog from './CookiesPolicyDialog';
+import LegalNoticeDialog from './LegalNoticeDialog';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -33,6 +34,11 @@ const Footer = () => {
                 Política de Cookies
               </button>
             </CookiesPolicyDialog>
+            <LegalNoticeDialog>
+              <button className="font-body text-sm text-muted-foreground hover:text-neon-blue transition-colors">
+                Aviso Legal
+              </button>
+            </LegalNoticeDialog>
           </div>
 
           {/* Social */}
