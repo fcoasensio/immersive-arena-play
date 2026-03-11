@@ -61,7 +61,7 @@ const HeroSection = ({ onReserveClick }: HeroSectionProps) => {
           {/* Subtitle */}
           <p className="font-body text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
             Experiencias inmersivas para Team Building, 
-            Cumpleaños, Despedidas y Torneos.{' '}
+            Cumpleaños, Despedidas, Torneos, Eventos Municipales, Festivales y Centros Educativos.{' '}
             <span className="text-neon-blue font-semibold">Indoor</span> y{' '}
             <span className="text-neon-red font-semibold">Outdoor</span>
           </p>
