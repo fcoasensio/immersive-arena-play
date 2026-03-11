@@ -120,8 +120,8 @@ const EventsSection = ({ onReserveClick }: EventsSectionProps) => {
                         ))}
                       </ul>
 
-                      <Button variant="outline" size="sm" className="group-hover:border-neon-blue group-hover:text-neon-blue transition-colors duration-300">
-                        Más información
+                      <Button variant="outline" size="sm" className="group-hover:border-neon-blue group-hover:text-neon-blue transition-colors duration-300" onClick={onReserveClick}>
+                        Solicitar presupuesto
                       </Button>
                     </div>
                   </div>
