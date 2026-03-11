@@ -91,7 +91,6 @@ const games: Game[] = [
 
 const categories: { id: GameCategory; label: string; icon: typeof Gamepad2 }[] = [
   { id: 'all', label: 'Todos', icon: Gamepad2 },
-  { id: 'party', label: 'Party Games', icon: Baby },
   { id: 'shooter', label: 'Shooters', icon: Crosshair },
   { id: 'adventure', label: 'Aventura', icon: Swords },
   { id: 'escape', label: 'Escape Room', icon: DoorOpen },
