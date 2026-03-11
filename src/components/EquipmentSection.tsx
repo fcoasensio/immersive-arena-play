@@ -148,8 +148,8 @@ const EquipmentSection = () => {
           >
             <div className="relative aspect-square rounded-2xl overflow-hidden gradient-border">
               <img
-                src={vrAdventure}
-                alt="VEX Adventure - Realidad Virtual"
+                src={vrExperience}
+                alt="Experiencia VR Free Roaming"
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent" />
