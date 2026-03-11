@@ -20,7 +20,7 @@ const services = [
   {
     icon: Glasses,
     title: 'Realidad Virtual',
-    description: 'Juegos de realidad virtual de libre movimiento con tecnología Free Roaming. Party games para toda la familia desde 5 años, shooters tácticos y aventuras de acción para hasta 16 jugadores simultáneos.',
+    description: 'Juegos de realidad virtual de libre movimiento con tecnología Free Roaming. Party games para toda la familia desde 5 años, shooters tácticos y aventuras de acción para hasta 12 jugadores simultáneos.',
     color: 'neon-purple',
     glowClass: 'box-glow-purple',
     image: vrExperience,
