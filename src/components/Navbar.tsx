@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Crosshair } from 'lucide-react';
+import logoSvg from '@/assets/logo-shootandrun.svg';
 import { Button } from './ui/button';
 
 interface NavbarProps {
@@ -25,9 +26,7 @@ const Navbar = ({ onReserveClick }: NavbarProps) => {
           {/* Logo */}
           <a href="#" className="flex items-center gap-2 group">
             <Crosshair className="w-8 h-8 text-neon-blue group-hover:text-neon-red transition-colors duration-300" />
-            <span className="font-display text-xl md:text-2xl font-bold text-foreground">
-              SHOOTANDRUN
-            </span>
+            <img src={logoSvg} alt="Shoot and Run" className="h-5 md:h-7 w-auto" translate="no" />
           </a>
 
           {/* Desktop Navigation */}

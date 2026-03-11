@@ -1,4 +1,5 @@
 import { Crosshair, Instagram, Facebook, Youtube } from 'lucide-react';
+import logoSvg from '@/assets/logo-shootandrun.svg';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -10,9 +11,7 @@ const Footer = () => {
           {/* Logo */}
           <div className="flex items-center gap-2">
             <Crosshair className="w-6 h-6 text-neon-blue" />
-            <span className="font-display text-lg font-bold text-foreground">
-              SHOOTANDRUN
-            </span>
+            <img src={logoSvg} alt="Shoot and Run" className="h-5 w-auto" translate="no" />
           </div>
 
           {/* Links */}
