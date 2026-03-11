@@ -30,6 +30,7 @@ const reservationSchema = z.object({
   activity_type: z.enum(['laser_tag', 'vr', 'both'], { required_error: 'Selecciona una actividad' }),
   event_type: z.enum(['casual', 'birthday', 'corporate', 'team_building', 'other'], { required_error: 'Selecciona el tipo de evento' }),
   extras: z.array(z.string()).default([]),
+  video_invitation_theme: z.string().optional(),
   special_requests: z.string().optional(),
 });
 
@@ -43,9 +44,9 @@ const timeSlots = [
 const extrasOptions = [
   { id: 'snacks', label: 'Snacks y bebidas', icon: '🍿' },
   { id: 'photos', label: 'Sesión de fotos', icon: '📸' },
-  { id: 'private_room', label: 'Sala privada', icon: '🚪' },
-  { id: 'trophy', label: 'Trofeo para ganador', icon: '🏆' },
-  { id: 'decoration', label: 'Decoración especial', icon: '🎈' },
+  { id: 'private_session', label: 'Sesión privada', icon: '🚪' },
+  { id: 'diploma', label: 'Diploma para ganador', icon: '🏆' },
+  { id: 'video_invitation', label: 'Videoinvitación', icon: '🎬' },
 ];
 
 interface ReservationFormProps {
@@ -306,6 +307,7 @@ const ReservationForm = ({ onClose }: ReservationFormProps) => {
                           {num} {num === 1 ? 'persona' : 'personas'}
                         </SelectItem>
                       ))}
+                      <SelectItem value="20+">Más de 20 personas</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -417,6 +419,27 @@ const ReservationForm = ({ onClose }: ReservationFormProps) => {
               </FormItem>
             )}
           />
+
+          {/* Video Invitation Theme */}
+          {form.watch('extras')?.includes('video_invitation') && (
+            <FormField
+              control={form.control}
+              name="video_invitation_theme"
+              render={({ field }) => (
+                <FormItem className="mt-3">
+                  <FormLabel>Temática de la videoinvitación</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Ej: Superhéroes, Star Wars, Neón..."
+                      {...field}
+                      className="bg-background/50"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
         </div>
 
         {/* Special Requests */}
@@ -437,6 +460,11 @@ const ReservationForm = ({ onClose }: ReservationFormProps) => {
             </FormItem>
           )}
         />
+
+        {/* Footer note */}
+        <p className="text-xs text-muted-foreground text-center italic">
+          Una vez enviada la solicitud, el equipo de Shoot&Run se pondrá en contacto contigo para confirmar disponibilidad, precios y cualquier detalle adicional.
+        </p>
 
         {/* Submit Button */}
         <div className="flex gap-4 pt-4">
