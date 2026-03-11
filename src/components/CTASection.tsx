@@ -11,6 +11,7 @@ const contactInfo = [
 
 interface CTASectionProps {
   onReserveClick?: () => void;
+  onOutdoorClick?: () => void;
 }
 
 const CTASection = ({ onReserveClick }: CTASectionProps) => {
