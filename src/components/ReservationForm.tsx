@@ -419,6 +419,27 @@ const ReservationForm = ({ onClose }: ReservationFormProps) => {
               </FormItem>
             )}
           />
+
+          {/* Video Invitation Theme */}
+          {form.watch('extras')?.includes('video_invitation') && (
+            <FormField
+              control={form.control}
+              name="video_invitation_theme"
+              render={({ field }) => (
+                <FormItem className="mt-3">
+                  <FormLabel>Temática de la videoinvitación</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Ej: Superhéroes, Star Wars, Neón..."
+                      {...field}
+                      className="bg-background/50"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
         </div>
 
         {/* Special Requests */}
