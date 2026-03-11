@@ -11,7 +11,7 @@ const Footer = () => {
           <div className="flex items-center gap-2">
             <Crosshair className="w-6 h-6 text-neon-blue" />
             <span className="font-display text-lg font-bold text-foreground">
-              SHOOT<span className="text-neon-blue">&</span>RUN
+              SHOOTANDRUN
             </span>
           </div>
 

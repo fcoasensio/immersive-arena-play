@@ -97,8 +97,8 @@ const HeroSection = ({ onReserveClick }: HeroSectionProps) => {
             <Button variant="hero" size="xl" onClick={onReserveClick}>
               Reserva tu experiencia
             </Button>
-            <Button variant="outline" size="xl">
-              Ver experiencias
+            <Button variant="outline" size="xl" asChild>
+              <a href="#services">Ver experiencias</a>
             </Button>
           </motion.div>
         </motion.div>
