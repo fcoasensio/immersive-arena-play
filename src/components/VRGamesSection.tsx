@@ -172,11 +172,11 @@ const VRGamesSection = () => {
             <p className="font-body text-xs text-muted-foreground uppercase tracking-wider">Contenido original</p>
           </div>
           <div className="text-center">
-            <span className="font-display text-2xl font-bold text-neon-blue">16</span>
+            <span className="font-display text-2xl font-bold text-neon-blue">12</span>
             <p className="font-body text-xs text-muted-foreground uppercase tracking-wider">Jugadores simultáneos</p>
           </div>
           <div className="text-center">
-            <span className="font-display text-2xl font-bold text-neon-green">5+</span>
+            <span className="font-display text-2xl font-bold text-neon-green">12+</span>
             <p className="font-body text-xs text-muted-foreground uppercase tracking-wider">Edad mínima</p>
           </div>
         </motion.div>
