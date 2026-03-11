@@ -3,9 +3,9 @@ import { Phone, Mail, MapPin, Clock } from 'lucide-react';
 import { Button } from './ui/button';
 
 const contactInfo = [
-  { icon: Phone, label: 'Teléfono', value: '+34 XXX XXX XXX' },
-  { icon: Mail, label: 'Email', value: 'info@shootandrun.es' },
-  { icon: MapPin, label: 'Ubicación', value: 'Tu ciudad, España' },
+  { icon: Phone, label: 'Teléfono', value: '+34 606 323 053' },
+  { icon: Mail, label: 'Email', value: 'hola@shootandrun.es' },
+  { icon: MapPin, label: 'Ubicación', value: 'Alcantarilla (Murcia)' },
   { icon: Clock, label: 'Horario', value: 'L-D: 10:00 - 22:00' },
 ];
 

@@ -26,7 +26,7 @@ const Navbar = ({ onReserveClick }: NavbarProps) => {
           <a href="#" className="flex items-center gap-2 group">
             <Crosshair className="w-8 h-8 text-neon-blue group-hover:text-neon-red transition-colors duration-300" />
             <span className="font-display text-xl md:text-2xl font-bold text-foreground">
-              SHOOT<span className="text-neon-blue">&</span>RUN
+              SHOOTANDRUN
             </span>
           </a>
 
