@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Gamepad2, Crosshair, Ghost, Swords, Users, Baby, DoorOpen } from 'lucide-react';
+import { Gamepad2, Crosshair, Ghost, Swords, Users, DoorOpen } from 'lucide-react';
 import { Badge } from './ui/badge';
 
 type GameCategory = 'all' | 'party' | 'shooter' | 'escape' | 'adventure';
