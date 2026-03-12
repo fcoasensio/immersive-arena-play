@@ -186,7 +186,7 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     // Send confirmation to customer
-    await resend.emails.send({
+    const customerEmailResult = await resend.emails.send({
       from: "Shoot&Run <outdoor@shootandrun.es>",
       to: [customerEmail],
       subject: `✅ Solicitud de presupuesto recibida - Shoot&Run Outdoor`,
