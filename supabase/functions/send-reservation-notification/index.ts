@@ -179,7 +179,7 @@ const handler = async (req: Request): Promise<Response> => {
     });
 
     // Send notification to admin
-    await resend.emails.send({
+    const adminEmailResult = await resend.emails.send({
       from: "Shoot&Run Reservas <reservas@shootandrun.es>",
       to: [ADMIN_EMAIL],
       cc: [CC_EMAIL],
