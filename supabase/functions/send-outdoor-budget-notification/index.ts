@@ -177,6 +177,14 @@ const handler = async (req: Request): Promise<Response> => {
       `,
     });
 
+    if (adminEmailResult.error) {
+      console.error("Resend admin email error:", adminEmailResult.error);
+      return new Response(
+        JSON.stringify({ error: "No se pudo enviar el correo interno de outdoor" }),
+        { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     // Send confirmation to customer
     await resend.emails.send({
       from: "Shoot&Run <outdoor@shootandrun.es>",
