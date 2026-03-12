@@ -233,12 +233,7 @@ const ReservationForm = ({ onClose }: ReservationFormProps) => {
                         disabled={(date) => {
                           const today = new Date();
                           today.setHours(0, 0, 0, 0);
-                          if (date < today) return true;
-                          return blockedDates.some(bd =>
-                            bd.getFullYear() === date.getFullYear() &&
-                            bd.getMonth() === date.getMonth() &&
-                            bd.getDate() === date.getDate()
-                          );
+                          return date < today;
                         }}
                         initialFocus
                       />
