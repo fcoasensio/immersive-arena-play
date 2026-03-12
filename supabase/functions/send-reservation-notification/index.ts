@@ -1,7 +1,8 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "https://esm.sh/resend@2.0.0";
 
-const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
+const resendApiKey = Deno.env.get("RESEND_API_KEY");
+const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 const ADMIN_EMAIL = "reservas@shootandrun.es";
 const CC_EMAIL = "info@shootandrun.es";
@@ -139,6 +140,14 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
+    if (!resend) {
+      console.error("Missing RESEND_API_KEY secret");
+      return new Response(
+        JSON.stringify({ error: "Servicio de email no configurado" }),
+        { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
     const clientIp = getClientIp(req);
     if (isRateLimited(ipRequests, clientIp, IP_WINDOW_MS, IP_MAX_REQUESTS)) {
       return new Response(
@@ -170,7 +179,7 @@ const handler = async (req: Request): Promise<Response> => {
     });
 
     // Send notification to admin
-    await resend.emails.send({
+    const adminEmailResult = await resend.emails.send({
       from: "Shoot&Run Reservas <reservas@shootandrun.es>",
       to: [ADMIN_EMAIL],
       cc: [CC_EMAIL],
@@ -215,8 +224,16 @@ const handler = async (req: Request): Promise<Response> => {
       `,
     });
 
+    if (adminEmailResult.error) {
+      console.error("Resend admin email error:", adminEmailResult.error);
+      return new Response(
+        JSON.stringify({ error: "No se pudo enviar el correo interno de reserva" }),
+        { status: 502, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
     // Send confirmation to customer
-    await resend.emails.send({
+    const customerEmailResult = await resend.emails.send({
       from: "Shoot&Run <reservas@shootandrun.es>",
       to: [data.customerEmail],
       subject: `✅ Confirmación de Reserva - Shoot&Run`,
@@ -260,7 +277,18 @@ const handler = async (req: Request): Promise<Response> => {
       `,
     });
 
-    console.log("Emails sent successfully");
+    if (customerEmailResult.error) {
+      console.error("Resend customer email error:", customerEmailResult.error);
+      return new Response(
+        JSON.stringify({ error: "No se pudo enviar la confirmación al cliente" }),
+        { status: 502, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
+    console.log("Emails sent successfully", {
+      adminEmailId: adminEmailResult.data?.id,
+      customerEmailId: customerEmailResult.data?.id,
+    });
 
     return new Response(
       JSON.stringify({ success: true }),
