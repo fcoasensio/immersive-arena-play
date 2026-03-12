@@ -119,7 +119,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send to admin
     const adminEmailResult = await resend.emails.send({
-      from: "Shoot&Run Outdoor <outdoor@shootandrun.es>",
+      from: "Shoot&Run Outdoor <outdoor@web.shootandrun.es>",
       to: [ADMIN_EMAIL],
       cc: [CC_EMAIL],
       subject: `🌿 Solicitud Presupuesto Outdoor - ${safeName}`,
