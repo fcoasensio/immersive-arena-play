@@ -140,6 +140,14 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
+    if (!resend) {
+      console.error("Missing RESEND_API_KEY secret");
+      return new Response(
+        JSON.stringify({ error: "Servicio de email no configurado" }),
+        { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
     const clientIp = getClientIp(req);
     if (isRateLimited(ipRequests, clientIp, IP_WINDOW_MS, IP_MAX_REQUESTS)) {
       return new Response(
