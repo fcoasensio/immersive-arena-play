@@ -219,6 +219,19 @@ const handler = async (req: Request): Promise<Response> => {
       `,
     });
 
+    if (customerEmailResult.error) {
+      console.error("Resend customer email error:", customerEmailResult.error);
+      return new Response(
+        JSON.stringify({ error: "No se pudo enviar la confirmación al cliente" }),
+        { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    console.log("Outdoor emails sent successfully", {
+      adminEmailId: adminEmailResult.data?.id,
+      customerEmailId: customerEmailResult.data?.id,
+    });
+
     return new Response(
       JSON.stringify({ success: true }),
       { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } }
