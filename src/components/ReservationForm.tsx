@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -54,19 +54,6 @@ interface ReservationFormProps {
 const ReservationForm = ({ onClose }: ReservationFormProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [blockedDates, setBlockedDates] = useState<Date[]>([]);
-
-  // Fetch blocked dates (holidays)
-  useEffect(() => {
-    supabase
-      .from('holidays')
-      .select('date')
-      .then(({ data }) => {
-        if (data) {
-          setBlockedDates(data.map((h: any) => new Date(h.date + 'T00:00:00')));
-        }
-      });
-  }, []);
 
   const form = useForm<ReservationFormData>({
     resolver: zodResolver(reservationSchema),
@@ -246,12 +233,7 @@ const ReservationForm = ({ onClose }: ReservationFormProps) => {
                         disabled={(date) => {
                           const today = new Date();
                           today.setHours(0, 0, 0, 0);
-                          if (date < today) return true;
-                          return blockedDates.some(bd =>
-                            bd.getFullYear() === date.getFullYear() &&
-                            bd.getMonth() === date.getMonth() &&
-                            bd.getDate() === date.getDate()
-                          );
+                          return date < today;
                         }}
                         initialFocus
                       />

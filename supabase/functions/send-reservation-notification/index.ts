@@ -1,5 +1,4 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { Resend } from "https://esm.sh/resend@2.0.0";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
@@ -14,9 +13,9 @@ const corsHeaders = {
 };
 
 // --- Rate Limiting ---
-const IP_WINDOW_MS = 60 * 1000; // 1 minute
+const IP_WINDOW_MS = 60 * 1000;
 const IP_MAX_REQUESTS = 5;
-const EMAIL_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+const EMAIL_WINDOW_MS = 60 * 60 * 1000;
 const EMAIL_MAX_REQUESTS = 2;
 
 const ipRequests = new Map<string, number[]>();
@@ -140,7 +139,6 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    // Rate limit by IP
     const clientIp = getClientIp(req);
     if (isRateLimited(ipRequests, clientIp, IP_WINDOW_MS, IP_MAX_REQUESTS)) {
       return new Response(
@@ -150,7 +148,6 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     const rawData = await req.json();
-
     const validation = validateInput(rawData);
     if (!validation.valid || !validation.sanitized) {
       return new Response(
@@ -161,7 +158,6 @@ const handler = async (req: Request): Promise<Response> => {
 
     const data = validation.sanitized;
 
-    // Rate limit by email
     if (isRateLimited(emailRequests, data.customerEmail.toLowerCase(), EMAIL_WINDOW_MS, EMAIL_MAX_REQUESTS)) {
       return new Response(
         JSON.stringify({ error: "Ya has enviado una solicitud recientemente. Inténtalo más tarde." }),
@@ -169,39 +165,8 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    // Insert reservation into database server-side (behind rate limiting)
-    const supabaseAdmin = createClient(
-      Deno.env.get("SUPABASE_URL")!,
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
-    );
-
-    const { error: dbError } = await supabaseAdmin.from("reservations").insert({
-      customer_name: data.customerName,
-      customer_email: data.customerEmail,
-      customer_phone: data.customerPhone,
-      reservation_date: data.reservationDate,
-      reservation_time: data.reservationTime,
-      number_of_people: data.numberOfPeople,
-      activity_type: data.activityType,
-      event_type: data.eventType,
-      extras: data.extras,
-      video_invitation_theme: data.videoInvitationTheme || null,
-      special_requests: data.specialRequests || null,
-    });
-
-    if (dbError) {
-      console.error("Database insert error:", dbError);
-      return new Response(
-        JSON.stringify({ error: "Error al guardar la reserva. Inténtalo de nuevo." }),
-        { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
-      );
-    }
-
     const formattedDate = new Date(data.reservationDate).toLocaleDateString('es-ES', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
     });
 
     // Send notification to admin
@@ -232,54 +197,17 @@ const handler = async (req: Request): Promise<Response> => {
               <h1>🎯 Nueva Reserva</h1>
             </div>
             <div class="content">
-              <div class="info-item">
-                <div class="info-label">Cliente</div>
-                <div class="info-value">${data.customerName}</div>
-              </div>
-              <div class="info-item">
-                <div class="info-label">Email</div>
-                <div class="info-value"><a href="mailto:${data.customerEmail}" style="color: #00d4ff;">${data.customerEmail}</a></div>
-              </div>
-              <div class="info-item">
-                <div class="info-label">Teléfono</div>
-                <div class="info-value"><a href="tel:${data.customerPhone}" style="color: #00d4ff;">${data.customerPhone}</a></div>
-              </div>
-              <div class="info-item">
-                <div class="info-label">Fecha</div>
-                <div class="info-value highlight">${formattedDate}</div>
-              </div>
-              <div class="info-item">
-                <div class="info-label">Hora</div>
-                <div class="info-value highlight">${data.reservationTime}</div>
-              </div>
-              <div class="info-item">
-                <div class="info-label">Personas</div>
-                <div class="info-value">${data.numberOfPeople}</div>
-              </div>
-              <div class="info-item">
-                <div class="info-label">Actividad</div>
-                <div class="info-value">${getActivityLabel(data.activityType)}</div>
-              </div>
-              <div class="info-item">
-                <div class="info-label">Tipo de Evento</div>
-                <div class="info-value">${getEventLabel(data.eventType)}</div>
-              </div>
-              <div class="info-item">
-                <div class="info-label">Extras</div>
-                <div class="info-value">${getExtrasLabels(data.extras)}</div>
-              </div>
-              ${data.videoInvitationTheme ? `
-              <div class="info-item">
-                <div class="info-label">Temática Videoinvitación</div>
-                <div class="info-value">${data.videoInvitationTheme}</div>
-              </div>
-              ` : ''}
-              ${data.specialRequests ? `
-              <div class="info-item">
-                <div class="info-label">Peticiones Especiales</div>
-                <div class="info-value">${data.specialRequests}</div>
-              </div>
-              ` : ''}
+              <div class="info-item"><div class="info-label">Cliente</div><div class="info-value">${data.customerName}</div></div>
+              <div class="info-item"><div class="info-label">Email</div><div class="info-value"><a href="mailto:${data.customerEmail}" style="color: #00d4ff;">${data.customerEmail}</a></div></div>
+              <div class="info-item"><div class="info-label">Teléfono</div><div class="info-value"><a href="tel:${data.customerPhone}" style="color: #00d4ff;">${data.customerPhone}</a></div></div>
+              <div class="info-item"><div class="info-label">Fecha</div><div class="info-value highlight">${formattedDate}</div></div>
+              <div class="info-item"><div class="info-label">Hora</div><div class="info-value highlight">${data.reservationTime}</div></div>
+              <div class="info-item"><div class="info-label">Personas</div><div class="info-value">${data.numberOfPeople}</div></div>
+              <div class="info-item"><div class="info-label">Actividad</div><div class="info-value">${getActivityLabel(data.activityType)}</div></div>
+              <div class="info-item"><div class="info-label">Tipo de Evento</div><div class="info-value">${getEventLabel(data.eventType)}</div></div>
+              <div class="info-item"><div class="info-label">Extras</div><div class="info-value">${getExtrasLabels(data.extras)}</div></div>
+              ${data.videoInvitationTheme ? `<div class="info-item"><div class="info-label">Temática Videoinvitación</div><div class="info-value">${data.videoInvitationTheme}</div></div>` : ''}
+              ${data.specialRequests ? `<div class="info-item"><div class="info-label">Peticiones Especiales</div><div class="info-value">${data.specialRequests}</div></div>` : ''}
             </div>
           </div>
         </body>
@@ -317,26 +245,12 @@ const handler = async (req: Request): Promise<Response> => {
             <div class="content">
               <p style="font-size: 18px;">¡Hola ${data.customerName}!</p>
               <p>Hemos recibido tu reserva. Aquí están los detalles:</p>
-              
               <div class="summary">
-                <div class="summary-item">
-                  <span class="summary-label">Fecha</span>
-                  <span class="summary-value">${formattedDate}</span>
-                </div>
-                <div class="summary-item">
-                  <span class="summary-label">Hora</span>
-                  <span class="summary-value">${data.reservationTime}</span>
-                </div>
-                <div class="summary-item">
-                  <span class="summary-label">Personas</span>
-                  <span class="summary-value">${data.numberOfPeople}</span>
-                </div>
-                <div class="summary-item">
-                  <span class="summary-label">Actividad</span>
-                  <span class="summary-value">${getActivityLabel(data.activityType)}</span>
-                </div>
+                <div class="summary-item"><span class="summary-label">Fecha</span><span class="summary-value">${formattedDate}</span></div>
+                <div class="summary-item"><span class="summary-label">Hora</span><span class="summary-value">${data.reservationTime}</span></div>
+                <div class="summary-item"><span class="summary-label">Personas</span><span class="summary-value">${data.numberOfPeople}</span></div>
+                <div class="summary-item"><span class="summary-label">Actividad</span><span class="summary-value">${getActivityLabel(data.activityType)}</span></div>
               </div>
-              
               <p>Nos pondremos en contacto contigo pronto para confirmar todos los detalles.</p>
               <p>¡Prepárate para la acción! 🎯</p>
             </div>
@@ -346,7 +260,7 @@ const handler = async (req: Request): Promise<Response> => {
       `,
     });
 
-    console.log("Reservation saved and emails sent successfully");
+    console.log("Emails sent successfully");
 
     return new Response(
       JSON.stringify({ success: true }),
