@@ -56,7 +56,7 @@ const EquipmentSection = () => {
 
       <div className="container mx-auto px-4 relative z-10">
         {/* Laser Tag Equipment */}
-        <div className="grid lg:grid-cols-2 gap-16 items-center mb-24">
+        <div className="grid md:grid-cols-2 gap-12 items-center mb-24">
           {/* Left - Content */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -137,14 +137,14 @@ const EquipmentSection = () => {
         </div>
 
         {/* VR Equipment */}
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* Left - Visual */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="relative order-2 lg:order-1">
+            className="relative order-2 md:order-1">
             
             <div className="relative aspect-square rounded-2xl overflow-hidden gradient-border">
               <img
@@ -171,7 +171,7 @@ const EquipmentSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="order-1 lg:order-2">
+            className="order-1 md:order-2">
             
             <span className="inline-block font-body text-sm uppercase tracking-widest text-neon-purple mb-4">
               Realidad Virtual
