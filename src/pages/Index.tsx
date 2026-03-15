@@ -8,7 +8,7 @@ import EventsSection from '@/components/EventsSection';
 import EquipmentSection from '@/components/EquipmentSection';
 import CTASection from '@/components/CTASection';
 import Footer from '@/components/Footer';
-import ReservationDialog from '@/components/ReservationDialog';
+
 import OutdoorBudgetDialog from '@/components/OutdoorBudgetDialog';
 
 const Index = () => {
