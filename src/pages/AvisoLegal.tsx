@@ -45,7 +45,7 @@ const AvisoLegal = () => {
           <section>
             <h2 className="text-lg font-semibold text-foreground">4. Condiciones de uso</h2>
             <p>
-              El usuario se compromete a hacer un uso adecuado de los contenidos y servicios que SHOOT&RUN ofrece a
+              El usuario se compromete a hacer un uso adecuado de los contenidos y servicios que shootandrun ofrece a
               través de su sitio web y a no emplearlos para incurrir en actividades ilícitas o contrarias a la buena fe
               y al ordenamiento legal.
             </p>
