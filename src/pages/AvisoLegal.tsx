@@ -54,7 +54,7 @@ const AvisoLegal = () => {
           <section>
             <h2 className="text-lg font-semibold text-foreground">5. Limitación de responsabilidad</h2>
             <p>
-              SHOOT&RUN no se hace responsable de los daños y perjuicios de cualquier naturaleza que pudieran derivarse
+              shootandrun no se hace responsable de los daños y perjuicios de cualquier naturaleza que pudieran derivarse
               del uso indebido de los servicios y contenidos del sitio web por parte del usuario.
             </p>
           </section>
