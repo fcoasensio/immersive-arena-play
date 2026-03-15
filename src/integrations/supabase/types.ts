@@ -14,16 +14,167 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      configuracion: {
+        Row: {
+          clave: string
+          descripcion: string | null
+          id: string
+          updated_at: string
+          valor: Json
+        }
+        Insert: {
+          clave: string
+          descripcion?: string | null
+          id?: string
+          updated_at?: string
+          valor: Json
+        }
+        Update: {
+          clave?: string
+          descripcion?: string | null
+          id?: string
+          updated_at?: string
+          valor?: Json
+        }
+        Relationships: []
+      }
+      festivos: {
+        Row: {
+          created_at: string
+          fecha: string
+          id: string
+          nombre: string
+        }
+        Insert: {
+          created_at?: string
+          fecha: string
+          id?: string
+          nombre?: string
+        }
+        Update: {
+          created_at?: string
+          fecha?: string
+          id?: string
+          nombre?: string
+        }
+        Relationships: []
+      }
+      reservas: {
+        Row: {
+          actividad: Database["public"]["Enums"]["actividad"]
+          anticipo: number | null
+          codigo_postal: string
+          created_at: string
+          direccion: string
+          dni_cif: string
+          duracion: Database["public"]["Enums"]["duracion_reserva"]
+          edad_menor: number | null
+          email: string
+          estado: Database["public"]["Enums"]["estado_reserva"]
+          fecha: string
+          hora: string
+          id: string
+          nombre_completo: string
+          nombre_menor: string | null
+          notas: string | null
+          num_participantes: number
+          precio_base: number | null
+          precio_final: number | null
+          telefono: string
+          tematica_invitacion: string | null
+          tipo_reserva: Database["public"]["Enums"]["tipo_reserva"]
+        }
+        Insert: {
+          actividad: Database["public"]["Enums"]["actividad"]
+          anticipo?: number | null
+          codigo_postal: string
+          created_at?: string
+          direccion: string
+          dni_cif: string
+          duracion?: Database["public"]["Enums"]["duracion_reserva"]
+          edad_menor?: number | null
+          email: string
+          estado?: Database["public"]["Enums"]["estado_reserva"]
+          fecha: string
+          hora: string
+          id?: string
+          nombre_completo: string
+          nombre_menor?: string | null
+          notas?: string | null
+          num_participantes: number
+          precio_base?: number | null
+          precio_final?: number | null
+          telefono: string
+          tematica_invitacion?: string | null
+          tipo_reserva: Database["public"]["Enums"]["tipo_reserva"]
+        }
+        Update: {
+          actividad?: Database["public"]["Enums"]["actividad"]
+          anticipo?: number | null
+          codigo_postal?: string
+          created_at?: string
+          direccion?: string
+          dni_cif?: string
+          duracion?: Database["public"]["Enums"]["duracion_reserva"]
+          edad_menor?: number | null
+          email?: string
+          estado?: Database["public"]["Enums"]["estado_reserva"]
+          fecha?: string
+          hora?: string
+          id?: string
+          nombre_completo?: string
+          nombre_menor?: string | null
+          notas?: string | null
+          num_participantes?: number
+          precio_base?: number | null
+          precio_final?: number | null
+          telefono?: string
+          tematica_invitacion?: string | null
+          tipo_reserva?: Database["public"]["Enums"]["tipo_reserva"]
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      actividad: "laser_tag" | "realidad_virtual"
+      app_role: "admin" | "user"
+      duracion_reserva: "90" | "150"
+      estado_reserva:
+        | "pendiente_pago"
+        | "pago_recibido"
+        | "confirmada"
+        | "cancelada"
+      tipo_reserva: "cumpleanos" | "grupos" | "despedida"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +301,17 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      actividad: ["laser_tag", "realidad_virtual"],
+      app_role: ["admin", "user"],
+      duracion_reserva: ["90", "150"],
+      estado_reserva: [
+        "pendiente_pago",
+        "pago_recibido",
+        "confirmada",
+        "cancelada",
+      ],
+      tipo_reserva: ["cumpleanos", "grupos", "despedida"],
+    },
   },
 } as const
