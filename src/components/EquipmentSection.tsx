@@ -56,7 +56,7 @@ const EquipmentSection = () => {
 
       <div className="container mx-auto px-4 relative z-10">
         {/* Laser Tag Equipment */}
-        <div className="grid lg:grid-cols-2 gap-16 items-center mb-24">
+        <div className="grid md:grid-cols-2 gap-12 items-center mb-24">
           {/* Left - Content */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
