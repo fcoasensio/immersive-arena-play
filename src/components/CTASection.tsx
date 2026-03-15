@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { Phone, Mail, MapPin, Clock } from 'lucide-react';
 import { Button } from './ui/button';
 
@@ -10,11 +11,11 @@ const contactInfo = [
 ];
 
 interface CTASectionProps {
-  onReserveClick?: () => void;
   onOutdoorClick?: () => void;
 }
 
-const CTASection = ({ onReserveClick, onOutdoorClick }: CTASectionProps) => {
+const CTASection = ({ onOutdoorClick }: CTASectionProps) => {
+  const navigate = useNavigate();
   return (
     <section id="contact" className="py-20 md:py-32 relative overflow-hidden">
       {/* Background gradient */}
