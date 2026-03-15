@@ -131,8 +131,6 @@ const EventsSection = () => {
         </div>
       </div>
     </section>
-    <ReservationDialog open={dialogOpen} onOpenChange={setDialogOpen} />
-    </>
   );
 };
 
