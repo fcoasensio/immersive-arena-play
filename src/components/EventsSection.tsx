@@ -119,7 +119,7 @@ const EventsSection = () => {
                         ))}
                       </ul>
 
-                      <Button variant="outline" size="sm" className="group-hover:border-neon-blue group-hover:text-neon-blue transition-colors duration-300" onClick={() => setDialogOpen(true)}>
+                      <Button variant="outline" size="sm" className="group-hover:border-neon-blue group-hover:text-neon-blue transition-colors duration-300" onClick={scrollToContact}>
                         Más información
                       </Button>
                     </div>
