@@ -21,7 +21,7 @@ const Admin = () => {
     <div className="min-h-screen bg-background">
       <header className="border-b border-border bg-card">
         <div className="container mx-auto px-4 h-14 flex items-center justify-between">
-          <h1 className="font-display text-lg font-bold text-primary">SHOOT&RUN <span className="text-muted-foreground font-body text-sm font-normal">Admin</span></h1>
+          <h1 className="font-display text-lg font-bold text-primary">shootandrun <span className="text-muted-foreground font-body text-sm font-normal">Admin</span></h1>
           <Button variant="ghost" size="sm" onClick={handleLogout}>
             <LogOut size={16} /> Salir
           </Button>

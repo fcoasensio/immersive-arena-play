@@ -17,7 +17,7 @@ const AvisoLegal = () => {
               siguientes datos:
             </p>
             <p>
-              <strong>Denominación:</strong> SHOOT&RUN<br />
+              <strong>Denominación:</strong> shootandrun<br />
               <strong>Domicilio:</strong> Avda. Cristo Yacente, 24, 30820 Alcantarilla (Murcia)<br />
               <strong>Email:</strong> reservas@shootandrun.es<br />
               <strong>Teléfono:</strong> 606 323 053
@@ -28,7 +28,7 @@ const AvisoLegal = () => {
             <h2 className="text-lg font-semibold text-foreground">2. Objeto</h2>
             <p>
               El presente sitio web tiene por objeto facilitar información sobre los servicios de ocio y entretenimiento
-              ofrecidos por SHOOT&RUN, así como permitir la gestión de reservas online.
+              ofrecidos por shootandrun, así como permitir la gestión de reservas online.
             </p>
           </section>
 
@@ -37,7 +37,7 @@ const AvisoLegal = () => {
             <p>
               Todos los contenidos del sitio web, incluyendo textos, fotografías, gráficos, imágenes, iconos, tecnología,
               software, enlaces y demás contenidos audiovisuales o sonoros, así como su diseño gráfico y códigos fuente,
-              son propiedad intelectual de SHOOT&RUN o de terceros, sin que puedan entenderse cedidos al usuario ninguno
+              son propiedad intelectual de shootandrun o de terceros, sin que puedan entenderse cedidos al usuario ninguno
               de los derechos de explotación reconocidos por la normativa vigente.
             </p>
           </section>
@@ -45,7 +45,7 @@ const AvisoLegal = () => {
           <section>
             <h2 className="text-lg font-semibold text-foreground">4. Condiciones de uso</h2>
             <p>
-              El usuario se compromete a hacer un uso adecuado de los contenidos y servicios que SHOOT&RUN ofrece a
+              El usuario se compromete a hacer un uso adecuado de los contenidos y servicios que shootandrun ofrece a
               través de su sitio web y a no emplearlos para incurrir en actividades ilícitas o contrarias a la buena fe
               y al ordenamiento legal.
             </p>
@@ -54,7 +54,7 @@ const AvisoLegal = () => {
           <section>
             <h2 className="text-lg font-semibold text-foreground">5. Limitación de responsabilidad</h2>
             <p>
-              SHOOT&RUN no se hace responsable de los daños y perjuicios de cualquier naturaleza que pudieran derivarse
+              shootandrun no se hace responsable de los daños y perjuicios de cualquier naturaleza que pudieran derivarse
               del uso indebido de los servicios y contenidos del sitio web por parte del usuario.
             </p>
           </section>
@@ -62,7 +62,7 @@ const AvisoLegal = () => {
           <section>
             <h2 className="text-lg font-semibold text-foreground">6. Legislación aplicable y jurisdicción</h2>
             <p>
-              La relación entre SHOOT&RUN y el usuario se regirá por la normativa española vigente. Para la resolución
+              La relación entre shootandrun y el usuario se regirá por la normativa española vigente. Para la resolución
               de cualquier controversia, las partes se someterán a los Juzgados y Tribunales de Murcia.
             </p>
           </section>

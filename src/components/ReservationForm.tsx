@@ -445,7 +445,7 @@ const ReservationForm = ({ onClose }: ReservationFormProps) => {
 
         {/* Footer note */}
         <p className="text-xs text-muted-foreground text-center italic">
-          Una vez enviada la solicitud, el equipo de Shoot&Run se pondrá en contacto contigo para confirmar disponibilidad, precios y cualquier detalle adicional.
+          Una vez enviada la solicitud, el equipo de shootandrun se pondrá en contacto contigo para confirmar disponibilidad, precios y cualquier detalle adicional.
         </p>
 
         {/* Submit Button */}

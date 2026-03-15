@@ -180,7 +180,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send notification to admin
     const adminEmailResult = await resend.emails.send({
-      from: "Shoot&Run Reservas <reservas@web.shootandrun.es>",
+      from: "shootandrun Reservas <reservas@web.shootandrun.es>",
       to: [ADMIN_EMAIL],
       cc: [CC_EMAIL],
       subject: `🎯 Nueva Reserva - ${data.customerName} - ${formattedDate}`,
@@ -234,9 +234,9 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send confirmation to customer
     const customerEmailResult = await resend.emails.send({
-      from: "Shoot&Run <reservas@web.shootandrun.es>",
+      from: "shootandrun <reservas@web.shootandrun.es>",
       to: [data.customerEmail],
-      subject: `✅ Confirmación de Reserva - Shoot&Run`,
+      subject: `✅ Confirmación de Reserva - shootandrun`,
       html: `
         <!DOCTYPE html>
         <html>

@@ -119,7 +119,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send to admin
     const adminEmailResult = await resend.emails.send({
-      from: "Shoot&Run Outdoor <outdoor@web.shootandrun.es>",
+      from: "shootandrun Outdoor <outdoor@web.shootandrun.es>",
       to: [ADMIN_EMAIL],
       cc: [CC_EMAIL],
       subject: `🌿 Solicitud Presupuesto Outdoor - ${safeName}`,
@@ -187,9 +187,9 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send confirmation to customer
     const customerEmailResult = await resend.emails.send({
-      from: "Shoot&Run <outdoor@web.shootandrun.es>",
+      from: "shootandrun <outdoor@web.shootandrun.es>",
       to: [customerEmail],
-      subject: `✅ Solicitud de presupuesto recibida - Shoot&Run Outdoor`,
+      subject: `✅ Solicitud de presupuesto recibida - shootandrun Outdoor`,
       html: `
         <!DOCTYPE html>
         <html>
@@ -211,7 +211,7 @@ const handler = async (req: Request): Promise<Response> => {
               <p style="font-size: 18px;">¡Hola ${safeName}!</p>
               <p>Hemos recibido tu solicitud de presupuesto para un evento outdoor.</p>
               <p>Nuestro equipo revisará los detalles y te enviará un presupuesto personalizado lo antes posible.</p>
-              <p>¡Gracias por confiar en Shoot&Run! 🎯</p>
+              <p>¡Gracias por confiar en shootandrun! 🎯</p>
             </div>
           </div>
         </body>

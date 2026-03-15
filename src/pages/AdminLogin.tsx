@@ -50,7 +50,7 @@ const AdminLogin = () => {
             <Lock size={24} className="text-primary-foreground" />
           </div>
           <h1 className="font-display text-2xl font-bold">Panel Admin</h1>
-          <p className="text-sm text-muted-foreground">SHOOT&RUN</p>
+          <p className="text-sm text-muted-foreground">shootandrun</p>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-4">
