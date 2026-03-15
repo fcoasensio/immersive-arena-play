@@ -17,7 +17,7 @@ const AvisoLegal = () => {
               siguientes datos:
             </p>
             <p>
-              <strong>Denominación:</strong> SHOOT&RUN<br />
+              <strong>Denominación:</strong> shootandrun<br />
               <strong>Domicilio:</strong> Avda. Cristo Yacente, 24, 30820 Alcantarilla (Murcia)<br />
               <strong>Email:</strong> reservas@shootandrun.es<br />
               <strong>Teléfono:</strong> 606 323 053
