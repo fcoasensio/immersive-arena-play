@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LogOut, CalendarCheck, Settings, CalendarDays } from "lucide-react";
+import { LogOut, CalendarCheck, Settings, CalendarDays, Package } from "lucide-react";
 import AdminReservas from "@/components/admin/AdminReservas";
 import AdminConfiguracion from "@/components/admin/AdminConfiguracion";
 import AdminFestivos from "@/components/admin/AdminFestivos";
+import AdminPacks from "@/components/admin/AdminPacks";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -34,6 +35,9 @@ const Admin = () => {
             <TabsTrigger value="reservas" className="gap-2">
               <CalendarCheck size={16} /> Reservas
             </TabsTrigger>
+            <TabsTrigger value="packs" className="gap-2">
+              <Package size={16} /> Packs
+            </TabsTrigger>
             <TabsTrigger value="configuracion" className="gap-2">
               <Settings size={16} /> Configuración
             </TabsTrigger>
@@ -44,6 +48,9 @@ const Admin = () => {
 
           <TabsContent value="reservas">
             <AdminReservas />
+          </TabsContent>
+          <TabsContent value="packs">
+            <AdminPacks />
           </TabsContent>
           <TabsContent value="configuracion">
             <AdminConfiguracion />
