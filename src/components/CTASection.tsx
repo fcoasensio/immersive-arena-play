@@ -49,7 +49,7 @@ const CTASection = ({ onOutdoorClick }: CTASectionProps) => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-            <Button variant="hero" size="xl" onClick={onReserveClick}>
+            <Button variant="hero" size="xl" onClick={() => navigate('/reservar')}>
               Reservar Ahora
             </Button>
             <Button variant="outline" size="xl" onClick={onOutdoorClick}>

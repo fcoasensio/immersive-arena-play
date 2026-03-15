@@ -93,7 +93,7 @@ const HeroSection = () => {
             transition={{ delay: 0.7, duration: 0.5 }}
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
-            <Button variant="hero" size="xl" onClick={onReserveClick}>
+            <Button variant="hero" size="xl" onClick={() => navigate('/reservar')}>
               Reserva tu experiencia
             </Button>
             <Button variant="outline" size="xl" asChild>

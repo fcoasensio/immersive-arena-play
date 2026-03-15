@@ -12,21 +12,19 @@ import ReservationDialog from '@/components/ReservationDialog';
 import OutdoorBudgetDialog from '@/components/OutdoorBudgetDialog';
 
 const Index = () => {
-  const [reservationOpen, setReservationOpen] = useState(false);
   const [outdoorOpen, setOutdoorOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar onReserveClick={() => setReservationOpen(true)} />
-      <HeroSection onReserveClick={() => setReservationOpen(true)} />
+      <Navbar />
+      <HeroSection />
       <ServicesSection />
       <LaserGamesSection />
       <VRGamesSection />
-      <EventsSection onReserveClick={() => setReservationOpen(true)} />
+      <EventsSection />
       <EquipmentSection />
-      <CTASection onReserveClick={() => setReservationOpen(true)} onOutdoorClick={() => setOutdoorOpen(true)} />
+      <CTASection onOutdoorClick={() => setOutdoorOpen(true)} />
       <Footer />
-      <ReservationDialog open={reservationOpen} onOpenChange={setReservationOpen} />
       <OutdoorBudgetDialog open={outdoorOpen} onOpenChange={setOutdoorOpen} />
     </div>
   );
