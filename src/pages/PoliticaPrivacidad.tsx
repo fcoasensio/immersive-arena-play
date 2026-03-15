@@ -12,7 +12,7 @@ const PoliticaPrivacidad = () => {
           <section>
             <h2 className="text-lg font-semibold text-foreground">1. Responsable del tratamiento</h2>
             <p>
-              <strong>SHOOT&RUN</strong><br />
+              <strong>shootandrun</strong><br />
               Avda. Cristo Yacente, 24, 30820 Alcantarilla (Murcia)<br />
               Email: reservas@shootandrun.es<br />
               Teléfono: 606 323 053

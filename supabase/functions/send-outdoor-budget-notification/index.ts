@@ -211,7 +211,7 @@ const handler = async (req: Request): Promise<Response> => {
               <p style="font-size: 18px;">¡Hola ${safeName}!</p>
               <p>Hemos recibido tu solicitud de presupuesto para un evento outdoor.</p>
               <p>Nuestro equipo revisará los detalles y te enviará un presupuesto personalizado lo antes posible.</p>
-              <p>¡Gracias por confiar en Shoot&Run! 🎯</p>
+              <p>¡Gracias por confiar en shootandrun! 🎯</p>
             </div>
           </div>
         </body>

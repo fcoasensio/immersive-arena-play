@@ -62,7 +62,7 @@ const AvisoLegal = () => {
           <section>
             <h2 className="text-lg font-semibold text-foreground">6. Legislación aplicable y jurisdicción</h2>
             <p>
-              La relación entre SHOOT&RUN y el usuario se regirá por la normativa española vigente. Para la resolución
+              La relación entre shootandrun y el usuario se regirá por la normativa española vigente. Para la resolución
               de cualquier controversia, las partes se someterán a los Juzgados y Tribunales de Murcia.
             </p>
           </section>

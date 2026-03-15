@@ -274,7 +274,7 @@ const OutdoorBudgetForm = ({ onClose }: OutdoorBudgetFormProps) => {
 
         {/* Footer note */}
         <p className="text-xs text-muted-foreground text-center italic">
-          Una vez recibida tu solicitud, el equipo de Shoot&Run te enviará un presupuesto personalizado sin compromiso.
+          Una vez recibida tu solicitud, el equipo de shootandrun te enviará un presupuesto personalizado sin compromiso.
         </p>
 
         {/* Submit Buttons */}

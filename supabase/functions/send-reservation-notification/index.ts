@@ -234,9 +234,9 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send confirmation to customer
     const customerEmailResult = await resend.emails.send({
-      from: "Shoot&Run <reservas@web.shootandrun.es>",
+      from: "shootandrun <reservas@web.shootandrun.es>",
       to: [data.customerEmail],
-      subject: `✅ Confirmación de Reserva - Shoot&Run`,
+      subject: `✅ Confirmación de Reserva - shootandrun`,
       html: `
         <!DOCTYPE html>
         <html>
