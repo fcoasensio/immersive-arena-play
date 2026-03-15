@@ -4,6 +4,8 @@ import HeroSection from '@/components/HeroSection';
 import ServicesSection from '@/components/ServicesSection';
 import VRGamesSection from '@/components/VRGamesSection';
 import LaserGamesSection from '@/components/LaserGamesSection';
+import HowItWorksSection from '@/components/HowItWorksSection';
+import PacksSection from '@/components/PacksSection';
 import EventsSection from '@/components/EventsSection';
 import EquipmentSection from '@/components/EquipmentSection';
 import CTASection from '@/components/CTASection';
@@ -21,6 +23,8 @@ const Index = () => {
       <ServicesSection />
       <LaserGamesSection />
       <VRGamesSection />
+      <HowItWorksSection />
+      <PacksSection />
       <EventsSection />
       <EquipmentSection />
       <CTASection onOutdoorClick={() => setOutdoorOpen(true)} />
