@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { Users, Cake, PartyPopper, Trophy, Landmark, GraduationCap } from 'lucide-react';
 import { Button } from './ui/button';
 
@@ -47,11 +48,8 @@ const events = [
   },
 ];
 
-interface EventsSectionProps {
-  onReserveClick?: () => void;
-}
-
-const EventsSection = ({ onReserveClick }: EventsSectionProps) => {
+const EventsSection = () => {
+  const navigate = useNavigate();
   return (
     <section id="events" className="py-20 md:py-32 bg-gradient-to-b from-background via-card/30 to-background relative overflow-hidden">
       {/* Decorative elements */}
@@ -120,7 +118,7 @@ const EventsSection = ({ onReserveClick }: EventsSectionProps) => {
                         ))}
                       </ul>
 
-                      <Button variant="outline" size="sm" className="group-hover:border-neon-blue group-hover:text-neon-blue transition-colors duration-300" onClick={onReserveClick}>
+                      <Button variant="outline" size="sm" className="group-hover:border-neon-blue group-hover:text-neon-blue transition-colors duration-300" onClick={() => navigate('/reservar')}>
                         Más información
                       </Button>
                     </div>
