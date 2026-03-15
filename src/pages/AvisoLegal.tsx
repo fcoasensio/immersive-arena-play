@@ -37,7 +37,7 @@ const AvisoLegal = () => {
             <p>
               Todos los contenidos del sitio web, incluyendo textos, fotografías, gráficos, imágenes, iconos, tecnología,
               software, enlaces y demás contenidos audiovisuales o sonoros, así como su diseño gráfico y códigos fuente,
-              son propiedad intelectual de SHOOT&RUN o de terceros, sin que puedan entenderse cedidos al usuario ninguno
+              son propiedad intelectual de shootandrun o de terceros, sin que puedan entenderse cedidos al usuario ninguno
               de los derechos de explotación reconocidos por la normativa vigente.
             </p>
           </section>
