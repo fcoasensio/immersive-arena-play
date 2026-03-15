@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
-import ServicesSection from '@/components/ServicesSection';
+
 import VRGamesSection from '@/components/VRGamesSection';
 import LaserGamesSection from '@/components/LaserGamesSection';
 import HowItWorksSection from '@/components/HowItWorksSection';
