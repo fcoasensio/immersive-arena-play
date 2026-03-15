@@ -144,7 +144,7 @@ const EquipmentSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="relative order-2 lg:order-1">
+            className="relative order-2 md:order-1">
             
             <div className="relative aspect-square rounded-2xl overflow-hidden gradient-border">
               <img
