@@ -59,6 +59,57 @@ export type Database = {
         }
         Relationships: []
       }
+      packs: {
+        Row: {
+          activo: boolean
+          caracteristicas: Json
+          color: string
+          created_at: string
+          descripcion: string
+          duracion: string
+          icono: string
+          id: string
+          jugadores: string
+          nombre: string
+          orden: number
+          popular: boolean
+          precio: string
+          updated_at: string
+        }
+        Insert: {
+          activo?: boolean
+          caracteristicas?: Json
+          color?: string
+          created_at?: string
+          descripcion?: string
+          duracion?: string
+          icono?: string
+          id?: string
+          jugadores?: string
+          nombre: string
+          orden?: number
+          popular?: boolean
+          precio?: string
+          updated_at?: string
+        }
+        Update: {
+          activo?: boolean
+          caracteristicas?: Json
+          color?: string
+          created_at?: string
+          descripcion?: string
+          duracion?: string
+          icono?: string
+          id?: string
+          jugadores?: string
+          nombre?: string
+          orden?: number
+          popular?: boolean
+          precio?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       reservas: {
         Row: {
           actividad: Database["public"]["Enums"]["actividad"]
