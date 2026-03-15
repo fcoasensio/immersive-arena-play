@@ -179,7 +179,7 @@ const EquipmentSection = () => {
             <h2 className="font-display text-3xl md:text-5xl font-bold text-foreground mb-6">
               REALIDAD <span className="text-neon-purple text-glow-purple">VIRTUAL</span> FREE ROAMING
             </h2>
-            <p className="font-body text-lg text-muted-foreground mb-10 leading-relaxed">Desarrollamos experiencias con los mejores juegos de realidad virtual de libre movimiento del mercado. Escape rooms, shooters tácticos y aventuras de acción para grupos de hasta 12 jugadores simultáneos.
+            <p className="font-body text-lg text-muted-foreground mb-10 leading-relaxed">Desarrollamos experiencias con los mejores juegos de realidad virtual de libre movimiento del mercado. Escape rooms, shooters tácticos, escape rooms y aventuras de acción para grupos de hasta 12 jugadores simultáneos.
 
 
             </p>
