@@ -171,7 +171,7 @@ const EquipmentSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="order-1 lg:order-2">
+            className="order-1 md:order-2">
             
             <span className="inline-block font-body text-sm uppercase tracking-widest text-neon-purple mb-4">
               Realidad Virtual
