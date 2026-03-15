@@ -50,8 +50,9 @@ const events = [
 ];
 
 const EventsSection = () => {
-  const navigate = useNavigate();
+  const [dialogOpen, setDialogOpen] = useState(false);
   return (
+    <>
     <section id="events" className="py-20 md:py-32 bg-gradient-to-b from-background via-card/30 to-background relative overflow-hidden">
       {/* Decorative elements */}
       <div className="absolute top-1/2 left-0 w-64 h-64 bg-neon-red/5 rounded-full blur-3xl -translate-y-1/2" />
