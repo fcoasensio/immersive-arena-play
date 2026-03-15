@@ -28,7 +28,7 @@ const AvisoLegal = () => {
             <h2 className="text-lg font-semibold text-foreground">2. Objeto</h2>
             <p>
               El presente sitio web tiene por objeto facilitar información sobre los servicios de ocio y entretenimiento
-              ofrecidos por SHOOT&RUN, así como permitir la gestión de reservas online.
+              ofrecidos por shootandrun, así como permitir la gestión de reservas online.
             </p>
           </section>
 
