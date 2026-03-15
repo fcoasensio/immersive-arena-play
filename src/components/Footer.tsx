@@ -1,9 +1,6 @@
 import { Instagram, Facebook, MessageCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import logoImg from '@/assets/logo-shootandrun.png';
-import PrivacyPolicyDialog from './PrivacyPolicyDialog';
-import TermsDialog from './TermsDialog';
-import CookiesPolicyDialog from './CookiesPolicyDialog';
-import LegalNoticeDialog from './LegalNoticeDialog';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -18,27 +15,13 @@ const Footer = () => {
           </div>
 
           {/* Links */}
-          <div className="flex items-center gap-6">
-            <PrivacyPolicyDialog>
-              <button className="font-body text-sm text-muted-foreground hover:text-neon-blue transition-colors">
-                Política de Privacidad
-              </button>
-            </PrivacyPolicyDialog>
-            <TermsDialog>
-              <button className="font-body text-sm text-muted-foreground hover:text-neon-blue transition-colors">
-                Términos y Condiciones
-              </button>
-            </TermsDialog>
-            <CookiesPolicyDialog>
-              <button className="font-body text-sm text-muted-foreground hover:text-neon-blue transition-colors">
-                Política de Cookies
-              </button>
-            </CookiesPolicyDialog>
-            <LegalNoticeDialog>
-              <button className="font-body text-sm text-muted-foreground hover:text-neon-blue transition-colors">
-                Aviso Legal
-              </button>
-            </LegalNoticeDialog>
+          <div className="flex items-center gap-6 flex-wrap justify-center">
+            <Link to="/politica-privacidad" className="font-body text-sm text-muted-foreground hover:text-neon-blue transition-colors">
+              Política de Privacidad
+            </Link>
+            <Link to="/aviso-legal" className="font-body text-sm text-muted-foreground hover:text-neon-blue transition-colors">
+              Aviso Legal
+            </Link>
           </div>
 
           {/* Social */}
