@@ -22,7 +22,11 @@ const Navbar = () => {
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     if (location.pathname !== '/') {
       e.preventDefault();
-      navigate('/' + href);
+      navigate('/');
+      setTimeout(() => {
+        const id = href.replace('#', '');
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+      }, 300);
     }
   };
 
