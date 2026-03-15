@@ -117,7 +117,7 @@ const EventsSection = () => {
                         ))}
                       </ul>
 
-                      <Button variant="outline" size="sm" className="group-hover:border-neon-blue group-hover:text-neon-blue transition-colors duration-300" onClick={onReserveClick}>
+                      <Button variant="outline" size="sm" className="group-hover:border-neon-blue group-hover:text-neon-blue transition-colors duration-300" onClick={() => navigate('/reservar')}>
                         Más información
                       </Button>
                     </div>
