@@ -1,7 +1,8 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
 import { Users, Cake, PartyPopper, Trophy, Landmark, GraduationCap } from 'lucide-react';
 import { Button } from './ui/button';
+import ReservationDialog from './ReservationDialog';
 
 const events = [
   {
