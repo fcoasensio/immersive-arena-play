@@ -124,6 +124,7 @@ const ReservaForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [festivos, setFestivos] = useState<string[]>([]);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     supabase.from("festivos").select("fecha").then(({ data }) => {
