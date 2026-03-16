@@ -1,0 +1,1 @@
+ALTER TYPE public.actividad ADD VALUE IF NOT EXISTS 'combinada';

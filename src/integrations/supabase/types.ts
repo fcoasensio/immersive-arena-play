@@ -217,7 +217,7 @@ export type Database = {
       }
     }
     Enums: {
-      actividad: "laser_tag" | "realidad_virtual"
+      actividad: "laser_tag" | "realidad_virtual" | "combinada"
       app_role: "admin" | "user"
       duracion_reserva: "90" | "150"
       estado_reserva:
@@ -353,7 +353,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      actividad: ["laser_tag", "realidad_virtual"],
+      actividad: ["laser_tag", "realidad_virtual", "combinada"],
       app_role: ["admin", "user"],
       duracion_reserva: ["90", "150"],
       estado_reserva: [
