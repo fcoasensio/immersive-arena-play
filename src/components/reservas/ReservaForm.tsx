@@ -62,7 +62,8 @@ function calcularPrecio(
   return { base, final: final_, recargo };
 }
 
-function getDuracionForTipo(tipo: string): "90" | "150" {
+function getDuracion(tipo: string, actividad: string): "90" | "150" | "270" {
+  if (actividad === "combinada") return "270";
   return tipo === "cumpleanos" ? "150" : "90";
 }
 
