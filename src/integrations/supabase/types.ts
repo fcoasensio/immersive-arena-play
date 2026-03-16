@@ -219,7 +219,7 @@ export type Database = {
     Enums: {
       actividad: "laser_tag" | "realidad_virtual" | "combinada"
       app_role: "admin" | "user"
-      duracion_reserva: "90" | "150"
+      duracion_reserva: "90" | "150" | "270"
       estado_reserva:
         | "pendiente_pago"
         | "pago_recibido"
@@ -355,7 +355,7 @@ export const Constants = {
     Enums: {
       actividad: ["laser_tag", "realidad_virtual", "combinada"],
       app_role: ["admin", "user"],
-      duracion_reserva: ["90", "150"],
+      duracion_reserva: ["90", "150", "270"],
       estado_reserva: [
         "pendiente_pago",
         "pago_recibido",
