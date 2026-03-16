@@ -409,9 +409,7 @@ const ReservaForm = () => {
                           : `90 min — ${config.precio_90min}€/pers`}
                     </div>
                     <p className="text-[11px] text-muted-foreground">
-                      {watchAll.actividad === "combinada"
-                        ? "Pack Premium: Láser Tag + Realidad Virtual (270 min)"
-                        : watchAll.tipo_reserva === "cumpleanos"
+                      {watchAll.tipo_reserva === "cumpleanos"
                           ? "Los cumpleaños incluyen 150 min"
                           : "Duración estándar de 90 min"}
                     </p>
