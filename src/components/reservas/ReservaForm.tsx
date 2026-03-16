@@ -346,7 +346,7 @@ const ReservaForm = () => {
                         >
                           <opt.icon size={32} className={`mx-auto mb-2 ${selected ? "text-primary" : "text-muted-foreground"}`} />
                           <div className={`font-display text-base font-bold ${selected ? "text-primary" : "text-foreground"}`}>{opt.label}</div>
-                          <div className="text-xs text-muted-foreground mt-1">{opt.desc}</div>
+                          <div className="text-xs text-muted-foreground mt-1 whitespace-pre-line">{opt.desc}</div>
                         </button>
                       );
                     })}
