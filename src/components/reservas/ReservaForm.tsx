@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -24,9 +25,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { useConfiguracion, type ConfigValues } from "@/hooks/useConfiguracion";
 
 const tipoOptions = [
-  { value: "cumpleanos", label: "Cumpleaños", icon: PartyPopper, desc: "El cumple más épico" },
-  { value: "grupos", label: "Grupos / Amigos", icon: Users, desc: "Acción con tu grupo" },
-  { value: "despedida", label: "Despedida", icon: Wine, desc: "Despedida inolvidable" },
+  { value: "cumpleanos", label: "Cumpleaños", icon: PartyPopper, desc: "El cumple más épico", hasMenu: true },
+  { value: "grupos", label: "Grupos / Amigos", icon: Users, desc: "Acción con tu grupo", hasMenu: false },
+  { value: "despedida", label: "Despedida", icon: Wine, desc: "Despedida inolvidable", hasMenu: false },
 ] as const;
 
 const actividadOptions = [
@@ -123,6 +124,7 @@ const ReservaForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [festivos, setFestivos] = useState<string[]>([]);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     supabase.from("festivos").select("fecha").then(({ data }) => {
@@ -313,7 +315,24 @@ const ReservaForm = () => {
                         >
                           <opt.icon size={28} className={`mx-auto mb-2 ${selected ? "text-primary" : "text-muted-foreground"}`} />
                           <div className={`font-display text-sm font-bold ${selected ? "text-primary" : "text-foreground"}`}>{opt.label}</div>
-                          <div className="text-[11px] text-muted-foreground mt-1">{opt.desc}</div>
+                          <div className="text-[11px] text-muted-foreground mt-1">
+                            {opt.desc}
+                            {opt.hasMenu && (
+                              <>
+                                {" · "}
+                                <span
+                                  role="button"
+                                  className="underline text-primary hover:text-primary/80 cursor-pointer"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setMenuOpen(true);
+                                  }}
+                                >
+                                  menú
+                                </span>
+                              </>
+                            )}
+                          </div>
                         </button>
                       );
                     })}
@@ -572,6 +591,22 @@ const ReservaForm = () => {
           )}
         </div>
       </form>
+
+      <Dialog open={menuOpen} onOpenChange={setMenuOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="font-display">🎂 Menú Cumpleaños</DialogTitle>
+          </DialogHeader>
+          <ul className="space-y-3 py-4">
+            {["Agua", "Refresco individual", "Bolsa de snack", "Perrito o pizza individual", "Chocolatina"].map((item) => (
+              <li key={item} className="flex items-center gap-3 text-sm text-foreground">
+                <span className="w-2 h-2 rounded-full bg-primary shrink-0" />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </DialogContent>
+      </Dialog>
     </Form>
   );
 };
