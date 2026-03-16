@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 export type ConfigValues = {
   precio_90min: number;
   precio_150min: number;
+  precio_270min: number;
   recargo_finde_festivo: number;
   min_participantes: number;
   max_participantes: number;
