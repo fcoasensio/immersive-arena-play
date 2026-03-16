@@ -1,0 +1,1 @@
+ALTER TYPE public.duracion_reserva ADD VALUE IF NOT EXISTS '270';

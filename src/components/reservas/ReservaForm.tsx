@@ -42,7 +42,10 @@ function calcularPrecio(
   config: ConfigValues,
   festivos: string[]
 ): { base: number; final: number; recargo: number } {
-  const precioBase = duracion === "150" ? config.precio_150min : config.precio_90min;
+  let precioBase = config.precio_90min;
+  if (duracion === "270") precioBase = config.precio_270min;
+  else if (duracion === "150") precioBase = config.precio_150min;
+
   let recargo = 0;
 
   if (fecha) {
@@ -59,7 +62,8 @@ function calcularPrecio(
   return { base, final: final_, recargo };
 }
 
-function getDuracionForTipo(tipo: string): "90" | "150" {
+function getDuracion(tipo: string, actividad: string): "90" | "150" | "270" {
+  if (actividad === "combinada") return "270";
   return tipo === "cumpleanos" ? "150" : "90";
 }
 
@@ -86,7 +90,7 @@ function buildSchema(config: ConfigValues) {
         (d) => d >= minDate, `La reserva debe hacerse con al menos ${config.antelacion_horas}h de antelación`
       ),
       hora: z.string().min(1, "Selecciona una hora"),
-      duracion: z.enum(["90", "150"]),
+      duracion: z.enum(["90", "150", "270"]),
       num_participantes: z.number()
         .min(config.min_participantes, `Mínimo ${config.min_participantes} participantes`),
       nombre_menor: z.string().optional(),
@@ -301,7 +305,7 @@ const ReservaForm = () => {
                           type="button"
                           onClick={() => {
                             form.setValue("tipo_reserva", opt.value);
-                            form.setValue("duracion", getDuracionForTipo(opt.value));
+                            form.setValue("duracion", getDuracion(opt.value, form.getValues("actividad")));
                           }}
                           className={`p-4 rounded-xl border-2 transition-all text-center ${
                             selected
@@ -329,6 +333,7 @@ const ReservaForm = () => {
                           type="button"
                           onClick={() => {
                             form.setValue("actividad", opt.value);
+                            form.setValue("duracion", getDuracion(form.getValues("tipo_reserva"), opt.value));
                             const newMax = getMaxParticipantes(opt.value, config);
                             const current = form.getValues("num_participantes");
                             if (current > newMax) form.setValue("num_participantes", newMax);
@@ -399,14 +404,18 @@ const ReservaForm = () => {
                   <div className="space-y-2">
                     <FormLabel>Duración</FormLabel>
                     <div className="h-10 px-3 flex items-center rounded-md border border-border bg-muted text-sm text-foreground">
-                      {watchAll.duracion === "150"
-                        ? `150 min — ${config.precio_150min}€/pers`
-                        : `90 min — ${config.precio_90min}€/pers`}
+                      {watchAll.duracion === "270"
+                        ? `270 min — ${config.precio_270min}€/pers`
+                        : watchAll.duracion === "150"
+                          ? `150 min — ${config.precio_150min}€/pers`
+                          : `90 min — ${config.precio_90min}€/pers`}
                     </div>
                     <p className="text-[11px] text-muted-foreground">
-                      {watchAll.tipo_reserva === "cumpleanos"
-                        ? "Los cumpleaños incluyen 150 min"
-                        : "Duración estándar de 90 min"}
+                      {watchAll.actividad === "combinada"
+                        ? "Pack Premium: Láser Tag + Realidad Virtual (270 min)"
+                        : watchAll.tipo_reserva === "cumpleanos"
+                          ? "Los cumpleaños incluyen 150 min"
+                          : "Duración estándar de 90 min"}
                     </p>
                   </div>
                 </div>
