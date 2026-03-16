@@ -42,7 +42,10 @@ function calcularPrecio(
   config: ConfigValues,
   festivos: string[]
 ): { base: number; final: number; recargo: number } {
-  const precioBase = duracion === "150" ? config.precio_150min : config.precio_90min;
+  let precioBase = config.precio_90min;
+  if (duracion === "270") precioBase = config.precio_270min;
+  else if (duracion === "150") precioBase = config.precio_150min;
+
   let recargo = 0;
 
   if (fecha) {
