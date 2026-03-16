@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import {
-  Crosshair, Glasses, PartyPopper, Users, Wine,
+  Crosshair, Glasses, Gamepad2, PartyPopper, Users, Wine,
   ArrowLeft, ArrowRight, Loader2, CheckCircle2, CreditCard,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
