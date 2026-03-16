@@ -103,7 +103,7 @@ function buildSchema(config: ConfigValues) {
     }, { message: "Datos del menor requeridos para cumpleaños", path: ["nombre_menor"] })
     .refine((data) => {
       if (data.tipo_reserva === "cumpleanos" && data.edad_menor) {
-        if (data.actividad === "realidad_virtual" || data.actividad === "combinada") return data.edad_menor >= 12;
+        if (data.actividad === "realidad_virtual") return data.edad_menor >= 12;
         if (data.actividad === "laser_tag") return data.edad_menor >= 8;
       }
       return true;
