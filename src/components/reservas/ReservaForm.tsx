@@ -333,6 +333,7 @@ const ReservaForm = () => {
                           type="button"
                           onClick={() => {
                             form.setValue("actividad", opt.value);
+                            form.setValue("duracion", getDuracion(form.getValues("tipo_reserva"), opt.value));
                             const newMax = getMaxParticipantes(opt.value, config);
                             const current = form.getValues("num_participantes");
                             if (current > newMax) form.setValue("num_participantes", newMax);
