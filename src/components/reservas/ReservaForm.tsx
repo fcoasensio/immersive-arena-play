@@ -67,7 +67,7 @@ function getDuracion(tipo: string, _actividad: string): "90" | "150" {
 
 function getMaxParticipantes(actividad: string, config: ConfigValues): number {
   if (actividad === "realidad_virtual") return config.max_participantes_realidad_virtual;
-  if (actividad === "combinada") return Math.min(config.max_participantes_laser_tag, config.max_participantes_realidad_virtual);
+  
   return config.max_participantes_laser_tag;
 }
 
