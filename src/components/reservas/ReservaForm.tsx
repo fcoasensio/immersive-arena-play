@@ -496,7 +496,7 @@ const ReservaForm = () => {
                         const minEdad = (watchAll.actividad === "realidad_virtual" || watchAll.actividad === "combinada") ? 12 : 8;
                         return (
                           <FormItem>
-                            <FormLabel>Edad {watchAll.actividad === "realidad_virtual" && <span className="text-xs text-muted-foreground">(mín. 12 años para RV)</span>}</FormLabel>
+                            <FormLabel>Edad {(watchAll.actividad === "realidad_virtual" || watchAll.actividad === "combinada") ? <span className="text-xs text-muted-foreground">(mín. 12 años para RV)</span> : <span className="text-xs text-muted-foreground">(mín. 8 años para Láser Tag)</span>}</FormLabel>
                             <FormControl><Input type="number" min={minEdad} max={17} placeholder={String(minEdad)} {...field} onChange={(e) => field.onChange(Number(e.target.value))} /></FormControl>
                             <FormMessage />
                           </FormItem>
