@@ -249,10 +249,10 @@ const ReservaForm = () => {
         </div>
         <h3 className="font-display text-2xl font-bold">¡Reserva Registrada!</h3>
         <p className="text-muted-foreground max-w-md mx-auto">
-          Se ha abierto WhatsApp para que confirmes tu reserva y te indiquemos cómo realizar el anticipo de <span className="text-primary font-bold">{config.anticipo}€</span>.
+          Te hemos enviado un email de confirmación con los detalles de tu reserva. Nos pondremos en contacto contigo para confirmar y gestionar el anticipo de <span className="text-primary font-bold">{config.anticipo}€</span>.
         </p>
         <p className="text-sm text-muted-foreground">
-          Si no se abrió automáticamente, haz clic en el botón de WhatsApp abajo a la derecha.
+          Si no recibes el email, revisa tu carpeta de spam.
         </p>
       </motion.div>
     );
