@@ -75,7 +75,7 @@ function buildSchema(config: ConfigValues) {
     minDate,
     schema: z.object({
       tipo_reserva: z.enum(["cumpleanos", "grupos", "despedida"]),
-      actividad: z.enum(["laser_tag", "realidad_virtual"]),
+      actividad: z.enum(["laser_tag", "realidad_virtual", "combinada"]),
       nombre_completo: z.string().trim().min(2, "Nombre requerido").max(200),
       telefono: z.string().trim().min(9, "Teléfono inválido").max(15),
       email: z.string().trim().email("Email inválido"),
