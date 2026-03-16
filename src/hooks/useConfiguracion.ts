@@ -18,6 +18,7 @@ export type ConfigValues = {
 const DEFAULTS: ConfigValues = {
   precio_90min: 15,
   precio_150min: 22,
+  precio_270min: 40,
   recargo_finde_festivo: 2,
   min_participantes: 6,
   max_participantes: 20,
