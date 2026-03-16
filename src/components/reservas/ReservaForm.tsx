@@ -90,7 +90,7 @@ function buildSchema(config: ConfigValues) {
         (d) => d >= minDate, `La reserva debe hacerse con al menos ${config.antelacion_horas}h de antelación`
       ),
       hora: z.string().min(1, "Selecciona una hora"),
-      duracion: z.enum(["90", "150"]),
+      duracion: z.enum(["90", "150", "270"]),
       num_participantes: z.number()
         .min(config.min_participantes, `Mínimo ${config.min_participantes} participantes`),
       nombre_menor: z.string().optional(),
