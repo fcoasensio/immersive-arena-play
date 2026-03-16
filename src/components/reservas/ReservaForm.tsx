@@ -99,11 +99,12 @@ function buildSchema(config: ConfigValues) {
       return true;
     }, { message: "Datos del menor requeridos para cumpleaños", path: ["nombre_menor"] })
     .refine((data) => {
-      if (data.tipo_reserva === "cumpleanos" && data.actividad === "realidad_virtual" && data.edad_menor) {
-        return data.edad_menor >= 12;
+      if (data.tipo_reserva === "cumpleanos" && data.edad_menor) {
+        if (data.actividad === "realidad_virtual") return data.edad_menor >= 12;
+        if (data.actividad === "laser_tag") return data.edad_menor >= 8;
       }
       return true;
-    }, { message: "Para cumpleaños de Realidad Virtual el cumpleañero debe tener al menos 12 años", path: ["edad_menor"] }),
+    }, { message: "Edad mínima: 8 años para Láser Tag, 12 años para Realidad Virtual", path: ["edad_menor"] }),
   };
 }
 
