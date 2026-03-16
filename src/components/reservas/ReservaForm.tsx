@@ -591,6 +591,22 @@ const ReservaForm = () => {
           )}
         </div>
       </form>
+
+      <Dialog open={menuOpen} onOpenChange={setMenuOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="font-display">🎂 Menú Cumpleaños</DialogTitle>
+          </DialogHeader>
+          <ul className="space-y-3 py-4">
+            {["Agua", "Refresco individual", "Bolsa de snack", "Perrito o pizza individual", "Chocolatina"].map((item) => (
+              <li key={item} className="flex items-center gap-3 text-sm text-foreground">
+                <span className="w-2 h-2 rounded-full bg-primary shrink-0" />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </DialogContent>
+      </Dialog>
     </Form>
   );
 };
