@@ -322,7 +322,7 @@ const ReservaForm = () => {
 
                 <div>
                   <h3 className="font-display text-lg font-bold mb-3">¿Qué actividad?</h3>
-                  <div className="grid grid-cols-3 gap-3">
+                  <div className="grid grid-cols-2 gap-3">
                     {actividadOptions.map((opt) => {
                       const selected = watchAll.actividad === opt.value;
                       return (
