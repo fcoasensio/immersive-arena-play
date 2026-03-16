@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import {
-  Crosshair, Glasses, PartyPopper, Users, Wine,
+  Crosshair, Glasses, Gamepad2, PartyPopper, Users, Wine,
   ArrowLeft, ArrowRight, Loader2, CheckCircle2, CreditCard,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -32,6 +32,7 @@ const tipoOptions = [
 const actividadOptions = [
   { value: "laser_tag", label: "Láser Tag", icon: Crosshair, desc: "Combates tácticos en 1200m²" },
   { value: "realidad_virtual", label: "Realidad Virtual", icon: Glasses, desc: "Free roam multijugador" },
+  { value: "combinada", label: "Combinada", icon: Gamepad2, desc: "Láser Tag + VR · Pack Premium" },
 ] as const;
 
 function calcularPrecio(
@@ -63,9 +64,9 @@ function getDuracionForTipo(tipo: string): "90" | "150" {
 }
 
 function getMaxParticipantes(actividad: string, config: ConfigValues): number {
-  return actividad === "realidad_virtual"
-    ? config.max_participantes_realidad_virtual
-    : config.max_participantes_laser_tag;
+  if (actividad === "realidad_virtual") return config.max_participantes_realidad_virtual;
+  if (actividad === "combinada") return Math.min(config.max_participantes_laser_tag, config.max_participantes_realidad_virtual);
+  return config.max_participantes_laser_tag;
 }
 
 function buildSchema(config: ConfigValues) {
@@ -74,7 +75,7 @@ function buildSchema(config: ConfigValues) {
     minDate,
     schema: z.object({
       tipo_reserva: z.enum(["cumpleanos", "grupos", "despedida"]),
-      actividad: z.enum(["laser_tag", "realidad_virtual"]),
+      actividad: z.enum(["laser_tag", "realidad_virtual", "combinada"]),
       nombre_completo: z.string().trim().min(2, "Nombre requerido").max(200),
       telefono: z.string().trim().min(9, "Teléfono inválido").max(15),
       email: z.string().trim().email("Email inválido"),
@@ -100,7 +101,7 @@ function buildSchema(config: ConfigValues) {
     }, { message: "Datos del menor requeridos para cumpleaños", path: ["nombre_menor"] })
     .refine((data) => {
       if (data.tipo_reserva === "cumpleanos" && data.edad_menor) {
-        if (data.actividad === "realidad_virtual") return data.edad_menor >= 12;
+        if (data.actividad === "realidad_virtual" || data.actividad === "combinada") return data.edad_menor >= 12;
         if (data.actividad === "laser_tag") return data.edad_menor >= 8;
       }
       return true;
@@ -319,7 +320,7 @@ const ReservaForm = () => {
 
                 <div>
                   <h3 className="font-display text-lg font-bold mb-3">¿Qué actividad?</h3>
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-3 gap-3">
                     {actividadOptions.map((opt) => {
                       const selected = watchAll.actividad === opt.value;
                       return (
@@ -492,10 +493,10 @@ const ReservaForm = () => {
                         <FormItem><FormLabel>Nombre del menor</FormLabel><FormControl><Input placeholder="Pablo" {...field} /></FormControl><FormMessage /></FormItem>
                       )} />
                       <FormField control={form.control} name="edad_menor" render={({ field }) => {
-                        const minEdad = watchAll.actividad === "realidad_virtual" ? 12 : 4;
+                        const minEdad = (watchAll.actividad === "realidad_virtual" || watchAll.actividad === "combinada") ? 12 : 8;
                         return (
                           <FormItem>
-                            <FormLabel>Edad {watchAll.actividad === "realidad_virtual" && <span className="text-xs text-muted-foreground">(mín. 12 años para RV)</span>}</FormLabel>
+                            <FormLabel>Edad {(watchAll.actividad === "realidad_virtual" || watchAll.actividad === "combinada") ? <span className="text-xs text-muted-foreground">(mín. 12 años para RV)</span> : <span className="text-xs text-muted-foreground">(mín. 8 años para Láser Tag)</span>}</FormLabel>
                             <FormControl><Input type="number" min={minEdad} max={17} placeholder={String(minEdad)} {...field} onChange={(e) => field.onChange(Number(e.target.value))} /></FormControl>
                             <FormMessage />
                           </FormItem>
