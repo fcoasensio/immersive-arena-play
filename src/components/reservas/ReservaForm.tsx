@@ -305,7 +305,7 @@ const ReservaForm = () => {
                           type="button"
                           onClick={() => {
                             form.setValue("tipo_reserva", opt.value);
-                            form.setValue("duracion", getDuracionForTipo(opt.value));
+                            form.setValue("duracion", getDuracion(opt.value, form.getValues("actividad")));
                           }}
                           className={`p-4 rounded-xl border-2 transition-all text-center ${
                             selected
