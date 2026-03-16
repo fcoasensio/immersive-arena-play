@@ -192,8 +192,6 @@ const ReservaForm = () => {
         nombre_menor: data.nombre_menor || null,
         edad_menor: data.edad_menor || null,
         tematica_invitacion: data.tematica_invitacion || null,
-        precio_base: precio.base,
-        precio_final: precio.final,
         anticipo: config.anticipo,
         notas: data.notas || null,
       } as any);
