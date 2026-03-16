@@ -25,8 +25,8 @@ import { useConfiguracion, type ConfigValues } from "@/hooks/useConfiguracion";
 
 const tipoOptions = [
   { value: "cumpleanos", label: "Cumpleaños", icon: PartyPopper, desc: "El cumple más épico", hasMenu: true },
-  { value: "grupos", label: "Grupos / Amigos", icon: Users, desc: "Acción con tu grupo" },
-  { value: "despedida", label: "Despedida", icon: Wine, desc: "Despedida inolvidable" },
+  { value: "grupos", label: "Grupos / Amigos", icon: Users, desc: "Acción con tu grupo", hasMenu: false },
+  { value: "despedida", label: "Despedida", icon: Wine, desc: "Despedida inolvidable", hasMenu: false },
 ] as const;
 
 const actividadOptions = [
