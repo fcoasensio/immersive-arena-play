@@ -32,7 +32,7 @@ const tipoOptions = [
 const actividadOptions = [
   { value: "laser_tag", label: "Láser Tag", icon: Crosshair, desc: "Combates tácticos en 1200m²" },
   { value: "realidad_virtual", label: "Realidad Virtual", icon: Glasses, desc: "Free roam multijugador" },
-  { value: "combinada", label: "Combinada", icon: Gamepad2, desc: "Láser Tag + VR · Pack Premium" },
+  { value: "combinada", label: "Combinada", icon: Gamepad2, desc: "Láser Tag + VR\n(mas de 12 años)" },
 ] as const;
 
 function calcularPrecio(
@@ -346,7 +346,7 @@ const ReservaForm = () => {
                         >
                           <opt.icon size={32} className={`mx-auto mb-2 ${selected ? "text-primary" : "text-muted-foreground"}`} />
                           <div className={`font-display text-base font-bold ${selected ? "text-primary" : "text-foreground"}`}>{opt.label}</div>
-                          <div className="text-xs text-muted-foreground mt-1">{opt.desc}</div>
+                          <div className="text-xs text-muted-foreground mt-1 whitespace-pre-line">{opt.desc}</div>
                         </button>
                       );
                     })}
