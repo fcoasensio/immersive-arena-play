@@ -193,31 +193,34 @@ const ReservaForm = () => {
       } as any);
 
       if (error) throw error;
-      setSubmitted(true);
-      toast.success("¡Reserva registrada! Te redirigimos a WhatsApp para confirmar.");
 
+      // Send email notifications via Resend edge function
       const tipoLabel = tipoOptions.find(t => t.value === data.tipo_reserva)?.label || data.tipo_reserva;
       const actLabel = actividadOptions.find(a => a.value === data.actividad)?.label || data.actividad;
-      const fechaStr = format(data.fecha, "dd/MM/yyyy");
-      const waMessage = [
-        `¡Hola! Acabo de realizar una reserva en la web:`,
-        ``,
-        `📋 *Tipo:* ${tipoLabel}`,
-        `🎯 *Actividad:* ${actLabel}`,
-        `📅 *Fecha:* ${fechaStr} a las ${data.hora}`,
-        `👥 *Participantes:* ${data.num_participantes}`,
-        `💰 *Precio total:* ${precio.final.toFixed(2)}€`,
-        `💳 *Anticipo:* ${config.anticipo}€`,
-        `👤 *Nombre:* ${data.nombre_completo}`,
-        data.nombre_menor ? `🎂 *Cumpleañero/a:* ${data.nombre_menor}` : '',
-        ``,
-        `¿Me indicáis cómo realizar el anticipo?`,
-      ].filter(Boolean).join('\n');
 
-      const waPhone = "34606323053";
-      setTimeout(() => {
-        window.open(`https://wa.me/${waPhone}?text=${encodeURIComponent(waMessage)}`, '_blank');
-      }, 1500);
+      const { error: emailError } = await supabase.functions.invoke("send-reservation-notification", {
+        body: {
+          customerName: data.nombre_completo,
+          customerEmail: data.email,
+          customerPhone: data.telefono,
+          reservationDate: format(data.fecha, "yyyy-MM-dd"),
+          reservationTime: data.hora,
+          numberOfPeople: data.num_participantes,
+          activityType: data.actividad === "realidad_virtual" ? "vr" : "laser_tag",
+          eventType: data.tipo_reserva === "cumpleanos" ? "birthday" : data.tipo_reserva === "despedida" ? "other" : "casual",
+          extras: [],
+          specialRequests: data.notas || undefined,
+          videoInvitationTheme: data.tematica_invitacion || undefined,
+        },
+      });
+
+      if (emailError) {
+        console.error("Error sending email notification:", emailError);
+        // Don't fail the reservation if email fails
+      }
+
+      setSubmitted(true);
+      toast.success("¡Reserva registrada! Te hemos enviado un email de confirmación.");
     } catch (e: any) {
       console.error(e);
       toast.error("Error al enviar la reserva. Inténtalo de nuevo.");
