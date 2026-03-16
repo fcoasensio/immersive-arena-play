@@ -403,14 +403,18 @@ const ReservaForm = () => {
                   <div className="space-y-2">
                     <FormLabel>Duración</FormLabel>
                     <div className="h-10 px-3 flex items-center rounded-md border border-border bg-muted text-sm text-foreground">
-                      {watchAll.duracion === "150"
-                        ? `150 min — ${config.precio_150min}€/pers`
-                        : `90 min — ${config.precio_90min}€/pers`}
+                      {watchAll.duracion === "270"
+                        ? `270 min — ${config.precio_270min}€/pers`
+                        : watchAll.duracion === "150"
+                          ? `150 min — ${config.precio_150min}€/pers`
+                          : `90 min — ${config.precio_90min}€/pers`}
                     </div>
                     <p className="text-[11px] text-muted-foreground">
-                      {watchAll.tipo_reserva === "cumpleanos"
-                        ? "Los cumpleaños incluyen 150 min"
-                        : "Duración estándar de 90 min"}
+                      {watchAll.actividad === "combinada"
+                        ? "Pack Premium: Láser Tag + Realidad Virtual (270 min)"
+                        : watchAll.tipo_reserva === "cumpleanos"
+                          ? "Los cumpleaños incluyen 150 min"
+                          : "Duración estándar de 90 min"}
                     </p>
                   </div>
                 </div>
