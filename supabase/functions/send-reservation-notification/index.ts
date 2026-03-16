@@ -6,6 +6,8 @@ const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 const ADMIN_EMAIL = "reservas@shootandrun.es";
 const CC_EMAIL = "info@shootandrun.es";
+const LOGO_URL = "https://pbfvhwgnpewmljkvckfw.supabase.co/storage/v1/object/public/email-assets/logo-shootandrun.png";
+const MAPS_URL = "https://maps.google.com/?q=C/+Independencia+31,+30820+Alcantarilla,+Murcia";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -74,9 +76,7 @@ const sanitizeHtml = (text: string) =>
 
 function validateInput(data: any): { valid: boolean; error?: string; sanitized?: ReservationNotification } {
   if (!data || typeof data !== 'object') return { valid: false, error: 'Invalid request body' };
-
   const { customerName, customerEmail, customerPhone, reservationDate, reservationTime, numberOfPeople, activityType, eventType, extras, specialRequests, videoInvitationTheme } = data;
-
   if (!customerName || typeof customerName !== 'string' || customerName.length < 2 || customerName.length > 100) return { valid: false, error: 'Invalid customer name' };
   if (!customerEmail || !isValidEmail(customerEmail)) return { valid: false, error: 'Invalid customer email' };
   if (!customerPhone || typeof customerPhone !== 'string' || customerPhone.length < 9 || customerPhone.length > 20) return { valid: false, error: 'Invalid phone' };
@@ -88,15 +88,11 @@ function validateInput(data: any): { valid: boolean; error?: string; sanitized?:
   if (!Array.isArray(extras) || extras.some((e: string) => !VALID_EXTRAS.includes(e))) return { valid: false, error: 'Invalid extras' };
   if (specialRequests && (typeof specialRequests !== 'string' || specialRequests.length > 1000)) return { valid: false, error: 'Invalid special requests' };
   if (videoInvitationTheme && (typeof videoInvitationTheme !== 'string' || videoInvitationTheme.length > 200)) return { valid: false, error: 'Invalid video invitation theme' };
-
   return {
     valid: true,
     sanitized: {
-      customerEmail,
-      customerName: sanitizeHtml(customerName),
-      customerPhone: sanitizeHtml(customerPhone),
-      reservationDate, reservationTime, numberOfPeople,
-      activityType, eventType, extras,
+      customerEmail, customerName: sanitizeHtml(customerName), customerPhone: sanitizeHtml(customerPhone),
+      reservationDate, reservationTime, numberOfPeople, activityType, eventType, extras,
       specialRequests: specialRequests ? sanitizeHtml(specialRequests) : undefined,
       videoInvitationTheme: videoInvitationTheme ? sanitizeHtml(videoInvitationTheme) : undefined,
     },
@@ -115,9 +111,9 @@ const getActivityLabel = (type: string) => {
 const getEventLabel = (type: string) => {
   switch (type) {
     case 'casual': return 'Visita casual';
-    case 'birthday': return 'Cumpleaños';
-    case 'corporate': return 'Centro educativo';
-    case 'team_building': return 'Team Building';
+    case 'birthday': return '🎂 Cumpleaños';
+    case 'corporate': return '🏫 Centro educativo';
+    case 'team_building': return '🤝 Team Building';
     case 'other': return 'Otro';
     default: return type;
   }
@@ -125,14 +121,41 @@ const getEventLabel = (type: string) => {
 
 const getExtrasLabels = (extras: string[]) => {
   const labels: Record<string, string> = {
-    'snacks': 'Snacks y bebidas',
-    'photos': 'Sesión de fotos',
-    'private_session': 'Sesión privada',
-    'diploma': 'Diploma para ganador',
-    'video_invitation': 'Videoinvitación',
+    'snacks': '🍿 Snacks y bebidas',
+    'photos': '📸 Sesión de fotos',
+    'private_session': '🔒 Sesión privada',
+    'diploma': '🏆 Diploma para ganador',
+    'video_invitation': '🎬 Videoinvitación',
   };
   return extras.map(e => labels[e] || e).join(', ') || 'Ninguno';
 };
+
+const emailStyles = `
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0a0a0a; color: #ffffff; padding: 20px; margin: 0; }
+  .container { max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 16px; overflow: hidden; }
+  .logo-bar { background: #0d0d1a; padding: 20px; text-align: center; }
+  .logo-bar img { height: 40px; }
+  .header { background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 50%, #ff3366 100%); padding: 28px 30px; text-align: center; }
+  .header h1 { margin: 0; font-size: 24px; text-transform: uppercase; letter-spacing: 2px; color: #fff; }
+  .content { padding: 30px; }
+  .info-item { background: rgba(255,255,255,0.05); padding: 14px 16px; border-radius: 8px; border-left: 3px solid #00d4ff; margin-bottom: 10px; }
+  .info-label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .info-value { font-size: 15px; font-weight: 600; color: #fff; }
+  .highlight { color: #00d4ff; }
+  .summary { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; margin: 20px 0; }
+  .summary-row { padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .summary-row:last-child { border-bottom: none; }
+  .summary-label { color: #888; font-size: 13px; }
+  .summary-value { color: #00d4ff; font-weight: 600; font-size: 15px; }
+  .next-steps { background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.2); border-radius: 12px; padding: 20px; margin: 20px 0; }
+  .next-steps h3 { margin: 0 0 12px; color: #00d4ff; font-size: 16px; }
+  .next-steps ol { margin: 0; padding-left: 20px; }
+  .next-steps li { margin-bottom: 8px; color: #ccc; font-size: 14px; }
+  .contact-box { background: rgba(255,255,255,0.04); border-radius: 12px; padding: 20px; margin-top: 24px; text-align: center; }
+  .contact-box p { margin: 6px 0; color: #aaa; font-size: 13px; }
+  .contact-box a { color: #00d4ff; text-decoration: none; }
+  .footer { background: #0d0d1a; padding: 16px; text-align: center; font-size: 11px; color: #555; }
+`;
 
 const handler = async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") {
@@ -142,164 +165,122 @@ const handler = async (req: Request): Promise<Response> => {
   try {
     if (!resend) {
       console.error("Missing RESEND_API_KEY secret");
-      return new Response(
-        JSON.stringify({ error: "Servicio de email no configurado" }),
-        { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
-      );
+      return new Response(JSON.stringify({ error: "Servicio de email no configurado" }), { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } });
     }
 
     const clientIp = getClientIp(req);
     if (isRateLimited(ipRequests, clientIp, IP_WINDOW_MS, IP_MAX_REQUESTS)) {
-      return new Response(
-        JSON.stringify({ error: "Demasiadas solicitudes. Inténtalo de nuevo en unos minutos." }),
-        { status: 429, headers: { "Content-Type": "application/json", ...corsHeaders } }
-      );
+      return new Response(JSON.stringify({ error: "Demasiadas solicitudes. Inténtalo de nuevo en unos minutos." }), { status: 429, headers: { "Content-Type": "application/json", ...corsHeaders } });
     }
 
     const rawData = await req.json();
     const validation = validateInput(rawData);
     if (!validation.valid || !validation.sanitized) {
-      return new Response(
-        JSON.stringify({ error: validation.error }),
-        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
-      );
+      return new Response(JSON.stringify({ error: validation.error }), { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } });
     }
 
     const data = validation.sanitized;
 
     if (isRateLimited(emailRequests, data.customerEmail.toLowerCase(), EMAIL_WINDOW_MS, EMAIL_MAX_REQUESTS)) {
-      return new Response(
-        JSON.stringify({ error: "Ya has enviado una solicitud recientemente. Inténtalo más tarde." }),
-        { status: 429, headers: { "Content-Type": "application/json", ...corsHeaders } }
-      );
+      return new Response(JSON.stringify({ error: "Ya has enviado una solicitud recientemente. Inténtalo más tarde." }), { status: 429, headers: { "Content-Type": "application/json", ...corsHeaders } });
     }
 
     const formattedDate = new Date(data.reservationDate).toLocaleDateString('es-ES', {
       weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
     });
 
-    // Send notification to admin
+    // --- Admin Email ---
     const adminEmailResult = await resend.emails.send({
       from: "shootandrun Reservas <reservas@web.shootandrun.es>",
       to: [ADMIN_EMAIL],
       cc: [CC_EMAIL],
       subject: `🎯 Nueva Reserva - ${data.customerName} - ${formattedDate}`,
-      html: `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <style>
-            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0a0a0a; color: #ffffff; padding: 20px; }
-            .container { max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 16px; overflow: hidden; }
-            .header { background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 50%, #ff3366 100%); padding: 30px; text-align: center; }
-            .header h1 { margin: 0; font-size: 28px; text-transform: uppercase; letter-spacing: 2px; }
-            .content { padding: 30px; }
-            .info-item { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; border-left: 3px solid #00d4ff; margin-bottom: 12px; }
-            .info-label { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
-            .info-value { font-size: 16px; font-weight: 600; color: #fff; }
-            .highlight { color: #00d4ff; }
-          </style>
-        </head>
-        <body>
-          <div class="container">
-            <div class="header">
-              <h1>🎯 Nueva Reserva</h1>
-            </div>
-            <div class="content">
-              <div class="info-item"><div class="info-label">Cliente</div><div class="info-value">${data.customerName}</div></div>
-              <div class="info-item"><div class="info-label">Email</div><div class="info-value"><a href="mailto:${data.customerEmail}" style="color: #00d4ff;">${data.customerEmail}</a></div></div>
-              <div class="info-item"><div class="info-label">Teléfono</div><div class="info-value"><a href="tel:${data.customerPhone}" style="color: #00d4ff;">${data.customerPhone}</a></div></div>
-              <div class="info-item"><div class="info-label">Fecha</div><div class="info-value highlight">${formattedDate}</div></div>
-              <div class="info-item"><div class="info-label">Hora</div><div class="info-value highlight">${data.reservationTime}</div></div>
-              <div class="info-item"><div class="info-label">Personas</div><div class="info-value">${data.numberOfPeople}</div></div>
-              <div class="info-item"><div class="info-label">Actividad</div><div class="info-value">${getActivityLabel(data.activityType)}</div></div>
-              <div class="info-item"><div class="info-label">Tipo de Evento</div><div class="info-value">${getEventLabel(data.eventType)}</div></div>
-              <div class="info-item"><div class="info-label">Extras</div><div class="info-value">${getExtrasLabels(data.extras)}</div></div>
-              ${data.videoInvitationTheme ? `<div class="info-item"><div class="info-label">Temática Videoinvitación</div><div class="info-value">${data.videoInvitationTheme}</div></div>` : ''}
-              ${data.specialRequests ? `<div class="info-item"><div class="info-label">Peticiones Especiales</div><div class="info-value">${data.specialRequests}</div></div>` : ''}
-            </div>
+      html: `<!DOCTYPE html><html><head><style>${emailStyles}</style></head><body>
+        <div class="container">
+          <div class="logo-bar"><img src="${LOGO_URL}" alt="shootandrun" /></div>
+          <div class="header"><h1>🎯 Nueva Reserva</h1></div>
+          <div class="content">
+            <div class="info-item"><div class="info-label">Cliente</div><div class="info-value">${data.customerName}</div></div>
+            <div class="info-item"><div class="info-label">Email</div><div class="info-value"><a href="mailto:${data.customerEmail}" style="color:#00d4ff">${data.customerEmail}</a></div></div>
+            <div class="info-item"><div class="info-label">Teléfono</div><div class="info-value"><a href="tel:${data.customerPhone}" style="color:#00d4ff">${data.customerPhone}</a></div></div>
+            <div class="info-item"><div class="info-label">Fecha</div><div class="info-value highlight">${formattedDate}</div></div>
+            <div class="info-item"><div class="info-label">Hora</div><div class="info-value highlight">${data.reservationTime}</div></div>
+            <div class="info-item"><div class="info-label">Personas</div><div class="info-value">${data.numberOfPeople}</div></div>
+            <div class="info-item"><div class="info-label">Actividad</div><div class="info-value">${getActivityLabel(data.activityType)}</div></div>
+            <div class="info-item"><div class="info-label">Tipo de Evento</div><div class="info-value">${getEventLabel(data.eventType)}</div></div>
+            <div class="info-item"><div class="info-label">Extras</div><div class="info-value">${getExtrasLabels(data.extras)}</div></div>
+            ${data.videoInvitationTheme ? `<div class="info-item"><div class="info-label">Temática Videoinvitación</div><div class="info-value">${data.videoInvitationTheme}</div></div>` : ''}
+            ${data.specialRequests ? `<div class="info-item"><div class="info-label">Peticiones Especiales</div><div class="info-value">${data.specialRequests}</div></div>` : ''}
           </div>
-        </body>
-        </html>
-      `,
+          <div class="footer">shootandrun · C/ Independencia 31, Alcantarilla (Murcia)</div>
+        </div>
+      </body></html>`,
     });
 
     if (adminEmailResult.error) {
       console.error("Resend admin email error:", adminEmailResult.error);
-      return new Response(
-        JSON.stringify({ error: "No se pudo enviar el correo interno de reserva" }),
-        { status: 502, headers: { "Content-Type": "application/json", ...corsHeaders } }
-      );
+      return new Response(JSON.stringify({ error: "No se pudo enviar el correo interno de reserva" }), { status: 502, headers: { "Content-Type": "application/json", ...corsHeaders } });
     }
 
-    // Send confirmation to customer
+    // --- Customer Email ---
     const customerEmailResult = await resend.emails.send({
       from: "shootandrun <reservas@web.shootandrun.es>",
       to: [data.customerEmail],
-      subject: `✅ Confirmación de Reserva - shootandrun`,
-      html: `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <style>
-            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0a0a0a; color: #ffffff; padding: 20px; }
-            .container { max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 16px; overflow: hidden; }
-            .header { background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 50%, #ff3366 100%); padding: 30px; text-align: center; }
-            .header h1 { margin: 0; font-size: 24px; }
-            .content { padding: 30px; }
-            .summary { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; margin: 20px 0; }
-            .summary-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
-            .summary-item:last-child { border-bottom: none; }
-            .summary-label { color: #888; }
-            .summary-value { color: #00d4ff; font-weight: 600; }
-          </style>
-        </head>
-        <body>
-          <div class="container">
-            <div class="header">
-              <h1>🎮 ¡Reserva Confirmada!</h1>
+      subject: `✅ Tu reserva en shootandrun - ${formattedDate}`,
+      html: `<!DOCTYPE html><html><head><style>${emailStyles}</style></head><body>
+        <div class="container">
+          <div class="logo-bar"><img src="${LOGO_URL}" alt="shootandrun" /></div>
+          <div class="header"><h1>🎮 ¡Reserva Recibida!</h1></div>
+          <div class="content">
+            <p style="font-size:18px;margin-top:0">¡Hola ${data.customerName}! 👋</p>
+            <p style="color:#ccc">Hemos recibido tu solicitud de reserva. Aquí tienes el resumen:</p>
+
+            <div class="summary">
+              <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse">
+                <tr class="summary-row"><td class="summary-label" style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08)">📅 Fecha</td><td class="summary-value" style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);text-align:right">${formattedDate}</td></tr>
+                <tr class="summary-row"><td class="summary-label" style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08)">🕐 Hora</td><td class="summary-value" style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);text-align:right">${data.reservationTime}</td></tr>
+                <tr class="summary-row"><td class="summary-label" style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08)">👥 Personas</td><td class="summary-value" style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);text-align:right">${data.numberOfPeople}</td></tr>
+                <tr class="summary-row"><td class="summary-label" style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08)">🎮 Actividad</td><td class="summary-value" style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);text-align:right">${getActivityLabel(data.activityType)}</td></tr>
+                <tr class="summary-row"><td class="summary-label" style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08)">🎉 Evento</td><td class="summary-value" style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);text-align:right">${getEventLabel(data.eventType)}</td></tr>
+                ${data.extras.length > 0 ? `<tr class="summary-row"><td class="summary-label" style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08)">✨ Extras</td><td class="summary-value" style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);text-align:right;font-size:13px">${getExtrasLabels(data.extras)}</td></tr>` : ''}
+                ${data.videoInvitationTheme ? `<tr class="summary-row"><td class="summary-label" style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08)">🎬 Temática</td><td class="summary-value" style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);text-align:right">${data.videoInvitationTheme}</td></tr>` : ''}
+                ${data.specialRequests ? `<tr class="summary-row"><td class="summary-label" style="padding:10px 0">💬 Notas</td><td class="summary-value" style="padding:10px 0;text-align:right;font-size:13px">${data.specialRequests}</td></tr>` : ''}
+              </table>
             </div>
-            <div class="content">
-              <p style="font-size: 18px;">¡Hola ${data.customerName}!</p>
-              <p>Hemos recibido tu reserva. Aquí están los detalles:</p>
-              <div class="summary">
-                <div class="summary-item"><span class="summary-label">Fecha</span><span class="summary-value">${formattedDate}</span></div>
-                <div class="summary-item"><span class="summary-label">Hora</span><span class="summary-value">${data.reservationTime}</span></div>
-                <div class="summary-item"><span class="summary-label">Personas</span><span class="summary-value">${data.numberOfPeople}</span></div>
-                <div class="summary-item"><span class="summary-label">Actividad</span><span class="summary-value">${getActivityLabel(data.activityType)}</span></div>
-              </div>
-              <p>Nos pondremos en contacto contigo pronto para confirmar todos los detalles.</p>
-              <p>¡Prepárate para la acción! 🎯</p>
+
+            <div class="next-steps">
+              <h3>📋 Próximos pasos</h3>
+              <ol>
+                <li>Nuestro equipo revisará tu reserva y te contactará para <strong>confirmarla</strong>.</li>
+                <li>Para asegurar tu plaza, gestionaremos un <strong>anticipo de 50€</strong>.</li>
+                <li>Una vez confirmada, recibirás todos los detalles para el día del evento.</li>
+              </ol>
+            </div>
+
+            <div class="contact-box">
+              <p style="font-size:15px;color:#fff;font-weight:600;margin-bottom:10px">📍 ¿Dónde estamos?</p>
+              <p><a href="${MAPS_URL}" style="color:#00d4ff">C/ Independencia 31, Alcantarilla (Murcia)</a></p>
+              <p style="margin-top:14px">📞 <a href="tel:+34606323053">+34 606 323 053</a></p>
+              <p>✉️ <a href="mailto:hola@shootandrun.es">hola@shootandrun.es</a></p>
+              <p>🌐 <a href="https://shootandrunweb.lovable.app">shootandrun.es</a></p>
             </div>
           </div>
-        </body>
-        </html>
-      `,
+          <div class="footer">© ${new Date().getFullYear()} shootandrun · Alcantarilla, Murcia</div>
+        </div>
+      </body></html>`,
     });
 
     if (customerEmailResult.error) {
       console.error("Resend customer email error:", customerEmailResult.error);
-      return new Response(
-        JSON.stringify({ error: "No se pudo enviar la confirmación al cliente" }),
-        { status: 502, headers: { "Content-Type": "application/json", ...corsHeaders } }
-      );
+      return new Response(JSON.stringify({ error: "No se pudo enviar la confirmación al cliente" }), { status: 502, headers: { "Content-Type": "application/json", ...corsHeaders } });
     }
 
-    console.log("Emails sent successfully", {
-      adminEmailId: adminEmailResult.data?.id,
-      customerEmailId: customerEmailResult.data?.id,
-    });
+    console.log("Emails sent successfully", { adminEmailId: adminEmailResult.data?.id, customerEmailId: customerEmailResult.data?.id });
 
-    return new Response(
-      JSON.stringify({ success: true }),
-      { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } }
-    );
+    return new Response(JSON.stringify({ success: true }), { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } });
   } catch (error: any) {
     console.error("Error in send-reservation-notification function:", error);
-    return new Response(
-      JSON.stringify({ error: "Failed to process notification. Please try again." }),
-      { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
-    );
+    return new Response(JSON.stringify({ error: "Failed to process notification. Please try again." }), { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } });
   }
 };
 
