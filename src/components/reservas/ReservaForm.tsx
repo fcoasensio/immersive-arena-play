@@ -498,7 +498,7 @@ const ReservaForm = () => {
                         <FormItem><FormLabel>Nombre del menor</FormLabel><FormControl><Input placeholder="Pablo" {...field} /></FormControl><FormMessage /></FormItem>
                       )} />
                       <FormField control={form.control} name="edad_menor" render={({ field }) => {
-                        const minEdad = (watchAll.actividad === "realidad_virtual" || watchAll.actividad === "combinada") ? 12 : 8;
+                        const minEdad = watchAll.actividad === "realidad_virtual" ? 12 : 8;
                         return (
                           <FormItem>
                             <FormLabel>Edad {(watchAll.actividad === "realidad_virtual" || watchAll.actividad === "combinada") ? <span className="text-xs text-muted-foreground">(mín. 12 años para RV)</span> : <span className="text-xs text-muted-foreground">(mín. 8 años para Láser Tag)</span>}</FormLabel>
