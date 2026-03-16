@@ -32,7 +32,6 @@ const tipoOptions = [
 const actividadOptions = [
   { value: "laser_tag", label: "Láser Tag", icon: Crosshair, desc: "Combates tácticos en 1200m²" },
   { value: "realidad_virtual", label: "Realidad Virtual", icon: Glasses, desc: "Free roam multijugador" },
-  { value: "combinada", label: "Combinada", icon: Gamepad2, desc: "Láser Tag + VR\n(mas de 12 años)" },
 ] as const;
 
 function calcularPrecio(
