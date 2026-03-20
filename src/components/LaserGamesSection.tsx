@@ -31,7 +31,7 @@ const games: LaserGame[] = [
     emoji: '💀',
     icon: Skull,
     description: 'Batalla total entre dos equipos. Cada eliminación suma puntos para tu equipo. El equipo con más eliminaciones al final del tiempo gana. ¡Acción sin parar de principio a fin!',
-    players: '4-24',
+    players: '4-16',
     duration: '15 min',
   },
   {
