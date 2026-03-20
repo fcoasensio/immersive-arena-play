@@ -58,7 +58,7 @@ const games: LaserGame[] = [
     emoji: '☢️',
     icon: Biohazard,
     description: 'Abre las cajas de seguridad y extrae las probetas radiactivas para llevarlas a tu base. Por el camino te irán restando vida. Si tu equipo consigue poner a salvo las tres probetas, ¡ganáis! Pero cuidado, el otro equipo intentará robarlas y devolverlas a su sitio.',
-    players: '4-24',
+    players: '4-16',
     duration: '15 min',
   },
   {
