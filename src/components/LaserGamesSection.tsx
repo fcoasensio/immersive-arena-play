@@ -22,7 +22,7 @@ const games: LaserGame[] = [
     emoji: '🚩',
     icon: Flag,
     description: 'Dos equipos compiten por capturar la bandera del equipo contrario y llevarla a su base. Protege tu bandera mientras atacas al enemigo. ¡Estrategia y trabajo en equipo son la clave!',
-    players: '4-24',
+    players: '4-16',
     duration: '15 min',
   },
   {
@@ -31,7 +31,7 @@ const games: LaserGame[] = [
     emoji: '💀',
     icon: Skull,
     description: 'Batalla total entre dos equipos. Cada eliminación suma puntos para tu equipo. El equipo con más eliminaciones al final del tiempo gana. ¡Acción sin parar de principio a fin!',
-    players: '4-24',
+    players: '4-16',
     duration: '15 min',
   },
   {
@@ -40,7 +40,7 @@ const games: LaserGame[] = [
     emoji: '🦸',
     icon: Shield,
     description: 'Todos contra todos. Cada jugador tiene un número limitado de vidas. El último jugador en pie se corona como el héroe definitivo. ¡Supervivencia en estado puro!',
-    players: '4-24',
+    players: '4-16',
     duration: '15 min',
   },
   {
@@ -49,7 +49,7 @@ const games: LaserGame[] = [
     emoji: '📍',
     icon: MapPin,
     description: 'Controla puntos estratégicos del mapa para sumar puntos. Los equipos luchan por mantener el dominio de las zonas clave. ¡Coordinación y posicionamiento táctico son esenciales!',
-    players: '6-24',
+    players: '6-16',
     duration: '15 min',
   },
   {
@@ -58,7 +58,7 @@ const games: LaserGame[] = [
     emoji: '☢️',
     icon: Biohazard,
     description: 'Abre las cajas de seguridad y extrae las probetas radiactivas para llevarlas a tu base. Por el camino te irán restando vida. Si tu equipo consigue poner a salvo las tres probetas, ¡ganáis! Pero cuidado, el otro equipo intentará robarlas y devolverlas a su sitio.',
-    players: '4-24',
+    players: '4-16',
     duration: '15 min',
   },
   {
@@ -67,7 +67,7 @@ const games: LaserGame[] = [
     emoji: '🧟',
     icon: Ghost,
     description: 'Dos bandos sobrenaturales se enfrentan. Cuando te infectan, ¡cambias de bando! La partida es una lucha constante por convertir a los rivales. Gana el equipo que más componentes tenga cuando acabe el tiempo.',
-    players: '4-24',
+    players: '4-16',
     duration: '15 min',
   },
 ];
