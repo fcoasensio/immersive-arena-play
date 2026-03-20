@@ -67,7 +67,7 @@ const games: LaserGame[] = [
     emoji: '🧟',
     icon: Ghost,
     description: 'Dos bandos sobrenaturales se enfrentan. Cuando te infectan, ¡cambias de bando! La partida es una lucha constante por convertir a los rivales. Gana el equipo que más componentes tenga cuando acabe el tiempo.',
-    players: '4-24',
+    players: '4-16',
     duration: '15 min',
   },
 ];
