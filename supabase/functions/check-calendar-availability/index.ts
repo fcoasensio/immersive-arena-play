@@ -227,6 +227,25 @@ serve(async (req: Request) => {
         throw new Error(`Calendar create error: ${createData.error?.message || "Unknown"}`);
       }
 
+      // Save the event ID to the most recent matching reservation
+      try {
+        const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+        const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+        const supabase = createClient(supabaseUrl, serviceRoleKey);
+
+        await supabase
+          .from("reservas")
+          .update({ google_calendar_event_id: createData.id })
+          .eq("fecha", date)
+          .eq("hora", time)
+          .eq("email", customerEmail)
+          .is("google_calendar_event_id", null)
+          .order("created_at", { ascending: false })
+          .limit(1);
+      } catch (dbError) {
+        console.error("Error saving calendar event ID to DB:", dbError);
+      }
+
       return new Response(
         JSON.stringify({ success: true, eventId: createData.id }),
         { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
