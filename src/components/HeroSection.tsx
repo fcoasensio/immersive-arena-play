@@ -68,20 +68,26 @@ const HeroSection = () => {
           {/* Feature Tags */}
           <div className="flex flex-wrap justify-center gap-4 mb-10">
             {[
-              { icon: Target, label: 'Laser Tag' },
-              { icon: Gamepad2, label: 'Realidad Virtual' },
+              { icon: Target, label: 'Laser Tag', comingSoon: false },
+              { icon: Gamepad2, label: 'Realidad Virtual', comingSoon: false },
+              { icon: MapPin, label: 'Escape City', comingSoon: true },
             ].map((item, index) => (
               <motion.div
                 key={item.label}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 + index * 0.1, duration: 0.5 }}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-card/50 border border-border backdrop-blur-sm"
+                className="relative flex items-center gap-2 px-4 py-2 rounded-lg bg-card/50 border border-border backdrop-blur-sm"
               >
                 <item.icon className="w-5 h-5 text-neon-purple" />
                 <span className="font-body text-sm uppercase tracking-wider text-foreground">
                   {item.label}
                 </span>
+                {item.comingSoon && (
+                  <span className="absolute -top-3 -right-3 px-2 py-0.5 text-[10px] font-display font-bold uppercase tracking-wider text-background bg-neon-red rounded-full shadow-lg animate-pulse">
+                    Próximamente
+                  </span>
+                )}
               </motion.div>
             ))}
           </div>
