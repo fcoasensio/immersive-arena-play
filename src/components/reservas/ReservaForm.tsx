@@ -125,6 +125,7 @@ const ReservaForm = () => {
   const [submitted, setSubmitted] = useState(false);
   const [festivos, setFestivos] = useState<string[]>([]);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [checkingAvailability, setCheckingAvailability] = useState(false);
 
   useEffect(() => {
     supabase.from("festivos").select("fecha").then(({ data }) => {
@@ -168,8 +169,50 @@ const ReservaForm = () => {
     return true;
   };
 
+  const checkCalendarAvailability = async (): Promise<boolean> => {
+    const fecha = form.getValues("fecha");
+    const hora = form.getValues("hora");
+    const duracion = form.getValues("duracion");
+    if (!fecha || !hora) return true;
+
+    setCheckingAvailability(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("check-calendar-availability", {
+        body: {
+          date: format(fecha, "yyyy-MM-dd"),
+          time: hora,
+          duration: duracion,
+        },
+      });
+
+      if (error) {
+        console.error("Error checking availability:", error);
+        // Don't block reservation if calendar check fails
+        return true;
+      }
+
+      if (data?.available === false) {
+        toast.error(data.message || "Esa franja horaria no está disponible. Elige otra hora.");
+        return false;
+      }
+
+      return true;
+    } catch (e) {
+      console.error("Calendar check error:", e);
+      return true; // Don't block on error
+    } finally {
+      setCheckingAvailability(false);
+    }
+  };
+
   const next = async () => {
-    if (await canAdvance()) setStep((s) => Math.min(s + 1, 3));
+    if (!(await canAdvance())) return;
+    // Check calendar availability when leaving step 1 (date/time)
+    if (step === 1) {
+      const available = await checkCalendarAvailability();
+      if (!available) return;
+    }
+    setStep((s) => Math.min(s + 1, 3));
   };
   const prev = () => setStep((s) => Math.max(s - 1, 0));
 
@@ -582,8 +625,12 @@ const ReservaForm = () => {
             </Button>
           )}
           {step < 3 ? (
-            <Button type="button" onClick={next} className="flex-1 font-display tracking-wide">
-              Siguiente <ArrowRight size={16} />
+            <Button type="button" onClick={next} disabled={checkingAvailability} className="flex-1 font-display tracking-wide">
+              {checkingAvailability ? (
+                <><Loader2 size={16} className="animate-spin mr-1" /> Comprobando...</>
+              ) : (
+                <>Siguiente <ArrowRight size={16} /></>
+              )}
             </Button>
           ) : (
             <Button
