@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
+import { useConfiguracion } from "@/hooks/useConfiguracion";
 import { Button } from "@/components/ui/button";
 import { Clock, Users, Star, PartyPopper, Wine, Zap, Gift, Trophy, Target, LucideIcon } from "lucide-react";
 
