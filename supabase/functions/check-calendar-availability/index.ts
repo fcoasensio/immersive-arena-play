@@ -203,11 +203,11 @@ serve(async (req: Request) => {
         summary,
         description,
         start: {
-          dateTime: startDateTime.toISOString(),
+          dateTime: startDateTimeStr,
           timeZone: "Europe/Madrid",
         },
         end: {
-          dateTime: endDateTime.toISOString(),
+          dateTime: endDateTimeStr,
           timeZone: "Europe/Madrid",
         },
         colorId: reservationType === "cumpleanos" ? "5" : reservationType === "despedida" ? "6" : "9",
