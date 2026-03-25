@@ -50,8 +50,13 @@ const PacksSection = () => {
   const { config, loading: configLoading } = useConfiguracion();
 
   // Compute dynamic price from configuracion based on pack's duracion text
-  const getDynamicPrice = (duracionText: string): string | null => {
-    const mins = parseInt(duracionText);
+  const getDynamicPrice = (pack: PackData): string | null => {
+    // Event-type-specific pricing
+    const nombre = pack.nombre.toLowerCase();
+    if (nombre.includes("cumpleaños")) return `Desde ${config.precio_cumpleanos}€/pers.`;
+    if (nombre.includes("despedida")) return `Desde ${config.precio_despedida}€/pers.`;
+    // Duration-based fallback
+    const mins = parseInt(pack.duracion);
     if (isNaN(mins)) return null;
     let price: number;
     if (mins >= 270) price = config.precio_270min;
@@ -140,7 +145,7 @@ const PacksSection = () => {
                 <h3 className="font-display text-xl font-bold mb-2 text-foreground">{pack.nombre}</h3>
                 <p className="text-muted-foreground text-sm mb-4 flex-grow font-body">{pack.descripcion}</p>
 
-                <div className="text-2xl font-display font-bold text-primary mb-4">{getDynamicPrice(pack.duracion) || pack.precio}</div>
+                <div className="text-2xl font-display font-bold text-primary mb-4">{getDynamicPrice(pack) || pack.precio}</div>
 
                 <div className="flex items-center gap-4 text-sm text-muted-foreground mb-5 font-body">
                   <span className="flex items-center gap-1"><Clock size={14} /> {pack.duracion}</span>

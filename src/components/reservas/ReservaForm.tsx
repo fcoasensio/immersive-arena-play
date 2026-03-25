@@ -40,11 +40,15 @@ function calcularPrecio(
   duracion: string,
   numParticipantes: number,
   config: ConfigValues,
-  festivos: string[]
+  festivos: string[],
+  tipoReserva?: string
 ): { base: number; final: number; recargo: number } {
-  let precioBase = config.precio_90min;
-  if (duracion === "270") precioBase = config.precio_270min;
+  let precioBase: number;
+  if (tipoReserva === "cumpleanos") precioBase = config.precio_cumpleanos;
+  else if (tipoReserva === "despedida") precioBase = config.precio_despedida;
+  else if (duracion === "270") precioBase = config.precio_270min;
   else if (duracion === "150") precioBase = config.precio_150min;
+  else precioBase = config.precio_90min;
 
   let recargo = 0;
 
@@ -181,7 +185,7 @@ const ReservaForm = () => {
   });
 
   const watchAll = form.watch();
-  const precio = calcularPrecio(watchAll.fecha, watchAll.duracion, watchAll.num_participantes || 10, config, festivos);
+  const precio = calcularPrecio(watchAll.fecha, watchAll.duracion, watchAll.num_participantes || 10, config, festivos, watchAll.tipo_reserva);
 
   const canAdvance = async () => {
     if (step === 0) return true;
@@ -272,7 +276,7 @@ const ReservaForm = () => {
       const tipoLabel = tipoOptions.find(t => t.value === data.tipo_reserva)?.label || data.tipo_reserva;
       const actLabel = actividadOptions.find(a => a.value === data.actividad)?.label || data.actividad;
 
-      const precio = calcularPrecio(data.fecha, data.duracion, data.num_participantes, config, festivos);
+      const precio = calcularPrecio(data.fecha, data.duracion, data.num_participantes, config, festivos, data.tipo_reserva);
       const { error: emailError } = await supabase.functions.invoke("send-reservation-notification", {
         body: {
           customerName: data.nombre_completo,
