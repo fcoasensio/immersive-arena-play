@@ -123,6 +123,7 @@ export type Database = {
           email: string
           estado: Database["public"]["Enums"]["estado_reserva"]
           fecha: string
+          google_calendar_event_id: string | null
           hora: string
           id: string
           nombre_completo: string
@@ -147,6 +148,7 @@ export type Database = {
           email: string
           estado?: Database["public"]["Enums"]["estado_reserva"]
           fecha: string
+          google_calendar_event_id?: string | null
           hora: string
           id?: string
           nombre_completo: string
@@ -171,6 +173,7 @@ export type Database = {
           email?: string
           estado?: Database["public"]["Enums"]["estado_reserva"]
           fecha?: string
+          google_calendar_event_id?: string | null
           hora?: string
           id?: string
           nombre_completo?: string
