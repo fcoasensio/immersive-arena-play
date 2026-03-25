@@ -171,9 +171,13 @@ serve(async (req: Request) => {
         );
       }
 
-      const startDateTime = new Date(`${date}T${time}:00`);
       const durationMinutes = parseInt(duration) || 90;
-      const endDateTime = new Date(startDateTime.getTime() + durationMinutes * 60 * 1000);
+      const endHours = parseInt(time.split(":")[0]);
+      const endMins = parseInt(time.split(":")[1]) + durationMinutes;
+      const endH = endHours + Math.floor(endMins / 60);
+      const endM = endMins % 60;
+      const startDateTimeStr = `${date}T${time}:00`;
+      const endDateTimeStr = `${date}T${String(endH).padStart(2, "0")}:${String(endM).padStart(2, "0")}:00`;
 
       const actLabel = ACTIVITY_LABELS[activityType] || activityType;
       const typeLabel = TYPE_LABELS[reservationType] || reservationType;
