@@ -77,14 +77,34 @@ const AdminReservas = () => {
   useEffect(() => { fetchReservas(); }, []);
 
   const updateEstado = async (id: string, estado: string) => {
+    const reserva = reservas.find((r) => r.id === id);
+
     const { error } = await supabase
       .from("reservas")
       .update({ estado } as any)
       .eq("id", id);
 
     if (error) { toast.error("Error actualizando estado"); return; }
-    toast.success("Estado actualizado");
-    setReservas((prev) => prev.map((r) => r.id === id ? { ...r, estado } : r));
+
+    // If cancelling and there's a calendar event, delete it
+    if (estado === "cancelada" && reserva?.google_calendar_event_id) {
+      const { error: calError } = await supabase.functions.invoke("check-calendar-availability", {
+        body: { action: "delete", eventId: reserva.google_calendar_event_id },
+      });
+
+      if (calError) {
+        console.error("Error deleting calendar event:", calError);
+        toast.warning("Reserva cancelada, pero no se pudo eliminar del calendario");
+      } else {
+        // Clear the event ID in DB
+        await supabase.from("reservas").update({ google_calendar_event_id: null } as any).eq("id", id);
+        toast.success("Estado actualizado y evento eliminado del calendario");
+      }
+    } else {
+      toast.success("Estado actualizado");
+    }
+
+    setReservas((prev) => prev.map((r) => r.id === id ? { ...r, estado, ...(estado === "cancelada" ? { google_calendar_event_id: null } : {}) } : r));
     if (selected?.id === id) setSelected({ ...selected, estado });
   };
 
