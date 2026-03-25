@@ -271,7 +271,27 @@ const ReservaForm = () => {
 
       if (emailError) {
         console.error("Error sending email notification:", emailError);
-        // Don't fail the reservation if email fails
+      }
+
+      // Create Google Calendar event
+      const { error: calError } = await supabase.functions.invoke("check-calendar-availability", {
+        body: {
+          action: "create",
+          date: format(data.fecha, "yyyy-MM-dd"),
+          time: data.hora,
+          duration: data.duracion,
+          customerName: data.nombre_completo,
+          customerPhone: data.telefono,
+          customerEmail: data.email,
+          activityType: data.actividad,
+          reservationType: data.tipo_reserva,
+          numberOfPeople: data.num_participantes,
+          notes: data.notas || undefined,
+        },
+      });
+
+      if (calError) {
+        console.error("Error creating calendar event:", calError);
       }
 
       setSubmitted(true);
