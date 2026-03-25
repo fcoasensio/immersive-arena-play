@@ -47,6 +47,18 @@ const FALLBACK_PACKS: PackData[] = [
 
 const PacksSection = () => {
   const [packs, setPacks] = useState<PackData[]>(FALLBACK_PACKS);
+  const { config, loading: configLoading } = useConfiguracion();
+
+  // Compute dynamic price from configuracion based on pack's duracion text
+  const getDynamicPrice = (duracionText: string): string | null => {
+    const mins = parseInt(duracionText);
+    if (isNaN(mins)) return null;
+    let price: number;
+    if (mins >= 270) price = config.precio_270min;
+    else if (mins >= 150) price = config.precio_150min;
+    else price = config.precio_90min;
+    return `Desde ${price}€/pers.`;
+  };
 
   useEffect(() => {
     const fetchPacks = async () => {
