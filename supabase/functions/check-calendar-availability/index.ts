@@ -114,12 +114,12 @@ serve(async (req: Request) => {
         );
       }
 
-      // Build start/end as Europe/Madrid local times, then convert to UTC for the API query
-      // Parse as if Madrid time: Spain is UTC+1 (winter) or UTC+2 (summer)
-      // Use a fixed offset approach: create Date with explicit offset
-      const startDateTime = new Date(`${date}T${time}:00+01:00`);
       const durationMinutes = parseInt(duration) || 90;
-      const endDateTime = new Date(startDateTime.getTime() + durationMinutes * 60 * 1000);
+      const endMins = parseInt(time.split(":")[1]) + durationMinutes;
+      const endH = parseInt(time.split(":")[0]) + Math.floor(endMins / 60);
+      const endM = endMins % 60;
+      const startStr = `${date}T${time}:00`;
+      const endStr = `${date}T${String(endH).padStart(2, "0")}:${String(endM).padStart(2, "0")}:00`;
 
       const accessToken = await getAccessToken(
         serviceAccount,
@@ -127,8 +127,9 @@ serve(async (req: Request) => {
       );
 
       const params = new URLSearchParams({
-        timeMin: startDateTime.toISOString(),
-        timeMax: endDateTime.toISOString(),
+        timeMin: startStr,
+        timeMax: endStr,
+        timeZone: "Europe/Madrid",
         singleEvents: "true",
         orderBy: "startTime",
       });
