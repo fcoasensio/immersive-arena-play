@@ -481,7 +481,11 @@ const ReservaForm = () => {
                         <Calendar
                           mode="single"
                           selected={field.value}
-                          onSelect={field.onChange}
+                          onSelect={(date) => {
+                            field.onChange(date);
+                            form.setValue("hora", "");
+                            if (date) fetchHoursAvailability(date);
+                          }}
                           disabled={(date) => date < minDate}
                           locale={es}
                           className="rounded-xl border border-border bg-card"
