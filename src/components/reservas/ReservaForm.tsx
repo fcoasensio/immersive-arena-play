@@ -246,7 +246,7 @@ const ReservaForm = () => {
   const onSubmit = async (data: ReservaValues) => {
     setIsSubmitting(true);
     try {
-      const { data: insertedRows, error } = await supabase.from("reservas").insert({
+      const { error } = await supabase.from("reservas").insert({
         tipo_reserva: data.tipo_reserva,
         actividad: data.actividad,
         nombre_completo: data.nombre_completo,
@@ -264,11 +264,9 @@ const ReservaForm = () => {
         tematica_invitacion: data.tematica_invitacion || null,
         anticipo: config.anticipo,
         notas: data.notas || null,
-      } as any).select("id").single();
+      } as any);
 
       if (error) throw error;
-
-      const reservaId = insertedRows?.id;
 
       // Send email notifications via Resend edge function
       const tipoLabel = tipoOptions.find(t => t.value === data.tipo_reserva)?.label || data.tipo_reserva;
@@ -302,8 +300,8 @@ const ReservaForm = () => {
         console.error("Error sending email notification:", emailError);
       }
 
-      // Create Google Calendar event and save event ID
-      const { data: calData, error: calError } = await supabase.functions.invoke("check-calendar-availability", {
+      // Create Google Calendar event (edge function saves event ID to DB)
+      const { error: calError } = await supabase.functions.invoke("check-calendar-availability", {
         body: {
           action: "create",
           date: format(data.fecha, "yyyy-MM-dd"),
@@ -321,8 +319,6 @@ const ReservaForm = () => {
 
       if (calError) {
         console.error("Error creating calendar event:", calError);
-      } else if (calData?.eventId && reservaId) {
-        await supabase.from("reservas").update({ google_calendar_event_id: calData.eventId } as any).eq("id", reservaId);
       }
 
       setSubmitted(true);
