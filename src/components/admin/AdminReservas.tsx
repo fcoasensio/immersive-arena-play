@@ -38,6 +38,7 @@ type Reserva = {
   precio_final: number | null;
   anticipo: number | null;
   notas: string | null;
+  google_calendar_event_id: string | null;
 };
 
 const estadoColors: Record<string, string> = {
