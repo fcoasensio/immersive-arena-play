@@ -246,7 +246,7 @@ const ReservaForm = () => {
   const onSubmit = async (data: ReservaValues) => {
     setIsSubmitting(true);
     try {
-      const { data: insertedRows, error } = await supabase.from("reservas").insert({
+      const { error } = await supabase.from("reservas").insert({
         tipo_reserva: data.tipo_reserva,
         actividad: data.actividad,
         nombre_completo: data.nombre_completo,
@@ -264,11 +264,9 @@ const ReservaForm = () => {
         tematica_invitacion: data.tematica_invitacion || null,
         anticipo: config.anticipo,
         notas: data.notas || null,
-      } as any).select("id").single();
+      } as any);
 
       if (error) throw error;
-
-      const reservaId = insertedRows?.id;
 
       // Send email notifications via Resend edge function
       const tipoLabel = tipoOptions.find(t => t.value === data.tipo_reserva)?.label || data.tipo_reserva;
