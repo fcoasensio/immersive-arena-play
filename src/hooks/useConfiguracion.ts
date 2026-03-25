@@ -5,6 +5,8 @@ export type ConfigValues = {
   precio_90min: number;
   precio_150min: number;
   precio_270min: number;
+  precio_cumpleanos: number;
+  precio_despedida: number;
   recargo_finde_festivo: number;
   min_participantes: number;
   max_participantes: number;
