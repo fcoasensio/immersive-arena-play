@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -126,12 +126,39 @@ const ReservaForm = () => {
   const [festivos, setFestivos] = useState<string[]>([]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [checkingAvailability, setCheckingAvailability] = useState(false);
+  const [busyHours, setBusyHours] = useState<Record<string, boolean>>({});
+  const [loadingHours, setLoadingHours] = useState(false);
 
   useEffect(() => {
     supabase.from("festivos").select("fecha").then(({ data }) => {
       if (data) setFestivos(data.map((d: any) => d.fecha));
     });
   }, []);
+
+  const fetchHoursAvailability = useCallback(async (fecha: Date) => {
+    setLoadingHours(true);
+    setBusyHours({});
+    const dateStr = format(fecha, "yyyy-MM-dd");
+    const duracion = form.getValues("duracion") || "90";
+
+    try {
+      const checks = config.horas_disponibles.map(async (hora) => {
+        const { data } = await supabase.functions.invoke("check-calendar-availability", {
+          body: { date: dateStr, time: hora, duration: duracion },
+        });
+        return { hora, busy: data?.available === false };
+      });
+
+      const results = await Promise.all(checks);
+      const map: Record<string, boolean> = {};
+      results.forEach((r) => { map[r.hora] = r.busy; });
+      setBusyHours(map);
+    } catch (e) {
+      console.error("Error fetching hours availability:", e);
+    } finally {
+      setLoadingHours(false);
+    }
+  }, [config.horas_disponibles]);
 
   const form = useForm<ReservaValues>({
     resolver: zodResolver(schema),
@@ -454,7 +481,11 @@ const ReservaForm = () => {
                         <Calendar
                           mode="single"
                           selected={field.value}
-                          onSelect={field.onChange}
+                          onSelect={(date) => {
+                            field.onChange(date);
+                            form.setValue("hora", "");
+                            if (date) fetchHoursAvailability(date);
+                          }}
                           disabled={(date) => date < minDate}
                           locale={es}
                           className="rounded-xl border border-border bg-card"
@@ -465,23 +496,48 @@ const ReservaForm = () => {
                   )}
                 />
 
-                <div className="grid sm:grid-cols-2 gap-4">
+                <div className="space-y-4">
                   <FormField
                     control={form.control}
                     name="hora"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Hora</FormLabel>
-                        <Select onValueChange={field.onChange} value={field.value}>
-                          <FormControl>
-                            <SelectTrigger><SelectValue placeholder="Selecciona hora" /></SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {config.horas_disponibles.map((h) => (
-                              <SelectItem key={h} value={h}>{h}</SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                        <FormLabel className="font-display text-base font-bold">Hora</FormLabel>
+                        {!watchAll.fecha ? (
+                          <p className="text-sm text-muted-foreground">Selecciona una fecha primero</p>
+                        ) : loadingHours ? (
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground py-3">
+                            <Loader2 size={16} className="animate-spin" />
+                            Comprobando disponibilidad...
+                          </div>
+                        ) : (
+                          <div className="grid grid-cols-4 sm:grid-cols-5 gap-2">
+                            {config.horas_disponibles.map((h) => {
+                              const isBusy = busyHours[h] === true;
+                              const isSelected = field.value === h;
+                              return (
+                                <button
+                                  key={h}
+                                  type="button"
+                                  disabled={isBusy}
+                                  onClick={() => field.onChange(h)}
+                                  className={`relative py-2.5 px-1 rounded-lg border-2 text-sm font-medium transition-all ${
+                                    isBusy
+                                      ? "border-destructive/30 bg-destructive/10 text-destructive/50 cursor-not-allowed line-through"
+                                      : isSelected
+                                        ? "border-primary bg-primary/15 text-primary box-glow-blue"
+                                        : "border-border bg-card text-foreground hover:border-primary/50"
+                                  }`}
+                                >
+                                  {h}
+                                  {isBusy && (
+                                    <span className="absolute -top-1.5 -right-1.5 text-[10px] bg-destructive text-destructive-foreground rounded-full w-4 h-4 flex items-center justify-center">✕</span>
+                                  )}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        )}
                         <FormMessage />
                       </FormItem>
                     )}
