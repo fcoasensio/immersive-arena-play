@@ -202,17 +202,25 @@ const ReservaForm = () => {
       const tipoLabel = tipoOptions.find(t => t.value === data.tipo_reserva)?.label || data.tipo_reserva;
       const actLabel = actividadOptions.find(a => a.value === data.actividad)?.label || data.actividad;
 
+      const precio = calcularPrecio(data.fecha, data.duracion, data.num_participantes, config, festivos);
       const { error: emailError } = await supabase.functions.invoke("send-reservation-notification", {
         body: {
           customerName: data.nombre_completo,
           customerEmail: data.email,
           customerPhone: data.telefono,
+          customerDni: data.dni_cif,
+          customerAddress: data.direccion,
+          customerPostalCode: data.codigo_postal,
           reservationDate: format(data.fecha, "yyyy-MM-dd"),
           reservationTime: data.hora,
           numberOfPeople: data.num_participantes,
-          activityType: data.actividad === "realidad_virtual" ? "vr" : "laser_tag",
-          eventType: data.tipo_reserva === "cumpleanos" ? "birthday" : data.tipo_reserva === "despedida" ? "other" : "casual",
-          extras: [],
+          activityType: data.actividad,
+          reservationType: data.tipo_reserva,
+          duration: data.duracion,
+          priceBase: precio.base,
+          priceFinal: precio.final,
+          childName: data.nombre_menor || undefined,
+          childAge: data.edad_menor || undefined,
           specialRequests: data.notas || undefined,
           videoInvitationTheme: data.tematica_invitacion || undefined,
         },
