@@ -70,7 +70,7 @@ const HeroSection = () => {
             {[
               { icon: Target, label: 'Laser Tag', comingSoon: false },
               { icon: Gamepad2, label: 'Realidad Virtual', comingSoon: false },
-              { icon: MapPin, label: 'Escape City', comingSoon: true },
+              { icon: MapPin, label: 'Escape City IA', comingSoon: true },
             ].map((item, index) => (
               <motion.div
                 key={item.label}
