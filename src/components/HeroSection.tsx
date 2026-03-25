@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Zap, Target, Gamepad2 } from 'lucide-react';
+import { Zap, Target, Gamepad2, MapPin } from 'lucide-react';
 import { Button } from './ui/button';
 import heroBg from '@/assets/hero-bg.jpg';
 
