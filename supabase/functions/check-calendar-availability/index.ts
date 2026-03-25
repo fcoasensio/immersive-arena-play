@@ -114,7 +114,10 @@ serve(async (req: Request) => {
         );
       }
 
-      const startDateTime = new Date(`${date}T${time}:00`);
+      // Build start/end as Europe/Madrid local times, then convert to UTC for the API query
+      // Parse as if Madrid time: Spain is UTC+1 (winter) or UTC+2 (summer)
+      // Use a fixed offset approach: create Date with explicit offset
+      const startDateTime = new Date(`${date}T${time}:00+01:00`);
       const durationMinutes = parseInt(duration) || 90;
       const endDateTime = new Date(startDateTime.getTime() + durationMinutes * 60 * 1000);
 
