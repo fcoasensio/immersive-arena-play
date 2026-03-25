@@ -276,7 +276,7 @@ const ReservaForm = () => {
       const tipoLabel = tipoOptions.find(t => t.value === data.tipo_reserva)?.label || data.tipo_reserva;
       const actLabel = actividadOptions.find(a => a.value === data.actividad)?.label || data.actividad;
 
-      const precio = calcularPrecio(data.fecha, data.duracion, data.num_participantes, config, festivos);
+      const precio = calcularPrecio(data.fecha, data.duracion, data.num_participantes, config, festivos, data.tipo_reserva);
       const { error: emailError } = await supabase.functions.invoke("send-reservation-notification", {
         body: {
           customerName: data.nombre_completo,
