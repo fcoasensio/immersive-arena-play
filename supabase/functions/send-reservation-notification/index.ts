@@ -54,12 +54,19 @@ interface ReservationNotification {
   customerName: string;
   customerEmail: string;
   customerPhone: string;
+  customerDni: string;
+  customerAddress: string;
+  customerPostalCode: string;
   reservationDate: string;
   reservationTime: string;
   numberOfPeople: number;
   activityType: string;
-  eventType: string;
-  extras: string[];
+  reservationType: string;
+  duration: string;
+  priceBase?: number;
+  priceFinal?: number;
+  childName?: string;
+  childAge?: number;
   specialRequests?: string;
   videoInvitationTheme?: string;
 }
@@ -67,32 +74,43 @@ interface ReservationNotification {
 const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 const isValidDate = (date: string) => /^\d{4}-\d{2}-\d{2}$/.test(date);
 const isValidTime = (time: string) => /^\d{2}:\d{2}$/.test(time);
-const VALID_ACTIVITIES = ['laser_tag', 'vr', 'both'];
-const VALID_EVENTS = ['casual', 'birthday', 'corporate', 'team_building', 'other'];
-const VALID_EXTRAS = ['snacks', 'photos', 'private_session', 'diploma', 'video_invitation'];
+const VALID_ACTIVITIES = ['laser_tag', 'realidad_virtual', 'combinada'];
+const VALID_RESERVATION_TYPES = ['cumpleanos', 'grupos', 'despedida'];
+const VALID_DURATIONS = ['90', '150', '270'];
 
 const sanitizeHtml = (text: string) =>
   text.replace(/[<>"'&]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '&': '&amp;' }[c] || c));
 
 function validateInput(data: any): { valid: boolean; error?: string; sanitized?: ReservationNotification } {
   if (!data || typeof data !== 'object') return { valid: false, error: 'Invalid request body' };
-  const { customerName, customerEmail, customerPhone, reservationDate, reservationTime, numberOfPeople, activityType, eventType, extras, specialRequests, videoInvitationTheme } = data;
+  const { customerName, customerEmail, customerPhone, customerDni, customerAddress, customerPostalCode, reservationDate, reservationTime, numberOfPeople, activityType, reservationType, duration, priceBase, priceFinal, childName, childAge, specialRequests, videoInvitationTheme } = data;
   if (!customerName || typeof customerName !== 'string' || customerName.length < 2 || customerName.length > 100) return { valid: false, error: 'Invalid customer name' };
   if (!customerEmail || !isValidEmail(customerEmail)) return { valid: false, error: 'Invalid customer email' };
   if (!customerPhone || typeof customerPhone !== 'string' || customerPhone.length < 9 || customerPhone.length > 20) return { valid: false, error: 'Invalid phone' };
+  if (!customerDni || typeof customerDni !== 'string' || customerDni.length < 5 || customerDni.length > 20) return { valid: false, error: 'Invalid DNI/CIF' };
+  if (!customerAddress || typeof customerAddress !== 'string' || customerAddress.length < 3 || customerAddress.length > 200) return { valid: false, error: 'Invalid address' };
+  if (!customerPostalCode || typeof customerPostalCode !== 'string' || customerPostalCode.length < 4 || customerPostalCode.length > 10) return { valid: false, error: 'Invalid postal code' };
   if (!reservationDate || !isValidDate(reservationDate)) return { valid: false, error: 'Invalid date' };
   if (!reservationTime || !isValidTime(reservationTime)) return { valid: false, error: 'Invalid time' };
   if (typeof numberOfPeople !== 'number' || numberOfPeople < 1 || numberOfPeople > 100) return { valid: false, error: 'Invalid number of people' };
   if (!VALID_ACTIVITIES.includes(activityType)) return { valid: false, error: 'Invalid activity type' };
-  if (!VALID_EVENTS.includes(eventType)) return { valid: false, error: 'Invalid event type' };
-  if (!Array.isArray(extras) || extras.some((e: string) => !VALID_EXTRAS.includes(e))) return { valid: false, error: 'Invalid extras' };
+  if (!VALID_RESERVATION_TYPES.includes(reservationType)) return { valid: false, error: 'Invalid reservation type' };
+  if (!VALID_DURATIONS.includes(duration)) return { valid: false, error: 'Invalid duration' };
+  if (priceBase !== undefined && (typeof priceBase !== 'number' || priceBase < 0)) return { valid: false, error: 'Invalid base price' };
+  if (priceFinal !== undefined && (typeof priceFinal !== 'number' || priceFinal < 0)) return { valid: false, error: 'Invalid final price' };
+  if (childName && (typeof childName !== 'string' || childName.length > 100)) return { valid: false, error: 'Invalid child name' };
+  if (childAge !== undefined && childAge !== null && (typeof childAge !== 'number' || childAge < 1 || childAge > 18)) return { valid: false, error: 'Invalid child age' };
   if (specialRequests && (typeof specialRequests !== 'string' || specialRequests.length > 1000)) return { valid: false, error: 'Invalid special requests' };
   if (videoInvitationTheme && (typeof videoInvitationTheme !== 'string' || videoInvitationTheme.length > 200)) return { valid: false, error: 'Invalid video invitation theme' };
   return {
     valid: true,
     sanitized: {
       customerEmail, customerName: sanitizeHtml(customerName), customerPhone: sanitizeHtml(customerPhone),
-      reservationDate, reservationTime, numberOfPeople, activityType, eventType, extras,
+      customerDni: sanitizeHtml(customerDni), customerAddress: sanitizeHtml(customerAddress), customerPostalCode: sanitizeHtml(customerPostalCode),
+      reservationDate, reservationTime, numberOfPeople, activityType, reservationType, duration,
+      priceBase, priceFinal,
+      childName: childName ? sanitizeHtml(childName) : undefined,
+      childAge: childAge || undefined,
       specialRequests: specialRequests ? sanitizeHtml(specialRequests) : undefined,
       videoInvitationTheme: videoInvitationTheme ? sanitizeHtml(videoInvitationTheme) : undefined,
     },
@@ -101,33 +119,29 @@ function validateInput(data: any): { valid: boolean; error?: string; sanitized?:
 
 const getActivityLabel = (type: string) => {
   switch (type) {
-    case 'laser_tag': return 'Laser Tag';
-    case 'vr': return 'Realidad Virtual';
-    case 'both': return 'Laser Tag + Realidad Virtual';
+    case 'laser_tag': return 'Láser Tag';
+    case 'realidad_virtual': return 'Realidad Virtual';
+    case 'combinada': return 'Láser Tag + Realidad Virtual';
     default: return type;
   }
 };
 
-const getEventLabel = (type: string) => {
+const getReservationTypeLabel = (type: string) => {
   switch (type) {
-    case 'casual': return 'Visita casual';
-    case 'birthday': return '🎂 Cumpleaños';
-    case 'corporate': return '🏫 Centro educativo';
-    case 'team_building': return '🤝 Team Building';
-    case 'other': return 'Otro';
+    case 'cumpleanos': return '🎂 Cumpleaños';
+    case 'grupos': return '👥 Grupos';
+    case 'despedida': return '🎉 Despedida';
     default: return type;
   }
 };
 
-const getExtrasLabels = (extras: string[]) => {
-  const labels: Record<string, string> = {
-    'snacks': '🍿 Snacks y bebidas',
-    'photos': '📸 Sesión de fotos',
-    'private_session': '🔒 Sesión privada',
-    'diploma': '🏆 Diploma para ganador',
-    'video_invitation': '🎬 Videoinvitación',
-  };
-  return extras.map(e => labels[e] || e).join(', ') || 'Ninguno';
+const getDurationLabel = (dur: string) => {
+  switch (dur) {
+    case '90': return '1h 30min';
+    case '150': return '2h 30min';
+    case '270': return '4h 30min';
+    default: return dur + ' min';
+  }
 };
 
 const emailStyles = `
@@ -138,6 +152,7 @@ const emailStyles = `
   .header { background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 50%, #ff3366 100%); padding: 28px 30px; text-align: center; }
   .header h1 { margin: 0; font-size: 24px; text-transform: uppercase; letter-spacing: 2px; color: #fff; }
   .content { padding: 30px; }
+  .section-title { font-size: 14px; color: #00d4ff; text-transform: uppercase; letter-spacing: 1.5px; margin: 20px 0 10px; font-weight: 600; }
   .info-item { background: rgba(255,255,255,0.05); padding: 14px 16px; border-radius: 8px; border-left: 3px solid #00d4ff; margin-bottom: 10px; }
   .info-label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
   .info-value { font-size: 15px; font-weight: 600; color: #fff; }
@@ -151,11 +166,141 @@ const emailStyles = `
   .next-steps h3 { margin: 0 0 12px; color: #00d4ff; font-size: 16px; }
   .next-steps ol { margin: 0; padding-left: 20px; }
   .next-steps li { margin-bottom: 8px; color: #ccc; font-size: 14px; }
+  .price-box { background: rgba(0,212,255,0.12); border: 1px solid rgba(0,212,255,0.3); border-radius: 12px; padding: 16px; margin: 16px 0; text-align: center; }
+  .price-label { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+  .price-value { font-size: 28px; font-weight: 700; color: #00d4ff; margin: 4px 0; }
+  .price-note { font-size: 12px; color: #aaa; }
   .contact-box { background: rgba(255,255,255,0.04); border-radius: 12px; padding: 20px; margin-top: 24px; text-align: center; }
   .contact-box p { margin: 6px 0; color: #aaa; font-size: 13px; }
   .contact-box a { color: #00d4ff; text-decoration: none; }
   .footer { background: #0d0d1a; padding: 16px; text-align: center; font-size: 11px; color: #555; }
 `;
+
+function buildAdminInfoItem(label: string, value: string, isHighlight = false): string {
+  return `<div class="info-item"><div class="info-label">${label}</div><div class="info-value${isHighlight ? ' highlight' : ''}">${value}</div></div>`;
+}
+
+function buildSummaryRow(emoji: string, label: string, value: string): string {
+  return `<tr class="summary-row"><td class="summary-label" style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08)">${emoji} ${label}</td><td class="summary-value" style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);text-align:right">${value}</td></tr>`;
+}
+
+function buildAdminEmail(data: ReservationNotification, formattedDate: string): string {
+  let childSection = '';
+  if (data.childName) {
+    childSection = `
+      <div class="section-title">👦 Datos del menor</div>
+      ${buildAdminInfoItem('Nombre del menor', data.childName)}
+      ${data.childAge ? buildAdminInfoItem('Edad', data.childAge + ' años') : ''}
+    `;
+  }
+
+  let priceSection = '';
+  if (data.priceFinal !== undefined) {
+    priceSection = `
+      <div class="section-title">💰 Precio</div>
+      ${data.priceBase !== undefined ? buildAdminInfoItem('Precio base', data.priceBase.toFixed(2) + ' €') : ''}
+      ${buildAdminInfoItem('Precio final', data.priceFinal.toFixed(2) + ' €', true)}
+    `;
+  }
+
+  return `<!DOCTYPE html><html><head><style>${emailStyles}</style></head><body>
+    <div class="container">
+      <div class="logo-bar"><img src="${LOGO_URL}" alt="shootandrun" /></div>
+      <div class="header"><h1>🎯 Nueva Reserva</h1></div>
+      <div class="content">
+        <div class="section-title">📋 Datos de la reserva</div>
+        ${buildAdminInfoItem('Tipo de reserva', getReservationTypeLabel(data.reservationType))}
+        ${buildAdminInfoItem('Actividad', getActivityLabel(data.activityType))}
+        ${buildAdminInfoItem('Fecha', formattedDate, true)}
+        ${buildAdminInfoItem('Hora', data.reservationTime, true)}
+        ${buildAdminInfoItem('Duración', getDurationLabel(data.duration))}
+        ${buildAdminInfoItem('Personas', String(data.numberOfPeople))}
+
+        ${childSection}
+
+        <div class="section-title">👤 Datos del cliente</div>
+        ${buildAdminInfoItem('Nombre', data.customerName)}
+        ${buildAdminInfoItem('Email', `<a href="mailto:${data.customerEmail}" style="color:#00d4ff">${data.customerEmail}</a>`)}
+        ${buildAdminInfoItem('Teléfono', `<a href="tel:${data.customerPhone}" style="color:#00d4ff">${data.customerPhone}</a>`)}
+        ${buildAdminInfoItem('DNI/CIF', data.customerDni)}
+        ${buildAdminInfoItem('Dirección', data.customerAddress)}
+        ${buildAdminInfoItem('Código Postal', data.customerPostalCode)}
+
+        ${priceSection}
+
+        ${data.videoInvitationTheme ? `<div class="section-title">🎬 Videoinvitación</div>${buildAdminInfoItem('Temática', data.videoInvitationTheme)}` : ''}
+        ${data.specialRequests ? `<div class="section-title">💬 Notas</div>${buildAdminInfoItem('Peticiones especiales', data.specialRequests)}` : ''}
+      </div>
+      <div class="footer">shootandrun · C/ Independencia 31, Alcantarilla (Murcia)</div>
+    </div>
+  </body></html>`;
+}
+
+function buildCustomerEmail(data: ReservationNotification, formattedDate: string): string {
+  let childRows = '';
+  if (data.childName) {
+    childRows += buildSummaryRow('👦', 'Cumpleañero/a', data.childName);
+    if (data.childAge) childRows += buildSummaryRow('🎂', 'Edad', data.childAge + ' años');
+  }
+
+  let priceBlock = '';
+  if (data.priceFinal !== undefined) {
+    const priceNote = data.priceBase !== undefined && data.priceBase !== data.priceFinal
+      ? `<div class="price-note">Incluye recargo fin de semana/festivo</div>` : '';
+    priceBlock = `
+      <div class="price-box">
+        <div class="price-label">Precio total</div>
+        <div class="price-value">${data.priceFinal.toFixed(2)} €</div>
+        ${priceNote}
+      </div>
+    `;
+  }
+
+  return `<!DOCTYPE html><html><head><style>${emailStyles}</style></head><body>
+    <div class="container">
+      <div class="logo-bar"><img src="${LOGO_URL}" alt="shootandrun" /></div>
+      <div class="header"><h1>🎮 ¡Reserva Recibida!</h1></div>
+      <div class="content">
+        <p style="font-size:18px;margin-top:0">¡Hola ${data.customerName}! 👋</p>
+        <p style="color:#ccc">Hemos recibido tu solicitud de reserva. Aquí tienes el resumen:</p>
+
+        <div class="summary">
+          <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse">
+            ${buildSummaryRow('🎉', 'Tipo', getReservationTypeLabel(data.reservationType))}
+            ${buildSummaryRow('🎮', 'Actividad', getActivityLabel(data.activityType))}
+            ${buildSummaryRow('📅', 'Fecha', formattedDate)}
+            ${buildSummaryRow('🕐', 'Hora', data.reservationTime)}
+            ${buildSummaryRow('⏱️', 'Duración', getDurationLabel(data.duration))}
+            ${buildSummaryRow('👥', 'Personas', String(data.numberOfPeople))}
+            ${childRows}
+            ${data.videoInvitationTheme ? buildSummaryRow('🎬', 'Temática', data.videoInvitationTheme) : ''}
+            ${data.specialRequests ? buildSummaryRow('💬', 'Notas', data.specialRequests) : ''}
+          </table>
+        </div>
+
+        ${priceBlock}
+
+        <div class="next-steps">
+          <h3>📋 Próximos pasos</h3>
+          <ol>
+            <li>Nuestro equipo revisará tu reserva y te contactará para <strong>confirmarla</strong>.</li>
+            <li>Para asegurar tu plaza, gestionaremos un <strong>anticipo de 50€</strong>.</li>
+            <li>Una vez confirmada, recibirás todos los detalles para el día del evento.</li>
+          </ol>
+        </div>
+
+        <div class="contact-box">
+          <p style="font-size:15px;color:#fff;font-weight:600;margin-bottom:10px">📍 ¿Dónde estamos?</p>
+          <p><a href="${MAPS_URL}" style="color:#00d4ff">C/ Independencia 31, Alcantarilla (Murcia)</a></p>
+          <p style="margin-top:14px">📞 <a href="tel:+34606323053">+34 606 323 053</a></p>
+          <p>✉️ <a href="mailto:hola@shootandrun.es">hola@shootandrun.es</a></p>
+          <p>🌐 <a href="https://shootandrunweb.lovable.app">shootandrun.es</a></p>
+        </div>
+      </div>
+      <div class="footer">© ${new Date().getFullYear()} shootandrun · Alcantarilla, Murcia</div>
+    </div>
+  </body></html>`;
+}
 
 const handler = async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") {
@@ -194,27 +339,8 @@ const handler = async (req: Request): Promise<Response> => {
       from: "shootandrun Reservas <reservas@web.shootandrun.es>",
       to: [ADMIN_EMAIL],
       cc: [CC_EMAIL],
-      subject: `🎯 Nueva Reserva - ${data.customerName} - ${formattedDate}`,
-      html: `<!DOCTYPE html><html><head><style>${emailStyles}</style></head><body>
-        <div class="container">
-          <div class="logo-bar"><img src="${LOGO_URL}" alt="shootandrun" /></div>
-          <div class="header"><h1>🎯 Nueva Reserva</h1></div>
-          <div class="content">
-            <div class="info-item"><div class="info-label">Cliente</div><div class="info-value">${data.customerName}</div></div>
-            <div class="info-item"><div class="info-label">Email</div><div class="info-value"><a href="mailto:${data.customerEmail}" style="color:#00d4ff">${data.customerEmail}</a></div></div>
-            <div class="info-item"><div class="info-label">Teléfono</div><div class="info-value"><a href="tel:${data.customerPhone}" style="color:#00d4ff">${data.customerPhone}</a></div></div>
-            <div class="info-item"><div class="info-label">Fecha</div><div class="info-value highlight">${formattedDate}</div></div>
-            <div class="info-item"><div class="info-label">Hora</div><div class="info-value highlight">${data.reservationTime}</div></div>
-            <div class="info-item"><div class="info-label">Personas</div><div class="info-value">${data.numberOfPeople}</div></div>
-            <div class="info-item"><div class="info-label">Actividad</div><div class="info-value">${getActivityLabel(data.activityType)}</div></div>
-            <div class="info-item"><div class="info-label">Tipo de Evento</div><div class="info-value">${getEventLabel(data.eventType)}</div></div>
-            <div class="info-item"><div class="info-label">Extras</div><div class="info-value">${getExtrasLabels(data.extras)}</div></div>
-            ${data.videoInvitationTheme ? `<div class="info-item"><div class="info-label">Temática Videoinvitación</div><div class="info-value">${data.videoInvitationTheme}</div></div>` : ''}
-            ${data.specialRequests ? `<div class="info-item"><div class="info-label">Peticiones Especiales</div><div class="info-value">${data.specialRequests}</div></div>` : ''}
-          </div>
-          <div class="footer">shootandrun · C/ Independencia 31, Alcantarilla (Murcia)</div>
-        </div>
-      </body></html>`,
+      subject: `🎯 Nueva Reserva - ${data.customerName} - ${formattedDate} - ${getReservationTypeLabel(data.reservationType)}`,
+      html: buildAdminEmail(data, formattedDate),
     });
 
     if (adminEmailResult.error) {
@@ -227,47 +353,7 @@ const handler = async (req: Request): Promise<Response> => {
       from: "shootandrun <reservas@web.shootandrun.es>",
       to: [data.customerEmail],
       subject: `✅ Tu reserva en shootandrun - ${formattedDate}`,
-      html: `<!DOCTYPE html><html><head><style>${emailStyles}</style></head><body>
-        <div class="container">
-          <div class="logo-bar"><img src="${LOGO_URL}" alt="shootandrun" /></div>
-          <div class="header"><h1>🎮 ¡Reserva Recibida!</h1></div>
-          <div class="content">
-            <p style="font-size:18px;margin-top:0">¡Hola ${data.customerName}! 👋</p>
-            <p style="color:#ccc">Hemos recibido tu solicitud de reserva. Aquí tienes el resumen:</p>
-
-            <div class="summary">
-              <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse">
-                <tr class="summary-row"><td class="summary-label" style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08)">📅 Fecha</td><td class="summary-value" style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);text-align:right">${formattedDate}</td></tr>
-                <tr class="summary-row"><td class="summary-label" style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08)">🕐 Hora</td><td class="summary-value" style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);text-align:right">${data.reservationTime}</td></tr>
-                <tr class="summary-row"><td class="summary-label" style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08)">👥 Personas</td><td class="summary-value" style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);text-align:right">${data.numberOfPeople}</td></tr>
-                <tr class="summary-row"><td class="summary-label" style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08)">🎮 Actividad</td><td class="summary-value" style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);text-align:right">${getActivityLabel(data.activityType)}</td></tr>
-                <tr class="summary-row"><td class="summary-label" style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08)">🎉 Evento</td><td class="summary-value" style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);text-align:right">${getEventLabel(data.eventType)}</td></tr>
-                ${data.extras.length > 0 ? `<tr class="summary-row"><td class="summary-label" style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08)">✨ Extras</td><td class="summary-value" style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);text-align:right;font-size:13px">${getExtrasLabels(data.extras)}</td></tr>` : ''}
-                ${data.videoInvitationTheme ? `<tr class="summary-row"><td class="summary-label" style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08)">🎬 Temática</td><td class="summary-value" style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);text-align:right">${data.videoInvitationTheme}</td></tr>` : ''}
-                ${data.specialRequests ? `<tr class="summary-row"><td class="summary-label" style="padding:10px 0">💬 Notas</td><td class="summary-value" style="padding:10px 0;text-align:right;font-size:13px">${data.specialRequests}</td></tr>` : ''}
-              </table>
-            </div>
-
-            <div class="next-steps">
-              <h3>📋 Próximos pasos</h3>
-              <ol>
-                <li>Nuestro equipo revisará tu reserva y te contactará para <strong>confirmarla</strong>.</li>
-                <li>Para asegurar tu plaza, gestionaremos un <strong>anticipo de 50€</strong>.</li>
-                <li>Una vez confirmada, recibirás todos los detalles para el día del evento.</li>
-              </ol>
-            </div>
-
-            <div class="contact-box">
-              <p style="font-size:15px;color:#fff;font-weight:600;margin-bottom:10px">📍 ¿Dónde estamos?</p>
-              <p><a href="${MAPS_URL}" style="color:#00d4ff">C/ Independencia 31, Alcantarilla (Murcia)</a></p>
-              <p style="margin-top:14px">📞 <a href="tel:+34606323053">+34 606 323 053</a></p>
-              <p>✉️ <a href="mailto:hola@shootandrun.es">hola@shootandrun.es</a></p>
-              <p>🌐 <a href="https://shootandrunweb.lovable.app">shootandrun.es</a></p>
-            </div>
-          </div>
-          <div class="footer">© ${new Date().getFullYear()} shootandrun · Alcantarilla, Murcia</div>
-        </div>
-      </body></html>`,
+      html: buildCustomerEmail(data, formattedDate),
     });
 
     if (customerEmailResult.error) {
