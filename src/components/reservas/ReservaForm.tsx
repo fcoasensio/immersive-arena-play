@@ -625,8 +625,12 @@ const ReservaForm = () => {
             </Button>
           )}
           {step < 3 ? (
-            <Button type="button" onClick={next} className="flex-1 font-display tracking-wide">
-              Siguiente <ArrowRight size={16} />
+            <Button type="button" onClick={next} disabled={checkingAvailability} className="flex-1 font-display tracking-wide">
+              {checkingAvailability ? (
+                <><Loader2 size={16} className="animate-spin mr-1" /> Comprobando...</>
+              ) : (
+                <>Siguiente <ArrowRight size={16} /></>
+              )}
             </Button>
           ) : (
             <Button
