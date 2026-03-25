@@ -232,8 +232,44 @@ serve(async (req: Request) => {
       );
     }
 
+    // ── DELETE EVENT ──
+    if (action === "delete") {
+      const { eventId } = body;
+
+      if (!eventId) {
+        return new Response(
+          JSON.stringify({ error: "Se requiere eventId para eliminar" }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
+      const accessToken = await getAccessToken(
+        serviceAccount,
+        "https://www.googleapis.com/auth/calendar.events"
+      );
+
+      const deleteRes = await fetch(
+        `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events/${encodeURIComponent(eventId)}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      );
+
+      if (!deleteRes.ok && deleteRes.status !== 410) {
+        const errorBody = await deleteRes.text();
+        console.error("Google Calendar delete error:", errorBody);
+        throw new Error(`Calendar delete error: ${errorBody}`);
+      }
+
+      return new Response(
+        JSON.stringify({ success: true }),
+        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     return new Response(
-      JSON.stringify({ error: "Acción no válida. Usa 'check' o 'create'." }),
+      JSON.stringify({ error: "Acción no válida. Usa 'check', 'create' o 'delete'." }),
       { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error: unknown) {
