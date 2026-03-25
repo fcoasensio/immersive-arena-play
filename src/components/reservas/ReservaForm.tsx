@@ -300,8 +300,8 @@ const ReservaForm = () => {
         console.error("Error sending email notification:", emailError);
       }
 
-      // Create Google Calendar event and save event ID
-      const { data: calData, error: calError } = await supabase.functions.invoke("check-calendar-availability", {
+      // Create Google Calendar event (edge function saves event ID to DB)
+      const { error: calError } = await supabase.functions.invoke("check-calendar-availability", {
         body: {
           action: "create",
           date: format(data.fecha, "yyyy-MM-dd"),
@@ -319,8 +319,6 @@ const ReservaForm = () => {
 
       if (calError) {
         console.error("Error creating calendar event:", calError);
-      } else if (calData?.eventId && reservaId) {
-        await supabase.from("reservas").update({ google_calendar_event_id: calData.eventId } as any).eq("id", reservaId);
       }
 
       setSubmitted(true);
