@@ -135,6 +135,31 @@ const ReservaForm = () => {
     });
   }, []);
 
+  const fetchHoursAvailability = useCallback(async (fecha: Date) => {
+    setLoadingHours(true);
+    setBusyHours({});
+    const dateStr = format(fecha, "yyyy-MM-dd");
+    const duracion = form.getValues("duracion") || "90";
+
+    try {
+      const checks = config.horas_disponibles.map(async (hora) => {
+        const { data } = await supabase.functions.invoke("check-calendar-availability", {
+          body: { date: dateStr, time: hora, duration: duracion },
+        });
+        return { hora, busy: data?.available === false };
+      });
+
+      const results = await Promise.all(checks);
+      const map: Record<string, boolean> = {};
+      results.forEach((r) => { map[r.hora] = r.busy; });
+      setBusyHours(map);
+    } catch (e) {
+      console.error("Error fetching hours availability:", e);
+    } finally {
+      setLoadingHours(false);
+    }
+  }, [config.horas_disponibles]);
+
   const form = useForm<ReservaValues>({
     resolver: zodResolver(schema),
     defaultValues: {
