@@ -140,7 +140,7 @@ const PacksSection = () => {
                 <h3 className="font-display text-xl font-bold mb-2 text-foreground">{pack.nombre}</h3>
                 <p className="text-muted-foreground text-sm mb-4 flex-grow font-body">{pack.descripcion}</p>
 
-                <div className="text-2xl font-display font-bold text-primary mb-4">{pack.precio}</div>
+                <div className="text-2xl font-display font-bold text-primary mb-4">{getDynamicPrice(pack.duracion) || pack.precio}</div>
 
                 <div className="flex items-center gap-4 text-sm text-muted-foreground mb-5 font-body">
                   <span className="flex items-center gap-1"><Clock size={14} /> {pack.duracion}</span>
