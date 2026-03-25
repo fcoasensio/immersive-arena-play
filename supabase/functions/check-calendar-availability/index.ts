@@ -115,11 +115,14 @@ serve(async (req: Request) => {
       }
 
       const durationMinutes = parseInt(duration) || 90;
+
+      // Use Date objects with a known offset for the events.list query (requires RFC3339)
+      // Approximate Spain offset: try +02:00 (CEST Mar-Oct), fall back won't break
+      const startISO = new Date(`${date}T${time}:00+02:00`).toISOString();
       const endMins = parseInt(time.split(":")[1]) + durationMinutes;
       const endH = parseInt(time.split(":")[0]) + Math.floor(endMins / 60);
       const endM = endMins % 60;
-      const startStr = `${date}T${time}:00`;
-      const endStr = `${date}T${String(endH).padStart(2, "0")}:${String(endM).padStart(2, "0")}:00`;
+      const endISO = new Date(`${date}T${String(endH).padStart(2, "0")}:${String(endM).padStart(2, "0")}:00+02:00`).toISOString();
 
       const accessToken = await getAccessToken(
         serviceAccount,
@@ -127,9 +130,8 @@ serve(async (req: Request) => {
       );
 
       const params = new URLSearchParams({
-        timeMin: startStr,
-        timeMax: endStr,
-        timeZone: "Europe/Madrid",
+        timeMin: startISO,
+        timeMax: endISO,
         singleEvents: "true",
         orderBy: "startTime",
       });
