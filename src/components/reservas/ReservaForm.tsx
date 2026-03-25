@@ -244,6 +244,7 @@ const ReservaForm = () => {
       if (!available) return;
     }
     setStep((s) => Math.min(s + 1, 3));
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const prev = () => setStep((s) => Math.max(s - 1, 0));
 
