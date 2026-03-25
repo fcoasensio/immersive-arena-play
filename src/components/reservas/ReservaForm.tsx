@@ -40,11 +40,15 @@ function calcularPrecio(
   duracion: string,
   numParticipantes: number,
   config: ConfigValues,
-  festivos: string[]
+  festivos: string[],
+  tipoReserva?: string
 ): { base: number; final: number; recargo: number } {
-  let precioBase = config.precio_90min;
-  if (duracion === "270") precioBase = config.precio_270min;
+  let precioBase: number;
+  if (tipoReserva === "cumpleanos") precioBase = config.precio_cumpleanos;
+  else if (tipoReserva === "despedida") precioBase = config.precio_despedida;
+  else if (duracion === "270") precioBase = config.precio_270min;
   else if (duracion === "150") precioBase = config.precio_150min;
+  else precioBase = config.precio_90min;
 
   let recargo = 0;
 
