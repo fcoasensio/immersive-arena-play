@@ -127,9 +127,8 @@ serve(async (req: Request) => {
       );
 
       const params = new URLSearchParams({
-        timeMin: startStr,
-        timeMax: endStr,
-        timeZone: "Europe/Madrid",
+        timeMin: `${startStr}+02:00`,
+        timeMax: `${endStr}+02:00`,
         singleEvents: "true",
         orderBy: "startTime",
       });
