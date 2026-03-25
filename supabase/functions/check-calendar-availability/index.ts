@@ -7,15 +7,15 @@ const corsHeaders = {
 };
 
 /** Parse the service-account JSON and build a signed JWT for Google APIs. */
-async function getAccessToken(serviceAccount: {
-  client_email: string;
-  private_key: string;
-}): Promise<string> {
+async function getAccessToken(
+  serviceAccount: { client_email: string; private_key: string },
+  scopes: string
+): Promise<string> {
   const now = Math.floor(Date.now() / 1000);
   const header = { alg: "RS256", typ: "JWT" };
   const payload = {
     iss: serviceAccount.client_email,
-    scope: "https://www.googleapis.com/auth/calendar.readonly",
+    scope: scopes,
     aud: "https://oauth2.googleapis.com/token",
     iat: now,
     exp: now + 3600,
@@ -29,7 +29,6 @@ async function getAccessToken(serviceAccount: {
 
   const unsignedToken = `${encode(header)}.${encode(payload)}`;
 
-  // Import the RSA private key
   const pemBody = serviceAccount.private_key
     .replace(/-----BEGIN PRIVATE KEY-----/, "")
     .replace(/-----END PRIVATE KEY-----/, "")
@@ -58,7 +57,6 @@ async function getAccessToken(serviceAccount: {
     .replace(/\//g, "_")
     .replace(/=+$/, "")}`;
 
-  // Exchange JWT for access token
   const tokenRes = await fetch("https://oauth2.googleapis.com/token", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -75,6 +73,18 @@ async function getAccessToken(serviceAccount: {
   return tokenData.access_token;
 }
 
+const ACTIVITY_LABELS: Record<string, string> = {
+  laser_tag: "Láser Tag",
+  realidad_virtual: "Realidad Virtual",
+  combinada: "Láser Tag + VR",
+};
+
+const TYPE_LABELS: Record<string, string> = {
+  cumpleanos: "Cumpleaños",
+  grupos: "Grupos",
+  despedida: "Despedida",
+};
+
 serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -89,59 +99,145 @@ serve(async (req: Request) => {
     }
 
     const serviceAccount = JSON.parse(serviceAccountJson);
-    const { date, time, duration } = await req.json();
+    const body = await req.json();
+    const { action } = body;
 
-    if (!date || !time || !duration) {
+    // ── CHECK AVAILABILITY ──
+    if (!action || action === "check") {
+      const { date, time, duration } = body;
+
+      if (!date || !time || !duration) {
+        return new Response(
+          JSON.stringify({ error: "Se requieren fecha, hora y duración" }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
+      const startDateTime = new Date(`${date}T${time}:00`);
+      const durationMinutes = parseInt(duration) || 90;
+      const endDateTime = new Date(startDateTime.getTime() + durationMinutes * 60 * 1000);
+
+      const accessToken = await getAccessToken(
+        serviceAccount,
+        "https://www.googleapis.com/auth/calendar.readonly"
+      );
+
+      const params = new URLSearchParams({
+        timeMin: startDateTime.toISOString(),
+        timeMax: endDateTime.toISOString(),
+        singleEvents: "true",
+        orderBy: "startTime",
+      });
+
+      const calendarRes = await fetch(
+        `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events?${params}`,
+        { headers: { Authorization: `Bearer ${accessToken}` } }
+      );
+
+      const calendarData = await calendarRes.json();
+      if (!calendarRes.ok) {
+        console.error("Google Calendar API error:", calendarData);
+        throw new Error(`Calendar API error: ${calendarData.error?.message || "Unknown"}`);
+      }
+
+      const events = calendarData.items || [];
+      const available = events.length === 0;
+
       return new Response(
-        JSON.stringify({ error: "Se requieren fecha, hora y duración" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        JSON.stringify({
+          available,
+          conflictCount: events.length,
+          message: available
+            ? "Franja horaria disponible"
+            : `Ya hay ${events.length} reserva(s) en esa franja horaria`,
+        }),
+        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    // Build time range to check
-    const startDateTime = new Date(`${date}T${time}:00`);
-    const durationMinutes = parseInt(duration) || 90;
-    const endDateTime = new Date(startDateTime.getTime() + durationMinutes * 60 * 1000);
+    // ── CREATE EVENT ──
+    if (action === "create") {
+      const {
+        date, time, duration,
+        customerName, activityType, reservationType,
+        numberOfPeople, customerPhone, customerEmail, notes,
+      } = body;
 
-    const accessToken = await getAccessToken(serviceAccount);
+      if (!date || !time || !duration || !customerName) {
+        return new Response(
+          JSON.stringify({ error: "Datos insuficientes para crear el evento" }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
 
-    // Query Google Calendar for events in this time window
-    const params = new URLSearchParams({
-      timeMin: startDateTime.toISOString(),
-      timeMax: endDateTime.toISOString(),
-      singleEvents: "true",
-      orderBy: "startTime",
-    });
+      const startDateTime = new Date(`${date}T${time}:00`);
+      const durationMinutes = parseInt(duration) || 90;
+      const endDateTime = new Date(startDateTime.getTime() + durationMinutes * 60 * 1000);
 
-    const calendarRes = await fetch(
-      `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(
-        calendarId
-      )}/events?${params}`,
-      { headers: { Authorization: `Bearer ${accessToken}` } }
-    );
+      const actLabel = ACTIVITY_LABELS[activityType] || activityType;
+      const typeLabel = TYPE_LABELS[reservationType] || reservationType;
 
-    const calendarData = await calendarRes.json();
+      const summary = `📌 ${typeLabel} – ${actLabel} (${numberOfPeople} pers.)`;
+      const description = [
+        `👤 ${customerName}`,
+        `📞 ${customerPhone || "–"}`,
+        `📧 ${customerEmail || "–"}`,
+        `🎯 ${actLabel}`,
+        `🎉 ${typeLabel}`,
+        `👥 ${numberOfPeople} participantes`,
+        `⏱ ${durationMinutes} min`,
+        notes ? `📝 ${notes}` : "",
+      ].filter(Boolean).join("\n");
 
-    if (!calendarRes.ok) {
-      console.error("Google Calendar API error:", calendarData);
-      throw new Error(`Calendar API error: ${calendarData.error?.message || "Unknown"}`);
+      const accessToken = await getAccessToken(
+        serviceAccount,
+        "https://www.googleapis.com/auth/calendar.events"
+      );
+
+      const event = {
+        summary,
+        description,
+        start: {
+          dateTime: startDateTime.toISOString(),
+          timeZone: "Europe/Madrid",
+        },
+        end: {
+          dateTime: endDateTime.toISOString(),
+          timeZone: "Europe/Madrid",
+        },
+        colorId: reservationType === "cumpleanos" ? "5" : reservationType === "despedida" ? "6" : "9",
+      };
+
+      const createRes = await fetch(
+        `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(event),
+        }
+      );
+
+      const createData = await createRes.json();
+      if (!createRes.ok) {
+        console.error("Google Calendar create error:", createData);
+        throw new Error(`Calendar create error: ${createData.error?.message || "Unknown"}`);
+      }
+
+      return new Response(
+        JSON.stringify({ success: true, eventId: createData.id }),
+        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
     }
 
-    const events = calendarData.items || [];
-    const available = events.length === 0;
-
     return new Response(
-      JSON.stringify({
-        available,
-        conflictCount: events.length,
-        message: available
-          ? "Franja horaria disponible"
-          : `Ya hay ${events.length} reserva(s) en esa franja horaria`,
-      }),
-      { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      JSON.stringify({ error: "Acción no válida. Usa 'check' o 'create'." }),
+      { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error: unknown) {
-    console.error("Error checking calendar:", error);
+    console.error("Error in calendar function:", error);
     const msg = error instanceof Error ? error.message : "Error desconocido";
     return new Response(
       JSON.stringify({ error: msg }),
