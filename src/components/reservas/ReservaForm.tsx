@@ -126,6 +126,8 @@ const ReservaForm = () => {
   const [festivos, setFestivos] = useState<string[]>([]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [checkingAvailability, setCheckingAvailability] = useState(false);
+  const [busyHours, setBusyHours] = useState<Record<string, boolean>>({});
+  const [loadingHours, setLoadingHours] = useState(false);
 
   useEffect(() => {
     supabase.from("festivos").select("fecha").then(({ data }) => {
