@@ -285,7 +285,7 @@ function buildCustomerEmail(data: ReservationNotification, formattedDate: string
           <ol>
             <li>Para confirmar la reserva deberá hacer un <strong>bizum al 606323053 de 50€</strong>.</li>
             <li>Nuestro equipo revisará su reserva y si hubiese alguna duda contactará para solucionarla.</li>
-            <li>Una vez confirmada recibirá un email con los detalles para el día del evento.</li>
+            <li>Una vez confirmada recibirá un email de confirmación. Para cualquier consulta no dude en contactarnos.</li>
           </ol>
         </div>
 
