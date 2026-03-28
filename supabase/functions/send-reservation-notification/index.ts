@@ -283,17 +283,17 @@ function buildCustomerEmail(data: ReservationNotification, formattedDate: string
         <div class="next-steps">
           <h3>📋 Próximos pasos</h3>
           <ol>
-            <li>Nuestro equipo revisará tu reserva y te contactará para <strong>confirmarla</strong>.</li>
-            <li>Para asegurar tu plaza, gestionaremos un <strong>anticipo de 50€</strong>.</li>
-            <li>Una vez confirmada, recibirás todos los detalles para el día del evento.</li>
+            <li>Para confirmar la reserva deberá hacer un <strong>bizum al 606323053 de 50€</strong>.</li>
+            <li>Nuestro equipo revisará su reserva y si hubiese alguna duda contactará para solucionarla.</li>
+            <li>Una vez confirmada recibirá un email con los detalles para el día del evento.</li>
           </ol>
         </div>
 
         <div class="contact-box">
           <p style="font-size:15px;color:#fff;font-weight:600;margin-bottom:10px">📍 ¿Dónde estamos?</p>
-          <p><a href="${MAPS_URL}" style="color:#00d4ff">C/ Independencia 31, Alcantarilla (Murcia)</a></p>
+          <p><a href="${MAPS_URL}" style="color:#00d4ff">Avda. Fernando III El Santo, 24. 30820-Alcantarilla (Murcia)</a></p>
           <p style="margin-top:14px">📞 <a href="tel:+34606323053">+34 606 323 053</a></p>
-          <p>✉️ <a href="mailto:hola@shootandrun.es">hola@shootandrun.es</a></p>
+          <p>✉️ <a href="mailto:reservas@shootandrun.es">reservas@shootandrun.es</a></p>
           <p>🌐 <a href="https://shootandrunweb.lovable.app">shootandrun.es</a></p>
         </div>
       </div>
