@@ -78,6 +78,9 @@ const AdminReservas = () => {
 
   const updateEstado = async (id: string, estado: string) => {
     const reserva = reservas.find((r) => r.id === id);
+    if (!reserva) return;
+
+    const previousEstado = reserva.estado;
 
     const { error } = await supabase
       .from("reservas")
@@ -85,6 +88,26 @@ const AdminReservas = () => {
       .eq("id", id);
 
     if (error) { toast.error("Error actualizando estado"); return; }
+
+    // Send status change notification emails
+    supabase.functions.invoke("send-status-change-notification", {
+      body: {
+        customerName: reserva.nombre_completo,
+        customerEmail: reserva.email,
+        customerPhone: reserva.telefono,
+        reservationDate: reserva.fecha,
+        reservationTime: reserva.hora,
+        numberOfPeople: reserva.num_participantes,
+        activityType: reserva.actividad,
+        reservationType: reserva.tipo_reserva,
+        duration: reserva.duracion,
+        priceFinal: reserva.precio_final,
+        newStatus: estado,
+        previousStatus: previousEstado,
+      },
+    }).then(({ error: emailError }) => {
+      if (emailError) console.error("Error sending status change email:", emailError);
+    });
 
     // If cancelling and there's a calendar event, delete it
     if (estado === "cancelada" && reserva?.google_calendar_event_id) {
@@ -96,7 +119,6 @@ const AdminReservas = () => {
         console.error("Error deleting calendar event:", calError);
         toast.warning("Reserva cancelada, pero no se pudo eliminar del calendario");
       } else {
-        // Clear the event ID in DB
         await supabase.from("reservas").update({ google_calendar_event_id: null } as any).eq("id", id);
         toast.success("Estado actualizado y evento eliminado del calendario");
       }
