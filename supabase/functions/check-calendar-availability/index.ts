@@ -86,6 +86,67 @@ const TYPE_LABELS: Record<string, string> = {
   despedida: "Despedida",
 };
 
+const normalizeTime = (value: string) => value.split(":").slice(0, 2).join(":");
+
+function createServiceRoleClient() {
+  const supabaseUrl = Deno.env.get("SUPABASE_URL");
+  const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+
+  if (!supabaseUrl || !serviceRoleKey) {
+    throw new Error("Supabase service role secrets not configured");
+  }
+
+  return createClient(supabaseUrl, serviceRoleKey);
+}
+
+async function getExistingReservationEventId(reservationId: string) {
+  const supabase = createServiceRoleClient();
+  const { data, error } = await supabase
+    .from("reservas")
+    .select("google_calendar_event_id")
+    .eq("id", reservationId)
+    .maybeSingle();
+
+  if (error) throw error;
+
+  return data?.google_calendar_event_id ?? null;
+}
+
+async function saveCalendarEventId(params: {
+  reservationId?: string;
+  date: string;
+  time: string;
+  customerEmail?: string;
+  eventId: string;
+}) {
+  const supabase = createServiceRoleClient();
+
+  if (params.reservationId) {
+    const { error } = await supabase
+      .from("reservas")
+      .update({ google_calendar_event_id: params.eventId })
+      .eq("id", params.reservationId)
+      .is("google_calendar_event_id", null);
+
+    if (!error) return;
+
+    console.error("Error saving calendar event ID by reservationId:", error);
+  }
+
+  const dbTime = params.time.length === 5 ? `${params.time}:00` : params.time;
+  const { error } = await supabase
+    .from("reservas")
+    .update({ google_calendar_event_id: params.eventId })
+    .eq("fecha", params.date)
+    .eq("hora", dbTime)
+    .eq("email", params.customerEmail)
+    .is("google_calendar_event_id", null)
+    .order("created_at", { ascending: false })
+    .limit(1);
+
+  if (error) throw error;
+}
+
 serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -106,8 +167,9 @@ serve(async (req: Request) => {
     // ── CHECK AVAILABILITY ──
     if (!action || action === "check") {
       const { date, time, duration } = body;
+      const normalizedTime = normalizeTime(time || "");
 
-      if (!date || !time || !duration) {
+      if (!date || !normalizedTime || !duration) {
         return new Response(
           JSON.stringify({ error: "Se requieren fecha, hora y duración" }),
           { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
@@ -118,9 +180,9 @@ serve(async (req: Request) => {
 
       // Use Date objects with a known offset for the events.list query (requires RFC3339)
       // Approximate Spain offset: try +02:00 (CEST Mar-Oct), fall back won't break
-      const startISO = new Date(`${date}T${time}:00+02:00`).toISOString();
-      const endMins = parseInt(time.split(":")[1]) + durationMinutes;
-      const endH = parseInt(time.split(":")[0]) + Math.floor(endMins / 60);
+      const startISO = new Date(`${date}T${normalizedTime}:00+02:00`).toISOString();
+      const endMins = parseInt(normalizedTime.split(":")[1]) + durationMinutes;
+      const endH = parseInt(normalizedTime.split(":")[0]) + Math.floor(endMins / 60);
       const endM = endMins % 60;
       const endISO = new Date(`${date}T${String(endH).padStart(2, "0")}:${String(endM).padStart(2, "0")}:00+02:00`).toISOString();
 
@@ -165,24 +227,36 @@ serve(async (req: Request) => {
     // ── CREATE EVENT ──
     if (action === "create") {
       const {
+        reservationId,
         date, time, duration,
         customerName, activityType, reservationType,
         numberOfPeople, customerPhone, customerEmail, notes,
       } = body;
+      const normalizedTime = normalizeTime(time || "");
 
-      if (!date || !time || !duration || !customerName) {
+      if (!date || !normalizedTime || !duration || !customerName) {
         return new Response(
           JSON.stringify({ error: "Datos insuficientes para crear el evento" }),
           { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
       }
 
+      if (reservationId) {
+        const existingEventId = await getExistingReservationEventId(reservationId);
+        if (existingEventId) {
+          return new Response(
+            JSON.stringify({ success: true, eventId: existingEventId, skipped: true }),
+            { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+          );
+        }
+      }
+
       const durationMinutes = parseInt(duration) || 90;
-      const endHours = parseInt(time.split(":")[0]);
-      const endMins = parseInt(time.split(":")[1]) + durationMinutes;
+      const endHours = parseInt(normalizedTime.split(":")[0]);
+      const endMins = parseInt(normalizedTime.split(":")[1]) + durationMinutes;
       const endH = endHours + Math.floor(endMins / 60);
       const endM = endMins % 60;
-      const startDateTimeStr = `${date}T${time}:00`;
+      const startDateTimeStr = `${date}T${normalizedTime}:00`;
       const endDateTimeStr = `${date}T${String(endH).padStart(2, "0")}:${String(endM).padStart(2, "0")}:00`;
 
       const actLabel = ACTIVITY_LABELS[activityType] || activityType;
@@ -237,21 +311,15 @@ serve(async (req: Request) => {
         throw new Error(`Calendar create error: ${createData.error?.message || "Unknown"}`);
       }
 
-      // Save the event ID to the most recent matching reservation
+      // Save the event ID to the reservation record
       try {
-        const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-        const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-        const supabase = createClient(supabaseUrl, serviceRoleKey);
-
-        await supabase
-          .from("reservas")
-          .update({ google_calendar_event_id: createData.id })
-          .eq("fecha", date)
-          .eq("hora", time)
-          .eq("email", customerEmail)
-          .is("google_calendar_event_id", null)
-          .order("created_at", { ascending: false })
-          .limit(1);
+        await saveCalendarEventId({
+          reservationId,
+          date,
+          time: normalizedTime,
+          customerEmail,
+          eventId: createData.id,
+        });
       } catch (dbError) {
         console.error("Error saving calendar event ID to DB:", dbError);
       }

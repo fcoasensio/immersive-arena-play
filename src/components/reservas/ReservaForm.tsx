@@ -251,25 +251,29 @@ const ReservaForm = () => {
   const onSubmit = async (data: ReservaValues) => {
     setIsSubmitting(true);
     try {
-      const { error } = await supabase.from("reservas").insert({
-        tipo_reserva: data.tipo_reserva,
-        actividad: data.actividad,
-        nombre_completo: data.nombre_completo,
-        telefono: data.telefono,
-        email: data.email,
-        dni_cif: data.dni_cif,
-        direccion: data.direccion,
-        codigo_postal: data.codigo_postal,
-        fecha: format(data.fecha, "yyyy-MM-dd"),
-        hora: data.hora,
-        duracion: data.duracion,
-        num_participantes: data.num_participantes,
-        nombre_menor: data.nombre_menor || null,
-        edad_menor: data.edad_menor || null,
-        tematica_invitacion: data.tematica_invitacion || null,
-        anticipo: config.anticipo,
-        notas: data.notas || null,
-      } as any);
+      const { data: insertedReserva, error } = await supabase
+        .from("reservas")
+        .insert({
+          tipo_reserva: data.tipo_reserva,
+          actividad: data.actividad,
+          nombre_completo: data.nombre_completo,
+          telefono: data.telefono,
+          email: data.email,
+          dni_cif: data.dni_cif,
+          direccion: data.direccion,
+          codigo_postal: data.codigo_postal,
+          fecha: format(data.fecha, "yyyy-MM-dd"),
+          hora: data.hora,
+          duracion: data.duracion,
+          num_participantes: data.num_participantes,
+          nombre_menor: data.nombre_menor || null,
+          edad_menor: data.edad_menor || null,
+          tematica_invitacion: data.tematica_invitacion || null,
+          anticipo: config.anticipo,
+          notas: data.notas || null,
+        } as any)
+        .select("id")
+        .single();
 
       if (error) throw error;
 
@@ -309,6 +313,7 @@ const ReservaForm = () => {
       const { error: calError } = await supabase.functions.invoke("check-calendar-availability", {
         body: {
           action: "create",
+          reservationId: insertedReserva.id,
           date: format(data.fecha, "yyyy-MM-dd"),
           time: data.hora,
           duration: data.duracion,

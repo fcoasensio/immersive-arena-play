@@ -62,6 +62,29 @@ const AdminReservas = () => {
   const [filterEstado, setFilterEstado] = useState<string>("all");
   const [selected, setSelected] = useState<Reserva | null>(null);
 
+  const syncCalendarEvent = async (reserva: Reserva) => {
+    const { data, error } = await supabase.functions.invoke("check-calendar-availability", {
+      body: {
+        action: "create",
+        reservationId: reserva.id,
+        date: reserva.fecha,
+        time: reserva.hora.slice(0, 5),
+        duration: reserva.duracion,
+        customerName: reserva.nombre_completo,
+        customerPhone: reserva.telefono,
+        customerEmail: reserva.email,
+        activityType: reserva.actividad,
+        reservationType: reserva.tipo_reserva,
+        numberOfPeople: reserva.num_participantes,
+        notes: reserva.notas || undefined,
+      },
+    });
+
+    if (error) throw error;
+
+    return (data as { eventId?: string } | null)?.eventId ?? null;
+  };
+
   const fetchReservas = async () => {
     setLoading(true);
     const { data, error } = await supabase
@@ -81,6 +104,7 @@ const AdminReservas = () => {
     if (!reserva) return;
 
     const previousEstado = reserva.estado;
+    let nextCalendarEventId = reserva.google_calendar_event_id;
 
     const { error } = await supabase
       .from("reservas")
@@ -109,6 +133,16 @@ const AdminReservas = () => {
       if (emailError) console.error("Error sending status change email:", emailError);
     });
 
+    if (estado === "confirmada" && !reserva.google_calendar_event_id) {
+      try {
+        nextCalendarEventId = await syncCalendarEvent(reserva);
+        toast.success("Estado actualizado y evento creado en Google Calendar");
+      } catch (calendarError) {
+        console.error("Error creating calendar event on confirmation:", calendarError);
+        toast.warning("Estado actualizado, pero no se pudo sincronizar con Google Calendar");
+      }
+    }
+
     // If cancelling and there's a calendar event, delete it
     if (estado === "cancelada" && reserva?.google_calendar_event_id) {
       const { error: calError } = await supabase.functions.invoke("check-calendar-availability", {
@@ -120,14 +154,15 @@ const AdminReservas = () => {
         toast.warning("Reserva cancelada, pero no se pudo eliminar del calendario");
       } else {
         await supabase.from("reservas").update({ google_calendar_event_id: null } as any).eq("id", id);
+        nextCalendarEventId = null;
         toast.success("Estado actualizado y evento eliminado del calendario");
       }
-    } else {
+    } else if (!(estado === "confirmada" && !reserva.google_calendar_event_id)) {
       toast.success("Estado actualizado");
     }
 
-    setReservas((prev) => prev.map((r) => r.id === id ? { ...r, estado, ...(estado === "cancelada" ? { google_calendar_event_id: null } : {}) } : r));
-    if (selected?.id === id) setSelected({ ...selected, estado });
+    setReservas((prev) => prev.map((r) => r.id === id ? { ...r, estado, google_calendar_event_id: nextCalendarEventId } : r));
+    if (selected?.id === id) setSelected({ ...selected, estado, google_calendar_event_id: nextCalendarEventId });
   };
 
   const filtered = reservas.filter((r) => {
