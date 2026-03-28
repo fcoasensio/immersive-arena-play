@@ -30,7 +30,7 @@ const estadoColors: Record<string, string> = {
 const estadoMessages: Record<string, string> = {
   pendiente_pago: "Su reserva está pendiente de pago. Para confirmarla, realice un bizum de 50€ al número 606323053.",
   pago_recibido: "Hemos recibido su pago. Nuestro equipo revisará su reserva y le confirmaremos a la mayor brevedad.",
-  confirmada: "¡Su reserva ha sido confirmada! Le esperamos el día del evento. Recibirá los detalles para el día del evento.",
+  confirmada: "¡Su reserva ha sido confirmada! Le esperamos el día del evento. Para cualquier consulta no dude en contactarnos.",
   cancelada: "Su reserva ha sido cancelada. Si tiene alguna duda, no dude en contactar con nosotros.",
 };
 
