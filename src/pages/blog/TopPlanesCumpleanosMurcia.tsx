@@ -21,7 +21,7 @@ const TopPlanesCumpleanosMurcia = () => (
       En <Link to="/" className="text-neon-blue hover:underline">Shoot and Run</Link> ofrecemos packs de cumpleaños completos desde 25€ por participante que incluyen varias partidas con monitor dedicado, equipamiento militar de última generación y zona de merienda privada. Los cumpleañeros reciben un detalle especial y el equipo ganador se lleva un diploma.
     </p>
     <p>
-      <strong className="text-foreground">Ideal para:</strong> niños de 8 a 16 años. Grupos de 8 a 16 participantes. Los padres también pueden jugar. niños de 8 a 16 años. Grupos de 8 a 16 participantes. Los padres también pueden jugar.. Grupos de 8 a 16 participantes. Los padres también pueden jugar.
+      <strong className="text-foreground">Ideal para:</strong> niños de 8 a 16 años. Grupos de 8 a 16 participantes. Los padres también pueden jugar.
     </p>
     <p>
       👉 <Link to="/cumpleanos-laser-tag-murcia" className="text-neon-blue hover:underline">Más info sobre cumpleaños de laser tag</Link>
