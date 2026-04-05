@@ -8,7 +8,7 @@ import laserPistols from '@/assets/laser-tag-pistols.jpg';
 const faqs = [
   {
     question: '¿A partir de qué edad se puede celebrar un cumpleaños de laser tag?',
-    answer: 'La edad mínima para participar es de 6 años. Nuestro equipamiento se adapta a diferentes tallas y los monitores están siempre presentes para garantizar la seguridad y la diversión de los más pequeños.',
+    answer: 'La edad mínima para participar es de 8 años. Nuestro equipamiento se adapta a diferentes tallas y los monitores están siempre presentes para garantizar la seguridad y la diversión de los más pequeños.',
   },
   {
     question: '¿Cuánto cuesta un cumpleaños de laser tag?',
