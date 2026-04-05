@@ -49,7 +49,7 @@ const LaserTagVsPaintball = () => (
       <strong className="text-foreground">Laser tag:</strong> <strong className="text-foreground">Laser tag:</strong> Apto desde los 8 años. El equipamiento es ligero, ergonómico y se adapta a diferentes tallas. No requiere forma física especial y cualquier persona puede participar independientemente de su condición.. El equipamiento es ligero, ergonómico y se adapta a diferentes tallas. No requiere forma física especial y cualquier persona puede participar independientemente de su condición.
     </p>
     <p className="p-4 rounded-lg border border-neon-blue/30 bg-neon-blue/5">
-      🏆 <strong className="text-foreground">Ganador: Laser tag.</strong> Accesible desde los 6 años.
+      🏆 <strong className="text-foreground">Ganador: Laser tag.</strong> 🏆 <strong className="text-foreground">Ganador: Laser tag.</strong> Accesible desde los 8 años.
     </p>
 
     <h2 className="font-display text-xl md:text-2xl font-bold text-foreground">
