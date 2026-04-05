@@ -122,8 +122,15 @@ const EventsSection = () => {
                         ))}
                       </ul>
 
-                      <Button variant="outline" size="sm" className="group-hover:border-neon-blue group-hover:text-neon-blue transition-colors duration-300" onClick={scrollToContact}>
-                        Más información
+                      {event.link ? (
+                        <Button variant="outline" size="sm" className="group-hover:border-neon-blue group-hover:text-neon-blue transition-colors duration-300" asChild>
+                          <Link to={event.link}>Más información</Link>
+                        </Button>
+                      ) : (
+                        <Button variant="outline" size="sm" className="group-hover:border-neon-blue group-hover:text-neon-blue transition-colors duration-300" onClick={scrollToContact}>
+                          Más información
+                        </Button>
+                      )}
                       </Button>
                     </div>
                   </div>
