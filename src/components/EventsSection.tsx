@@ -10,6 +10,7 @@ const events = [
     description: 'Fortalece los lazos de tu equipo con actividades que fomentan la comunicación, estrategia y trabajo en equipo.',
     features: ['Grupos de 10-50 personas', 'Dinámicas personalizadas', 'Catering disponible'],
     accent: 'from-neon-blue to-neon-purple',
+    link: '/eventos-empresa-laser-tag',
   },
   {
     icon: Cake,
