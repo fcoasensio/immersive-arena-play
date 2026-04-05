@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { Target, Glasses, Building2, TreePine } from 'lucide-react';
+import { Button } from './ui/button';
 import vrExperience from '@/assets/vr-card.jpg';
 import vrAdventure from '@/assets/vr-adventure.png';
 import laserTagEquipment from '@/assets/laser-tag-card.webp';
@@ -9,6 +11,7 @@ const services = [
     icon: Target,
     title: 'Laser Tag',
     description: 'Equipamiento militar de última generación con tecnología infrarroja de precisión. Partidas épicas con diferentes modos de juego a partir de 8 años.',
+    link: '/laser-tag-murcia',
     color: 'neon-blue',
     glowClass: 'box-glow-blue',
     image: laserTagEquipment,
@@ -21,6 +24,7 @@ const services = [
     icon: Glasses,
     title: 'Realidad Virtual',
     description: 'Juegos de realidad virtual de libre movimiento con tecnología Free Roaming. Party games para toda la familia desde 12 años, shooters tácticos, escape rooms y aventuras de acción para hasta 12 jugadores simultáneos.',
+    link: '/realidad-virtual-murcia',
     color: 'neon-purple',
     glowClass: 'box-glow-purple',
     image: vrExperience,
@@ -127,6 +131,10 @@ const ServicesSection = () => {
                       ))}
                     </div>
                   </div>
+
+                  <Button variant="outline" size="sm" className="mt-4" asChild>
+                    <Link to={service.link}>Saber más</Link>
+                  </Button>
                 </div>
               </div>
             </motion.div>

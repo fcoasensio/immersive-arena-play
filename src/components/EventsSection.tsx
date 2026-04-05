@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { Users, Cake, PartyPopper, Trophy, Landmark, GraduationCap } from 'lucide-react';
 import { Button } from './ui/button';
 
@@ -9,6 +10,7 @@ const events = [
     description: 'Fortalece los lazos de tu equipo con actividades que fomentan la comunicación, estrategia y trabajo en equipo.',
     features: ['Grupos de 10-50 personas', 'Dinámicas personalizadas', 'Catering disponible'],
     accent: 'from-neon-blue to-neon-purple',
+    link: '/eventos-empresa-laser-tag',
   },
   {
     icon: Cake,
@@ -16,6 +18,7 @@ const events = [
     description: 'Celebra tu día especial con una fiesta llena de acción. Packs completos con merienda y tiempo de juego ilimitado.',
     features: ['Desde 8 invitados', 'Sesión privada', 'Diploma'],
     accent: 'from-neon-purple to-neon-red',
+    link: '/cumpleanos-laser-tag-murcia',
   },
   {
     icon: PartyPopper,
@@ -119,9 +122,15 @@ const EventsSection = () => {
                         ))}
                       </ul>
 
-                      <Button variant="outline" size="sm" className="group-hover:border-neon-blue group-hover:text-neon-blue transition-colors duration-300" onClick={scrollToContact}>
-                        Más información
-                      </Button>
+                      {event.link ? (
+                        <Button variant="outline" size="sm" className="group-hover:border-neon-blue group-hover:text-neon-blue transition-colors duration-300" asChild>
+                          <Link to={event.link}>Más información</Link>
+                        </Button>
+                      ) : (
+                        <Button variant="outline" size="sm" className="group-hover:border-neon-blue group-hover:text-neon-blue transition-colors duration-300" onClick={scrollToContact}>
+                          Más información
+                        </Button>
+                      )}
                     </div>
                   </div>
                 </div>
