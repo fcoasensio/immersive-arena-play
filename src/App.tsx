@@ -17,6 +17,10 @@ import EventosEmpresaLaserTag from "./pages/EventosEmpresaLaserTag";
 import RealidadVirtualMurcia from "./pages/RealidadVirtualMurcia";
 import ProtectedAdminRoute from "./components/admin/ProtectedAdminRoute";
 import CookieBanner from "./components/CookieBanner";
+import Blog from "./pages/Blog";
+import TopPlanesCumpleanosMurcia from "./pages/blog/TopPlanesCumpleanosMurcia";
+import LaserTagVsPaintball from "./pages/blog/LaserTagVsPaintball";
+import IdeasEventosEmpresaMurcia from "./pages/blog/IdeasEventosEmpresaMurcia";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +40,10 @@ const App = () => (
             <Route path="/cumpleanos-laser-tag-murcia" element={<CumpleanosLaserTagMurcia />} />
             <Route path="/eventos-empresa-laser-tag" element={<EventosEmpresaLaserTag />} />
             <Route path="/realidad-virtual-murcia" element={<RealidadVirtualMurcia />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/top-5-planes-cumpleanos-murcia" element={<TopPlanesCumpleanosMurcia />} />
+            <Route path="/blog/laser-tag-vs-paintball-cual-elegir" element={<LaserTagVsPaintball />} />
+            <Route path="/blog/ideas-eventos-empresa-murcia" element={<IdeasEventosEmpresaMurcia />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<ProtectedAdminRoute><Admin /></ProtectedAdminRoute>} />
             <Route path="*" element={<NotFound />} />
