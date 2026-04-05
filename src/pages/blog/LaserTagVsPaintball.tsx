@@ -20,7 +20,7 @@ const LaserTagVsPaintball = () => (
       <strong className="text-foreground">Paintball:</strong> Sí, duele. Las bolas de pintura impactan a velocidades de 80-100 m/s y dejan moratones, especialmente en zonas expuestas. Aunque se usa equipamiento de protección, los impactos a corta distancia pueden ser bastante dolorosos. Muchos jugadores primerizos abandonan la partida por el dolor.
     </p>
     <p>
-      <strong className="text-foreground">Laser tag:</strong> No duele en absoluto. El sistema utiliza sensores infrarrojos que detectan los "disparos" mediante luz. No hay impacto físico de ningún tipo. Es <strong className="text-foreground">100% indoloro y seguro</strong>, lo que lo hace apto para niños desde 6 años y para cualquier persona independientemente de su forma física.
+      <strong className="text-foreground">Laser tag:</strong> No duele en absoluto. El sistema utiliza sensores infrarrojos que detectan los "disparos" mediante luz. No hay impacto físico de ningún tipo. Es <strong className="text-foreground">100% indoloro y seguro</strong>, <strong className="text-foreground">Laser tag:</strong> No duele en absoluto. El sistema utiliza sensores infrarrojos que detectan los "disparos" mediante luz. No hay impacto físico de ningún tipo. Es <strong className="text-foreground">100% indoloro y seguro</strong>, lo que lo hace apto para niños desde 8 años y para cualquier persona independientemente de su forma física. y para cualquier persona independientemente de su forma física.
     </p>
     <p className="p-4 rounded-lg border border-neon-blue/30 bg-neon-blue/5">
       🏆 <strong className="text-foreground">Ganador: Laser tag.</strong> Sin dolor, sin moratones, sin miedo.
@@ -46,10 +46,10 @@ const LaserTagVsPaintball = () => (
       <strong className="text-foreground">Paintball:</strong> La edad mínima suele ser de 12-14 años por el factor dolor y el peso del equipamiento. Las bolas de pintura son difíciles de manejar para niños pequeños y el equipo de protección puede resultar incómodo.
     </p>
     <p>
-      <strong className="text-foreground">Laser tag:</strong> Apto desde los 6 años. El equipamiento es ligero, ergonómico y se adapta a diferentes tallas. No requiere forma física especial y cualquier persona puede participar independientemente de su condición.
+      <strong className="text-foreground">Laser tag:</strong> <strong className="text-foreground">Laser tag:</strong> Apto desde los 8 años. El equipamiento es ligero, ergonómico y se adapta a diferentes tallas. No requiere forma física especial y cualquier persona puede participar independientemente de su condición.. El equipamiento es ligero, ergonómico y se adapta a diferentes tallas. No requiere forma física especial y cualquier persona puede participar independientemente de su condición.
     </p>
     <p className="p-4 rounded-lg border border-neon-blue/30 bg-neon-blue/5">
-      🏆 <strong className="text-foreground">Ganador: Laser tag.</strong> Accesible desde los 6 años.
+      🏆 <strong className="text-foreground">Ganador: Laser tag.</strong> 🏆 <strong className="text-foreground">Ganador: Laser tag.</strong> Accesible desde los 8 años.
     </p>
 
     <h2 className="font-display text-xl md:text-2xl font-bold text-foreground">
@@ -118,7 +118,7 @@ const LaserTagVsPaintball = () => (
           </thead>
           <tbody className="divide-y divide-border">
             <tr><td className="py-2">Dolor</td><td className="text-center">❌ No</td><td className="text-center">✅ Sí</td></tr>
-            <tr><td className="py-2">Edad mínima</td><td className="text-center">6 años</td><td className="text-center">12-14 años</td></tr>
+            <tr><td className="py-2">Edad mínima</td><tr><td className="py-2">Edad mínima</td><td className="text-center">8 años</td><td className="text-center">12-14 años</td></tr><td className="text-center">12-14 años</td></tr>
             <tr><td className="py-2">Precio</td><td className="text-center">Desde 15€</td><td className="text-center">20-35€</td></tr>
             <tr><td className="py-2">Manchas</td><td className="text-center">❌ No</td><td className="text-center">✅ Sí</td></tr>
             <tr><td className="py-2">Modos de juego</td><td className="text-center">6+</td><td className="text-center">1-2</td></tr>

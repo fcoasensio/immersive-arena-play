@@ -8,7 +8,7 @@ import laserBlasters from '@/assets/laser-tag-blasters.jpg';
 const faqs = [
   {
     question: '¿Cuál es la edad mínima para jugar al laser tag?',
-    answer: 'La edad mínima para participar en nuestras partidas de laser tag es de 6 años. Los menores de 14 años deben ir acompañados por un adulto responsable. Nuestro equipamiento se adapta a diferentes tallas y edades.',
+    answer: 'La edad mínima para participar en nuestras partidas de laser tag es de 8 años. Los menores de 14 años deben ir acompañados por un adulto responsable. Nuestro equipamiento se adapta a diferentes tallas y edades.',
   },
   {
     question: '¿Cuánto cuesta una partida de laser tag en Murcia?',
@@ -128,7 +128,7 @@ const LaserTagMurcia = () => {
             ¿Para quién es el <span className="text-neon-blue">Laser Tag</span>?
           </h2>
           <p>
-            El laser tag es una actividad versátil que se adapta a todo tipo de grupos y ocasiones. En Shoot and Run recibimos desde familias con niños a partir de 6 años hasta grupos de adultos que buscan una experiencia competitiva e intensa.
+            El laser tag es una actividad versátil que se adapta a todo tipo de grupos y ocasiones. En Shoot and Run recibimos desde familias con niños El laser tag es una actividad versátil que se adapta a todo tipo de grupos y ocasiones. En Shoot and Run recibimos desde familias con niños a partir de 8 años hasta grupos de adultos que buscan una experiencia competitiva e intensa. hasta grupos de adultos que buscan una experiencia competitiva e intensa.
           </p>
           <div className="grid sm:grid-cols-3 gap-4 mt-6">
             {[

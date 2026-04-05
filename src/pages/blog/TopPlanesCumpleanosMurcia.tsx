@@ -15,13 +15,13 @@ const TopPlanesCumpleanosMurcia = () => (
       1. Cumpleaños de <span className="text-neon-blue">Laser Tag</span> 🎯
     </h2>
     <p>
-      Sin duda, la opción estrella para niños a partir de 6 años y adolescentes. El laser tag combina acción, estrategia y trabajo en equipo en partidas de 15 minutos con diferentes modos de juego. A diferencia del paintball, <strong className="text-foreground">no duele, no mancha y es completamente seguro</strong> gracias a la tecnología infrarroja.
+      Sin duda, Sin duda, la opción estrella para niños a partir de 8 años y adolescentes. El laser tag combina acción, estrategia y trabajo en equipo en partidas de 15 minutos con diferentes modos de juego. A diferencia del paintball, <strong className="text-foreground">no duele, no mancha y es completamente seguro</strong> gracias a la tecnología infrarroja. y adolescentes. El laser tag combina acción, estrategia y trabajo en equipo en partidas de 15 minutos con diferentes modos de juego. A diferencia del paintball, <strong className="text-foreground">no duele, no mancha y es completamente seguro</strong> gracias a la tecnología infrarroja.
     </p>
     <p>
       En <Link to="/" className="text-neon-blue hover:underline">Shoot and Run</Link> ofrecemos packs de cumpleaños completos desde 25€ por participante que incluyen varias partidas con monitor dedicado, equipamiento militar de última generación y zona de merienda privada. Los cumpleañeros reciben un detalle especial y el equipo ganador se lleva un diploma.
     </p>
     <p>
-      <strong className="text-foreground">Ideal para:</strong> niños de 6 a 16 años. Grupos de 8 a 16 participantes. Los padres también pueden jugar.
+      <strong className="text-foreground">Ideal para:</strong> niños de 8 a 16 años. Grupos de 8 a 16 participantes. Los padres también pueden jugar.
     </p>
     <p>
       👉 <Link to="/cumpleanos-laser-tag-murcia" className="text-neon-blue hover:underline">Más info sobre cumpleaños de laser tag</Link>
@@ -75,7 +75,7 @@ const TopPlanesCumpleanosMurcia = () => (
     <div className="p-6 rounded-xl border border-neon-blue/30 bg-neon-blue/5">
       <h3 className="font-display text-lg font-bold text-foreground mb-3">Resumen: ¿Cuál elegir?</h3>
       <ul className="space-y-2">
-        <li>🎯 <strong className="text-foreground">Laser Tag:</strong> acción y competición. 6-16 años. Desde 25€/persona.</li>
+        <li>🎯 <strong className="text-foreground">Laser Tag:</strong> acción y competición. 8-16 años. Desde 25€/persona.</li>
         <li>🥽 <strong className="text-foreground">Realidad Virtual:</strong> tecnología e inmersión. 8+ años.</li>
         <li>🌿 <strong className="text-foreground">Naturaleza:</strong> aire libre y aventura. Todas las edades.</li>
         <li>🎭 <strong className="text-foreground">Temáticas:</strong> magia y fantasía. 4-8 años.</li>
