@@ -99,6 +99,13 @@ const Navbar = () => {
                     {link.name}
                   </a>
                 ))}
+                <a
+                  href="/blog"
+                  onClick={(e) => { e.preventDefault(); setIsOpen(false); navigate('/blog'); }}
+                  className="font-body text-lg uppercase tracking-wider text-muted-foreground hover:text-neon-blue transition-colors duration-300 py-2"
+                >
+                  Blog
+                </a>
                 <Button variant="neon" className="mt-2" onClick={() => { setIsOpen(false); navigate('/reservar'); }}>
                   Reservar Ahora
                 </Button>
