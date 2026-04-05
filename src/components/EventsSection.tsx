@@ -131,7 +131,6 @@ const EventsSection = () => {
                           Más información
                         </Button>
                       )}
-                      </Button>
                     </div>
                   </div>
                 </div>
