@@ -15,7 +15,7 @@ const TopPlanesCumpleanosMurcia = () => (
       1. Cumpleaños de <span className="text-neon-blue">Laser Tag</span> 🎯
     </h2>
     <p>
-      Sin duda, la opción estrella para niños a partir de 6 años y adolescentes. El laser tag combina acción, estrategia y trabajo en equipo en partidas de 15 minutos con diferentes modos de juego. A diferencia del paintball, <strong className="text-foreground">no duele, no mancha y es completamente seguro</strong> gracias a la tecnología infrarroja.
+      Sin duda, Sin duda, la opción estrella para niños a partir de 8 años y adolescentes. El laser tag combina acción, estrategia y trabajo en equipo en partidas de 15 minutos con diferentes modos de juego. A diferencia del paintball, <strong className="text-foreground">no duele, no mancha y es completamente seguro</strong> gracias a la tecnología infrarroja. y adolescentes. El laser tag combina acción, estrategia y trabajo en equipo en partidas de 15 minutos con diferentes modos de juego. A diferencia del paintball, <strong className="text-foreground">no duele, no mancha y es completamente seguro</strong> gracias a la tecnología infrarroja.
     </p>
     <p>
       En <Link to="/" className="text-neon-blue hover:underline">Shoot and Run</Link> ofrecemos packs de cumpleaños completos desde 25€ por participante que incluyen varias partidas con monitor dedicado, equipamiento militar de última generación y zona de merienda privada. Los cumpleañeros reciben un detalle especial y el equipo ganador se lleva un diploma.
