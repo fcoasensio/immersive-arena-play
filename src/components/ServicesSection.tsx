@@ -24,6 +24,7 @@ const services = [
     icon: Glasses,
     title: 'Realidad Virtual',
     description: 'Juegos de realidad virtual de libre movimiento con tecnología Free Roaming. Party games para toda la familia desde 12 años, shooters tácticos, escape rooms y aventuras de acción para hasta 12 jugadores simultáneos.',
+    link: '/realidad-virtual-murcia',
     color: 'neon-purple',
     glowClass: 'box-glow-purple',
     image: vrExperience,
