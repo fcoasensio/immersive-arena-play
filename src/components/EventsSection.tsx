@@ -18,6 +18,7 @@ const events = [
     description: 'Celebra tu día especial con una fiesta llena de acción. Packs completos con merienda y tiempo de juego ilimitado.',
     features: ['Desde 8 invitados', 'Sesión privada', 'Diploma'],
     accent: 'from-neon-purple to-neon-red',
+    link: '/cumpleanos-laser-tag-murcia',
   },
   {
     icon: PartyPopper,
