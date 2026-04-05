@@ -1,34 +1,24 @@
 import { Helmet } from 'react-helmet-async';
-import { Building2, Users, Target, Trophy, Handshake, Clock, Star, Zap } from 'lucide-react';
+import { Building2, Users, Target, Trophy, Handshake, Clock, Star, Zap, Settings } from 'lucide-react';
 import SEOLandingLayout from '@/components/seo/SEOLandingLayout';
 import heroBg from '@/assets/hero-bg.jpg';
-import laserEquip from '@/assets/equipamiento-lasertag-real.png';
-import laserSniper from '@/assets/laser-tag-sniper.jpg';
 
 const faqs = [
   {
-    question: '¿Cuántas personas pueden participar en un evento de empresa?',
-    answer: 'Nuestras partidas admiten entre 4 y 16 jugadores simultáneos. Para grupos más grandes organizamos turnos y torneos con clasificaciones, así todos participan y la competición se mantiene durante toda la jornada.',
-  },
-  {
-    question: '¿Cuánto cuesta un evento corporativo de laser tag?',
+    question: '¿Cuánto cuesta un evento de empresa de laser tag?',
     answer: 'El precio varía según el número de participantes y la duración del evento. Contacta con nosotros para recibir un presupuesto personalizado adaptado a las necesidades de tu empresa.',
   },
   {
-    question: '¿Cuánto dura un evento de empresa?',
+    question: '¿A partir de qué edad se puede jugar?',
+    answer: 'La edad mínima es de 8 años, aunque los eventos corporativos suelen ser para adultos. El laser tag no requiere condición física especial, así que todo el equipo puede participar.',
+  },
+  {
+    question: '¿Cuánto dura la experiencia?',
     answer: 'Los eventos corporativos suelen durar entre 90 y 270 minutos dependiendo del formato. Podemos adaptar la duración a las necesidades de tu equipo.',
   },
   {
-    question: '¿Se puede combinar laser tag con otras actividades?',
-    answer: 'Sí, ofrecemos la posibilidad de combinar laser tag con realidad virtual para crear un evento más completo y variado. Consulta nuestros packs combinados.',
-  },
-  {
-    question: '¿Emitís factura para la empresa?',
-    answer: 'Sí, emitimos factura con todos los datos fiscales necesarios para la contabilidad de tu empresa.',
-  },
-  {
-    question: '¿Es seguro para personas que nunca han jugado?',
-    answer: 'Totalmente. El laser tag no implica impacto físico. Nuestros monitores explican las reglas antes de cada partida y acompañan al grupo durante toda la experiencia.',
+    question: '¿Se puede celebrar cumpleaños?',
+    answer: 'Sí, también organizamos cumpleaños y celebraciones. Consulta nuestra página de cumpleaños para más información sobre los packs disponibles.',
   },
 ];
 
@@ -37,79 +27,60 @@ const EventosEmpresaLaserTag = () => {
     <>
       <Helmet>
         <title>Eventos de Empresa Laser Tag Murcia | Team Building | Shoot and Run</title>
-        <meta name="description" content="Team building y eventos corporativos con laser tag en Murcia. Fortalece tu equipo con actividades competitivas y divertidas. Presupuesto personalizado." />
+        <meta name="description" content="Team building y eventos corporativos con laser tag en Murcia. Dinámicas adaptadas, actividades competitivas y experiencias personalizadas. Solicita presupuesto." />
         <link rel="canonical" href="https://shootandrunweb.lovable.app/eventos-empresa-laser-tag" />
       </Helmet>
 
       <SEOLandingLayout
-        title="Eventos de Empresa y Team Building con Laser Tag en Murcia"
-        subtitle="Fortalece los lazos de tu equipo con una experiencia de laser tag corporativa. Competición, estrategia y diversión para cohesionar equipos de trabajo."
+        title="Eventos de empresa en Murcia con Laser Tag: Team Building que funciona"
+        subtitle="Si buscas una actividad de team building en Murcia, el laser tag es una opción dinámica que mejora la comunicación, el liderazgo y el trabajo en equipo."
         heroImage={heroBg}
         faqs={faqs}
       >
-        {/* Intro */}
-        <div>
-          <p>
-            El laser tag es una de las actividades de <strong className="text-foreground">team building</strong> más efectivas y divertidas que existen. En Shoot and Run diseñamos eventos corporativos a medida que combinan competición, estrategia y trabajo en equipo para fortalecer las relaciones entre compañeros de trabajo.
-          </p>
-          <p className="mt-4">
-            Ya sea para una jornada de team building, una celebración de fin de año, una despedida de soltero/a entre compañeros o simplemente un día diferente fuera de la oficina, nuestras instalaciones en Alcantarilla (Murcia) son el escenario perfecto para crear <strong className="text-foreground">recuerdos que refuercen la cohesión de tu equipo</strong>.
-          </p>
-        </div>
-
-        {/* Benefits */}
+        {/* Bloque venta */}
         <div>
           <h2 className="font-display text-xl md:text-2xl font-bold text-foreground mb-6">
-            Beneficios del Laser Tag como <span className="text-neon-blue">Team Building</span>
+            ¿Qué ofrecemos para <span className="text-neon-blue">tu empresa</span>?
           </h2>
-          <div className="grid sm:grid-cols-2 gap-4">
+          <div className="grid sm:grid-cols-3 gap-4">
             {[
-              { icon: Handshake, title: 'Mejora la comunicación', desc: 'Los jugadores deben coordinarse y comunicarse constantemente para ganar. Se generan dinámicas de equipo naturales.' },
-              { icon: Target, title: 'Fomenta el liderazgo', desc: 'En cada partida surgen líderes naturales que organizan la estrategia del equipo. Una forma de descubrir talentos.' },
-              { icon: Trophy, title: 'Competición sana', desc: 'La rivalidad entre equipos genera motivación y compromiso. Las estadísticas en tiempo real alimentan la competitividad.' },
-              { icon: Zap, title: 'Rompe la rutina', desc: 'Sacar al equipo de su zona de confort en un entorno lúdico reduce el estrés y mejora las relaciones interpersonales.' },
-              { icon: Users, title: 'Integra a todos', desc: 'El laser tag no requiere forma física especial. Todos pueden participar independientemente de su condición.' },
-              { icon: Star, title: 'Resultados medibles', desc: 'Al final de cada partida, las estadísticas muestran el rendimiento de cada jugador y equipo.' },
+              { icon: Handshake, title: 'Dinámicas adaptadas a empresas', desc: 'Diseñamos cada sesión según los objetivos de tu equipo: integración de nuevos miembros, cohesión, liderazgo o simplemente diversión.' },
+              { icon: Trophy, title: 'Actividades competitivas y cooperativas', desc: 'Torneos entre departamentos, partidas colaborativas o formatos mixtos. Tú eliges el enfoque que mejor se adapte.' },
+              { icon: Settings, title: 'Experiencias personalizadas', desc: 'Adaptamos duración, formato, número de participantes y combinación de actividades (laser tag + realidad virtual) a tu medida.' },
             ].map((item, i) => (
-              <div key={i} className="flex gap-4 p-4 rounded-lg border border-border bg-card/50">
-                <item.icon className="w-6 h-6 text-neon-blue shrink-0 mt-0.5" />
-                <div>
-                  <h3 className="font-display text-sm font-bold text-foreground mb-1">{item.title}</h3>
-                  <p className="text-sm">{item.desc}</p>
-                </div>
+              <div key={i} className="p-5 rounded-xl border border-border bg-card/50 text-center">
+                <item.icon className="w-8 h-8 text-neon-blue mx-auto mb-3" />
+                <h3 className="font-display text-sm font-bold text-foreground mb-2">{item.title}</h3>
+                <p className="text-sm">{item.desc}</p>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Image */}
-        <div className="grid md:grid-cols-2 gap-8 items-center">
-          <img src={laserEquip} alt="Equipamiento laser tag eventos empresa Murcia" className="rounded-xl border border-border w-full" loading="lazy" />
-          <div>
-            <h2 className="font-display text-xl md:text-2xl font-bold text-foreground mb-4">
-              Formatos de <span className="text-neon-blue">Eventos Corporativos</span>
-            </h2>
-            <p>
-              Adaptamos cada evento a las necesidades de tu empresa. Estos son algunos de los formatos más populares:
-            </p>
-            <ul className="space-y-3 mt-4">
-              <li className="flex items-start gap-2">
-                <Trophy className="w-4 h-4 text-neon-blue shrink-0 mt-1" />
-                <span><strong className="text-foreground">Torneo por departamentos:</strong> Enfrenta a los diferentes departamentos en un campeonato con eliminatorias, semifinales y final.</span>
+        {/* Beneficios */}
+        <div>
+          <h2 className="font-display text-xl md:text-2xl font-bold text-foreground mb-4">
+            Beneficios del Laser Tag como <span className="text-neon-blue">Team Building</span>
+          </h2>
+          <p>
+            El laser tag no es solo diversión: es una herramienta real de <strong className="text-foreground">desarrollo de equipos</strong>. Las dinámicas de juego generan situaciones donde los participantes deben comunicarse, tomar decisiones rápidas y confiar en sus compañeros.
+          </p>
+          <ul className="mt-4 space-y-3">
+            {[
+              { icon: Target, text: 'Mejora la comunicación interna del equipo de forma natural y divertida' },
+              { icon: Users, text: 'Integra a todos los participantes independientemente de su condición física' },
+              { icon: Zap, text: 'Rompe la rutina y reduce el estrés sacando al equipo de su zona de confort' },
+              { icon: Star, text: 'Descubre líderes naturales y fortalece las relaciones interpersonales' },
+            ].map((item, i) => (
+              <li key={i} className="flex items-start gap-3">
+                <item.icon className="w-5 h-5 text-neon-blue shrink-0 mt-0.5" />
+                <span>{item.text}</span>
               </li>
-              <li className="flex items-start gap-2">
-                <Users className="w-4 h-4 text-neon-blue shrink-0 mt-1" />
-                <span><strong className="text-foreground">Jornada de integración:</strong> Mezcla personas de diferentes equipos para que se conozcan y trabajen juntas en las partidas.</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Star className="w-4 h-4 text-neon-blue shrink-0 mt-1" />
-                <span><strong className="text-foreground">Experiencia combinada:</strong> Combina laser tag con realidad virtual para un evento más completo y variado.</span>
-              </li>
-            </ul>
-          </div>
+            ))}
+          </ul>
         </div>
 
-        {/* How it works */}
+        {/* Cómo funciona */}
         <div>
           <h2 className="font-display text-xl md:text-2xl font-bold text-foreground mb-6">
             Cómo Organizar tu <span className="text-neon-blue">Evento de Empresa</span>
@@ -134,23 +105,14 @@ const EventosEmpresaLaserTag = () => {
           </div>
         </div>
 
-        {/* Second image */}
-        <div className="grid md:grid-cols-2 gap-8 items-center">
-          <div>
-            <h2 className="font-display text-xl md:text-2xl font-bold text-foreground mb-4">
-              Despedidas de Soltero/a y <span className="text-neon-blue">Celebraciones</span>
-            </h2>
-            <p>
-              Además de eventos corporativos, somos especialistas en <strong className="text-foreground">despedidas de soltero y soltera</strong>. Si buscas una actividad original y divertida para celebrar con tu grupo de amigos antes del gran día, el laser tag es la opción perfecta.
-            </p>
-            <p className="mt-4">
-              Las despedidas suelen incluir partidas competitivas con sistema de puntuación, coronación del equipo ganador y momentos memorables que no olvidaréis. Podéis personalizar la experiencia con temáticas especiales y combinarla con realidad virtual para un evento aún más completo.
-            </p>
-            <p className="mt-4">
-              También organizamos <strong className="text-foreground">celebraciones de fin de año, aniversarios de empresa y jornadas de incentivos</strong>. Cualquier excusa es buena para sacar a tu equipo de la oficina y vivir una experiencia diferente.
-            </p>
-          </div>
-          <img src={laserSniper} alt="Laser tag despedidas y eventos en Murcia" className="rounded-xl border border-border w-full" loading="lazy" />
+        {/* Despedidas */}
+        <div>
+          <h2 className="font-display text-xl md:text-2xl font-bold text-foreground mb-4">
+            También para despedidas y <span className="text-neon-blue">celebraciones</span>
+          </h2>
+          <p>
+            Además de eventos corporativos, organizamos <strong className="text-foreground">despedidas de soltero/a, celebraciones de fin de año, aniversarios de empresa y jornadas de incentivos</strong>. Cualquier excusa es buena para vivir una experiencia diferente fuera de la oficina.
+          </p>
         </div>
 
         {/* CTA box */}
