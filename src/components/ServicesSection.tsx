@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { Target, Glasses, Building2, TreePine } from 'lucide-react';
+import { Button } from './ui/button';
 import vrExperience from '@/assets/vr-card.jpg';
 import vrAdventure from '@/assets/vr-adventure.png';
 import laserTagEquipment from '@/assets/laser-tag-card.webp';
