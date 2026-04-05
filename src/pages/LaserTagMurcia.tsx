@@ -8,7 +8,7 @@ import laserBlasters from '@/assets/laser-tag-blasters.jpg';
 const faqs = [
   {
     question: '¿Cuál es la edad mínima para jugar al laser tag?',
-    answer: 'La edad mínima para participar en nuestras partidas de laser tag es de 6 años. Los menores de 14 años deben ir acompañados por un adulto responsable. Nuestro equipamiento se adapta a diferentes tallas y edades.',
+    answer: 'La edad mínima para participar en nuestras partidas de laser tag es de 8 años. Los menores de 14 años deben ir acompañados por un adulto responsable. Nuestro equipamiento se adapta a diferentes tallas y edades.',
   },
   {
     question: '¿Cuánto cuesta una partida de laser tag en Murcia?',

@@ -90,7 +90,7 @@ const CumpleanosLaserTagMurcia = () => {
               Seguridad <span className="text-neon-blue">Garantizada</span>
             </h2>
             <p>
-              La seguridad de los niños es nuestra máxima prioridad. El laser tag utiliza <strong className="text-foreground">tecnología infrarroja</strong>, lo que significa que no hay impacto físico de ningún tipo. No duele, no mancha y es completamente seguro para niños a partir de 6 años.
+              La seguridad de los niños es nuestra máxima prioridad. El laser tag utiliza <strong className="text-foreground">tecnología infrarroja</strong>, lo que significa que no hay impacto físico de ningún tipo. No duele, no mancha y es La seguridad de los niños es nuestra máxima prioridad. El laser tag utiliza <strong className="text-foreground">tecnología infrarroja</strong>, lo que significa que no hay impacto físico de ningún tipo. No duele, no mancha y es completamente seguro para niños a partir de 8 años.
             </p>
             <p className="mt-4">
               Nuestros monitores están formados para gestionar grupos infantiles y se aseguran de que todos los participantes entiendan las reglas y disfruten de la experiencia en un entorno controlado y seguro.

@@ -118,7 +118,7 @@ const LaserTagVsPaintball = () => (
           </thead>
           <tbody className="divide-y divide-border">
             <tr><td className="py-2">Dolor</td><td className="text-center">❌ No</td><td className="text-center">✅ Sí</td></tr>
-            <tr><td className="py-2">Edad mínima</td><td className="text-center">6 años</td><td className="text-center">12-14 años</td></tr>
+            <tr><td className="py-2">Edad mínima</td><tr><td className="py-2">Edad mínima</td><td className="text-center">8 años</td><td className="text-center">12-14 años</td></tr><td className="text-center">12-14 años</td></tr>
             <tr><td className="py-2">Precio</td><td className="text-center">Desde 15€</td><td className="text-center">20-35€</td></tr>
             <tr><td className="py-2">Manchas</td><td className="text-center">❌ No</td><td className="text-center">✅ Sí</td></tr>
             <tr><td className="py-2">Modos de juego</td><td className="text-center">6+</td><td className="text-center">1-2</td></tr>

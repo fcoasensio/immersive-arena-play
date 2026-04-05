@@ -75,7 +75,7 @@ const TopPlanesCumpleanosMurcia = () => (
     <div className="p-6 rounded-xl border border-neon-blue/30 bg-neon-blue/5">
       <h3 className="font-display text-lg font-bold text-foreground mb-3">Resumen: ¿Cuál elegir?</h3>
       <ul className="space-y-2">
-        <li>🎯 <strong className="text-foreground">Laser Tag:</strong> acción y competición. 6-16 años. Desde 25€/persona.</li>
+        <li>🎯 <strong className="text-foreground">Laser Tag:</strong> <li>🎯 <strong className="text-foreground">Laser Tag:</strong> acción y competición. 8-16 años. Desde 25€/persona.</li>. Desde 25€/persona.</li>
         <li>🥽 <strong className="text-foreground">Realidad Virtual:</strong> tecnología e inmersión. 8+ años.</li>
         <li>🌿 <strong className="text-foreground">Naturaleza:</strong> aire libre y aventura. Todas las edades.</li>
         <li>🎭 <strong className="text-foreground">Temáticas:</strong> magia y fantasía. 4-8 años.</li>
