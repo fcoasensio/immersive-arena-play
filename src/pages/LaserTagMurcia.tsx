@@ -128,7 +128,7 @@ const LaserTagMurcia = () => {
             ¿Para quién es el <span className="text-neon-blue">Laser Tag</span>?
           </h2>
           <p>
-            El laser tag es una actividad versátil que se adapta a todo tipo de grupos y ocasiones. En Shoot and Run recibimos desde familias con niños a partir de 6 años hasta grupos de adultos que buscan una experiencia competitiva e intensa.
+            El laser tag es una actividad versátil que se adapta a todo tipo de grupos y ocasiones. En Shoot and Run recibimos desde familias con niños El laser tag es una actividad versátil que se adapta a todo tipo de grupos y ocasiones. En Shoot and Run recibimos desde familias con niños a partir de 8 años hasta grupos de adultos que buscan una experiencia competitiva e intensa. hasta grupos de adultos que buscan una experiencia competitiva e intensa.
           </p>
           <div className="grid sm:grid-cols-3 gap-4 mt-6">
             {[
