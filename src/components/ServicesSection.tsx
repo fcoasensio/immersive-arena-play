@@ -11,6 +11,7 @@ const services = [
     icon: Target,
     title: 'Laser Tag',
     description: 'Equipamiento militar de última generación con tecnología infrarroja de precisión. Partidas épicas con diferentes modos de juego a partir de 8 años.',
+    link: '/laser-tag-murcia',
     color: 'neon-blue',
     glowClass: 'box-glow-blue',
     image: laserTagEquipment,
