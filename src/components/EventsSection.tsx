@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { Users, Cake, PartyPopper, Trophy, Landmark, GraduationCap } from 'lucide-react';
 import { Button } from './ui/button';
 
