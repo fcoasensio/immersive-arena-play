@@ -1,12 +1,22 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import logoImg from '@/assets/logo-shootandrun.png';
 import { Button } from './ui/button';
 
+const actividadesLinks = [
+  { name: 'Laser Tag', href: '/laser-tag-murcia' },
+  { name: 'Realidad Virtual', href: '/realidad-virtual-murcia' },
+  { name: 'Cumpleaños', href: '/cumpleanos-laser-tag-murcia' },
+  { name: 'Eventos Empresa', href: '/eventos-empresa-laser-tag' },
+];
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [mobileSubmenu, setMobileSubmenu] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -14,10 +24,19 @@ const Navbar = () => {
     { name: 'Inicio', href: '#hero' },
     { name: 'Cómo Funciona', href: '#como-funciona' },
     { name: 'Packs', href: '#packs' },
-    { name: 'Eventos', href: '#events' },
     { name: 'Equipamiento', href: '#equipment' },
     { name: 'Contacto', href: '#contact' },
   ];
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     if (location.pathname !== '/') {
@@ -39,6 +58,9 @@ const Navbar = () => {
     }
   };
 
+  const linkClass = "font-body text-[10px] uppercase tracking-wider text-foreground hover:text-neon-blue transition-colors duration-300 relative group";
+  const mobileLinkClass = "font-body text-lg uppercase tracking-wider text-muted-foreground hover:text-neon-blue transition-colors duration-300 py-2";
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
       <div className="container mx-auto px-4">
@@ -47,22 +69,48 @@ const Navbar = () => {
             <img src={logoImg} alt="Shoot and Run" className="h-[52px] md:h-[62px] w-auto" translate="no" />
           </a>
 
+          {/* Desktop */}
           <div className="hidden md:flex items-center gap-4">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href)}
-                className="font-body text-[10px] uppercase tracking-wider text-foreground hover:text-neon-blue transition-colors duration-300 relative group"
+                className={linkClass}
               >
                 {link.name}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-neon-blue group-hover:w-full transition-all duration-300" />
               </a>
             ))}
+
+            {/* Actividades dropdown */}
+            <div ref={dropdownRef} className="relative">
+              <button
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className={`${linkClass} flex items-center gap-1 cursor-pointer`}
+              >
+                Actividades
+                <ChevronDown className={`w-3 h-3 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {dropdownOpen && (
+                <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 bg-background/95 backdrop-blur-lg border border-border rounded-lg py-2 min-w-[180px] shadow-lg">
+                  {actividadesLinks.map((link) => (
+                    <button
+                      key={link.href}
+                      onClick={() => { setDropdownOpen(false); navigate(link.href); }}
+                      className="block w-full text-left px-4 py-2 font-body text-sm text-muted-foreground hover:text-neon-blue hover:bg-neon-blue/5 transition-colors"
+                    >
+                      {link.name}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <a
               href="/blog"
               onClick={(e) => { e.preventDefault(); navigate('/blog'); }}
-              className="font-body text-[10px] uppercase tracking-wider text-foreground hover:text-neon-blue transition-colors duration-300 relative group"
+              className={linkClass}
             >
               Blog
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-neon-blue group-hover:w-full transition-all duration-300" />
@@ -80,6 +128,7 @@ const Navbar = () => {
           </button>
         </div>
 
+        {/* Mobile */}
         <AnimatePresence>
           {isOpen && (
             <motion.div
@@ -94,15 +143,38 @@ const Navbar = () => {
                     key={link.name}
                     href={link.href}
                     onClick={(e) => { handleNavClick(e, link.href); setIsOpen(false); }}
-                    className="font-body text-lg uppercase tracking-wider text-muted-foreground hover:text-neon-blue transition-colors duration-300 py-2"
+                    className={mobileLinkClass}
                   >
                     {link.name}
                   </a>
                 ))}
+
+                {/* Mobile Actividades */}
+                <button
+                  onClick={() => setMobileSubmenu(!mobileSubmenu)}
+                  className={`${mobileLinkClass} flex items-center justify-between w-full text-left`}
+                >
+                  Actividades
+                  <ChevronDown className={`w-4 h-4 transition-transform ${mobileSubmenu ? 'rotate-180' : ''}`} />
+                </button>
+                {mobileSubmenu && (
+                  <div className="pl-4 flex flex-col gap-2">
+                    {actividadesLinks.map((link) => (
+                      <button
+                        key={link.href}
+                        onClick={() => { setIsOpen(false); setMobileSubmenu(false); navigate(link.href); }}
+                        className="font-body text-base text-muted-foreground hover:text-neon-blue transition-colors text-left py-1"
+                      >
+                        {link.name}
+                      </button>
+                    ))}
+                  </div>
+                )}
+
                 <a
                   href="/blog"
                   onClick={(e) => { e.preventDefault(); setIsOpen(false); navigate('/blog'); }}
-                  className="font-body text-lg uppercase tracking-wider text-muted-foreground hover:text-neon-blue transition-colors duration-300 py-2"
+                  className={mobileLinkClass}
                 >
                   Blog
                 </a>
