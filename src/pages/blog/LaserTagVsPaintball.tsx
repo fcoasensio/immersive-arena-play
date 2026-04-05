@@ -20,7 +20,7 @@ const LaserTagVsPaintball = () => (
       <strong className="text-foreground">Paintball:</strong> Sí, duele. Las bolas de pintura impactan a velocidades de 80-100 m/s y dejan moratones, especialmente en zonas expuestas. Aunque se usa equipamiento de protección, los impactos a corta distancia pueden ser bastante dolorosos. Muchos jugadores primerizos abandonan la partida por el dolor.
     </p>
     <p>
-      <strong className="text-foreground">Laser tag:</strong> No duele en absoluto. El sistema utiliza sensores infrarrojos que detectan los "disparos" mediante luz. No hay impacto físico de ningún tipo. Es <strong className="text-foreground">100% indoloro y seguro</strong>, lo que lo hace apto para niños desde 6 años y para cualquier persona independientemente de su forma física.
+      <strong className="text-foreground">Laser tag:</strong> No duele en absoluto. El sistema utiliza sensores infrarrojos que detectan los "disparos" mediante luz. No hay impacto físico de ningún tipo. Es <strong className="text-foreground">100% indoloro y seguro</strong>, <strong className="text-foreground">Laser tag:</strong> No duele en absoluto. El sistema utiliza sensores infrarrojos que detectan los "disparos" mediante luz. No hay impacto físico de ningún tipo. Es <strong className="text-foreground">100% indoloro y seguro</strong>, lo que lo hace apto para niños desde 8 años y para cualquier persona independientemente de su forma física. y para cualquier persona independientemente de su forma física.
     </p>
     <p className="p-4 rounded-lg border border-neon-blue/30 bg-neon-blue/5">
       🏆 <strong className="text-foreground">Ganador: Laser tag.</strong> Sin dolor, sin moratones, sin miedo.
