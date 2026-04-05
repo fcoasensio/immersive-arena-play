@@ -29,7 +29,10 @@ const Footer = () => {
                 Cumpleaños Laser Tag
               </Link>
               <Link to="/eventos-empresa-laser-tag" className="font-body text-sm text-muted-foreground hover:text-neon-blue transition-colors">
-                Eventos de Empresa
+              Eventos de Empresa
+              </Link>
+              <Link to="/blog" className="font-body text-sm text-muted-foreground hover:text-neon-blue transition-colors">
+                Blog
               </Link>
             </div>
           </div>
