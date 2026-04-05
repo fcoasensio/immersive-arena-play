@@ -59,6 +59,14 @@ const Navbar = () => {
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-neon-blue group-hover:w-full transition-all duration-300" />
               </a>
             ))}
+            <a
+              href="/blog"
+              onClick={(e) => { e.preventDefault(); navigate('/blog'); }}
+              className="font-body text-[10px] uppercase tracking-wider text-foreground hover:text-neon-blue transition-colors duration-300 relative group"
+            >
+              Blog
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-neon-blue group-hover:w-full transition-all duration-300" />
+            </a>
             <Button variant="neon" size="sm" onClick={() => navigate('/reservar')}>
               Reservar
             </Button>
