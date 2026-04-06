@@ -90,7 +90,7 @@ const AdminConfiguracion = () => {
         Modifica los parámetros de las reservas. Los cambios se aplicarán a las nuevas reservas.
       </p>
 
-      {items.map((item) => {
+      {items.filter((item) => !HIDDEN_KEYS.includes(item.clave)).map((item) => {
         const changed = edits[item.clave] !== item.valor;
         return (
           <div key={item.id} className="flex items-end gap-3 py-3 border-b border-border">
