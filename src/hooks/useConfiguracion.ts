@@ -20,7 +20,7 @@ const DEFAULTS: ConfigValues = {
   max_participantes_realidad_virtual: 12,
   anticipo: 50,
   antelacion_horas: 48,
-  horas_disponibles: ["10:00", "11:30", "13:00", "16:00", "17:30", "19:00", "20:30"],
+  horas_disponibles: ["11:00", "12:30", "17:00", "18:30", "20:00", "21:30"],
 };
 
 export function useConfiguracion() {
