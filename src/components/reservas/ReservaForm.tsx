@@ -193,7 +193,8 @@ const ReservaForm = () => {
   });
 
   const watchAll = form.watch();
-  const precio = calcularPrecio(watchAll.fecha, watchAll.duracion, watchAll.num_participantes || 10, config, festivos, watchAll.tipo_reserva);
+  const precioPorPersona = packPrices[watchAll.tipo_reserva] || packPrices.grupos;
+  const precio = calcularPrecio(watchAll.fecha, watchAll.num_participantes || 10, config, festivos, precioPorPersona);
 
   const canAdvance = async () => {
     if (step === 0) return true;
