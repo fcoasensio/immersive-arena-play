@@ -94,7 +94,7 @@ const PacksSection = () => {
             Packs y <span className="text-neon-purple text-glow-purple">Precios</span>
           </h2>
           <p className="mt-3 text-muted-foreground max-w-xl mx-auto font-body">
-            Elige la experiencia perfecta para tu grupo. Fines de semana y festivos: +{config.recargo_finde_festivo}€/pers.
+            Elige la experiencia perfecta para tu grupo. Fines de semana y festivos: +2€/pers.
           </p>
         </motion.div>
 
