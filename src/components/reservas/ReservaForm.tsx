@@ -124,10 +124,26 @@ const ReservaForm = () => {
   const [checkingAvailability, setCheckingAvailability] = useState(false);
   const [busyHours, setBusyHours] = useState<Record<string, boolean>>({});
   const [loadingHours, setLoadingHours] = useState(false);
+  const [packPrices, setPackPrices] = useState<Record<string, number>>({ cumpleanos: 25, despedida: 20, grupos: 18 });
 
   useEffect(() => {
     supabase.from("festivos").select("fecha").then(({ data }) => {
       if (data) setFestivos(data.map((d: any) => d.fecha));
+    });
+    // Fetch pack prices
+    supabase.from("packs").select("nombre, precio").eq("activo", true).then(({ data }) => {
+      if (data) {
+        const prices: Record<string, number> = { cumpleanos: 25, despedida: 20, grupos: 18 };
+        data.forEach((p: any) => {
+          const num = parseFloat((p.precio || "").replace(/[^0-9.,]/g, "").replace(",", "."));
+          if (isNaN(num)) return;
+          const n = (p.nombre || "").toLowerCase();
+          if (n.includes("cumpleaños") || n.includes("cumpleanos")) prices.cumpleanos = num;
+          else if (n.includes("despedida")) prices.despedida = num;
+          else prices.grupos = num;
+        });
+        setPackPrices(prices);
+      }
     });
   }, []);
 
