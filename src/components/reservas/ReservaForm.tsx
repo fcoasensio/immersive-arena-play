@@ -37,19 +37,11 @@ const actividadOptions = [
 
 function calcularPrecio(
   fecha: Date | undefined,
-  duracion: string,
   numParticipantes: number,
   config: ConfigValues,
   festivos: string[],
-  tipoReserva?: string
+  precioPorPersona: number
 ): { base: number; final: number; recargo: number } {
-  let precioBase: number;
-  if (tipoReserva === "cumpleanos") precioBase = config.precio_cumpleanos;
-  else if (tipoReserva === "despedida") precioBase = config.precio_despedida;
-  else if (duracion === "270") precioBase = config.precio_270min;
-  else if (duracion === "150") precioBase = config.precio_150min;
-  else precioBase = config.precio_90min;
-
   let recargo = 0;
 
   if (fecha) {
@@ -61,7 +53,7 @@ function calcularPrecio(
     }
   }
 
-  const base = precioBase * numParticipantes;
+  const base = precioPorPersona * numParticipantes;
   const final_ = base + recargo * numParticipantes;
   return { base, final: final_, recargo };
 }
