@@ -13,11 +13,9 @@ type ConfigItem = {
   descripcion: string | null;
 };
 
+const HIDDEN_KEYS = ["precio_90min", "precio_150min", "precio_270min", "precio_cumpleanos", "precio_despedida"];
+
 const configLabels: Record<string, string> = {
-  precio_90min: "Precio 90 min (€/persona)",
-  precio_150min: "Precio 150 min (€/persona)",
-  precio_cumpleanos: "Precio Cumpleaños (€/persona)",
-  precio_despedida: "Precio Despedidas (€/persona)",
   recargo_finde_festivo: "Recargo finde/festivo (€/jugador)",
   min_participantes: "Mín. participantes",
   max_participantes: "Máx. participantes (general)",
@@ -92,7 +90,7 @@ const AdminConfiguracion = () => {
         Modifica los parámetros de las reservas. Los cambios se aplicarán a las nuevas reservas.
       </p>
 
-      {items.map((item) => {
+      {items.filter((item) => !HIDDEN_KEYS.includes(item.clave)).map((item) => {
         const changed = edits[item.clave] !== item.valor;
         return (
           <div key={item.id} className="flex items-end gap-3 py-3 border-b border-border">

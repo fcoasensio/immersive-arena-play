@@ -37,19 +37,11 @@ const actividadOptions = [
 
 function calcularPrecio(
   fecha: Date | undefined,
-  duracion: string,
   numParticipantes: number,
   config: ConfigValues,
   festivos: string[],
-  tipoReserva?: string
+  precioPorPersona: number
 ): { base: number; final: number; recargo: number } {
-  let precioBase: number;
-  if (tipoReserva === "cumpleanos") precioBase = config.precio_cumpleanos;
-  else if (tipoReserva === "despedida") precioBase = config.precio_despedida;
-  else if (duracion === "270") precioBase = config.precio_270min;
-  else if (duracion === "150") precioBase = config.precio_150min;
-  else precioBase = config.precio_90min;
-
   let recargo = 0;
 
   if (fecha) {
@@ -61,7 +53,7 @@ function calcularPrecio(
     }
   }
 
-  const base = precioBase * numParticipantes;
+  const base = precioPorPersona * numParticipantes;
   const final_ = base + recargo * numParticipantes;
   return { base, final: final_, recargo };
 }
@@ -132,10 +124,26 @@ const ReservaForm = () => {
   const [checkingAvailability, setCheckingAvailability] = useState(false);
   const [busyHours, setBusyHours] = useState<Record<string, boolean>>({});
   const [loadingHours, setLoadingHours] = useState(false);
+  const [packPrices, setPackPrices] = useState<Record<string, number>>({ cumpleanos: 25, despedida: 20, grupos: 18 });
 
   useEffect(() => {
     supabase.from("festivos").select("fecha").then(({ data }) => {
       if (data) setFestivos(data.map((d: any) => d.fecha));
+    });
+    // Fetch pack prices
+    supabase.from("packs").select("nombre, precio").eq("activo", true).then(({ data }) => {
+      if (data) {
+        const prices: Record<string, number> = { cumpleanos: 25, despedida: 20, grupos: 18 };
+        data.forEach((p: any) => {
+          const num = parseFloat((p.precio || "").replace(/[^0-9.,]/g, "").replace(",", "."));
+          if (isNaN(num)) return;
+          const n = (p.nombre || "").toLowerCase();
+          if (n.includes("cumpleaños") || n.includes("cumpleanos")) prices.cumpleanos = num;
+          else if (n.includes("despedida")) prices.despedida = num;
+          else prices.grupos = num;
+        });
+        setPackPrices(prices);
+      }
     });
   }, []);
 
@@ -185,7 +193,8 @@ const ReservaForm = () => {
   });
 
   const watchAll = form.watch();
-  const precio = calcularPrecio(watchAll.fecha, watchAll.duracion, watchAll.num_participantes || 10, config, festivos, watchAll.tipo_reserva);
+  const precioPorPersona = packPrices[watchAll.tipo_reserva] || packPrices.grupos;
+  const precio = calcularPrecio(watchAll.fecha, watchAll.num_participantes || 10, config, festivos, precioPorPersona);
 
   const canAdvance = async () => {
     if (step === 0) return true;
@@ -281,7 +290,8 @@ const ReservaForm = () => {
       const tipoLabel = tipoOptions.find(t => t.value === data.tipo_reserva)?.label || data.tipo_reserva;
       const actLabel = actividadOptions.find(a => a.value === data.actividad)?.label || data.actividad;
 
-      const precio = calcularPrecio(data.fecha, data.duracion, data.num_participantes, config, festivos, data.tipo_reserva);
+      const ppPrice = packPrices[data.tipo_reserva] || packPrices.grupos;
+      const precio = calcularPrecio(data.fecha, data.num_participantes, config, festivos, ppPrice);
       const { error: emailError } = await supabase.functions.invoke("send-reservation-notification", {
         body: {
           customerName: data.nombre_completo,
