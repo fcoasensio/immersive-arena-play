@@ -2,11 +2,6 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
 export type ConfigValues = {
-  precio_90min: number;
-  precio_150min: number;
-  precio_270min: number;
-  precio_cumpleanos: number;
-  precio_despedida: number;
   recargo_finde_festivo: number;
   min_participantes: number;
   max_participantes: number;
@@ -18,11 +13,6 @@ export type ConfigValues = {
 };
 
 const DEFAULTS: ConfigValues = {
-  precio_90min: 15,
-  precio_150min: 22,
-  precio_270min: 40,
-  precio_cumpleanos: 25,
-  precio_despedida: 20,
   recargo_finde_festivo: 2,
   min_participantes: 6,
   max_participantes: 20,
