@@ -260,9 +260,9 @@ const ReservaForm = () => {
   const onSubmit = async (data: ReservaValues) => {
     setIsSubmitting(true);
     try {
-      const { data: insertedReserva, error } = await supabase
-        .from("reservas")
-        .insert({
+      // Create reservation via secure edge function with rate limiting
+      const { data: responseData, error } = await supabase.functions.invoke("create-reservation", {
+        body: {
           tipo_reserva: data.tipo_reserva,
           actividad: data.actividad,
           nombre_completo: data.nombre_completo,
@@ -278,13 +278,12 @@ const ReservaForm = () => {
           nombre_menor: data.nombre_menor || null,
           edad_menor: data.edad_menor || null,
           tematica_invitacion: data.tematica_invitacion || null,
-          anticipo: config.anticipo,
           notas: data.notas || null,
-        } as any)
-        .select("id")
-        .single();
+        },
+      });
 
       if (error) throw error;
+      const insertedReserva = { id: responseData.id };
 
       // Send email notifications via Resend edge function
       const tipoLabel = tipoOptions.find(t => t.value === data.tipo_reserva)?.label || data.tipo_reserva;
