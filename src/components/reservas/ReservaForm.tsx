@@ -223,7 +223,7 @@ const ReservaForm = () => {
         body: {
           date: format(fecha, "yyyy-MM-dd"),
           time: hora,
-          duration: duracion,
+          duration: "1", // Only check the exact slot, not the full event duration
         },
       });
 
