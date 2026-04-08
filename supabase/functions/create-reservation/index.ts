@@ -105,7 +105,46 @@ serve(async (req: Request) => {
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, serviceRoleKey);
 
-    // Insert reservation with controlled defaults
+    // ── Calculate prices from packs ──────────────────────────────────
+    let precioPorPersona = 18; // default
+    const { data: packs } = await supabase.from("packs").select("nombre, precio").eq("activo", true);
+    if (packs) {
+      for (const p of packs) {
+        const num = parseFloat((p.precio || "").replace(/[^0-9.,]/g, "").replace(",", "."));
+        if (isNaN(num)) continue;
+        const n = (p.nombre || "").toLowerCase();
+        if (data.tipo_reserva === "cumpleanos" && (n.includes("cumpleaños") || n.includes("cumpleanos"))) {
+          precioPorPersona = num; break;
+        } else if (data.tipo_reserva === "despedida" && n.includes("despedida")) {
+          precioPorPersona = num; break;
+        } else if (data.tipo_reserva === "grupos" && !n.includes("cumpleaños") && !n.includes("cumpleanos") && !n.includes("despedida")) {
+          precioPorPersona = num;
+        }
+      }
+    }
+
+    // Check weekend/holiday surcharge
+    let recargo = 0;
+    const fecha = new Date(data.fecha + "T00:00:00");
+    const dow = fecha.getDay(); // 0=Sun, 6=Sat
+    if (dow === 0 || dow === 6) {
+      recargo = 2;
+    } else {
+      const { data: festivo } = await supabase.from("festivos").select("id").eq("fecha", data.fecha).limit(1);
+      if (festivo && festivo.length > 0) recargo = 2;
+    }
+
+    // Also try to read surcharge from config
+    const { data: recargoConfig } = await supabase.from("configuracion").select("valor").eq("clave", "recargo_finde_festivo").single();
+    if (recargoConfig && recargo > 0) {
+      const rv = typeof recargoConfig.valor === "number" ? recargoConfig.valor : parseFloat(String(recargoConfig.valor));
+      if (!isNaN(rv)) recargo = rv;
+    }
+
+    const precioBase = precioPorPersona * data.num_participantes;
+    const precioFinal = (precioPorPersona + recargo) * data.num_participantes;
+
+    // Insert reservation with calculated prices
     const { data: inserted, error } = await supabase
       .from("reservas")
       .insert({
@@ -127,6 +166,8 @@ serve(async (req: Request) => {
         notas: data.notas || null,
         estado: "pendiente_pago",
         anticipo: 50.00,
+        precio_base: precioBase,
+        precio_final: precioFinal,
       })
       .select("id")
       .single();
