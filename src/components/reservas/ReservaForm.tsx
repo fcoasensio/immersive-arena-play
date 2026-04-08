@@ -154,9 +154,11 @@ const ReservaForm = () => {
     const duracion = form.getValues("duracion") || "90";
 
     try {
+      // Use a short window (1 min) so each slot only checks its own start time,
+      // not the full event duration which would block adjacent slots.
       const checks = config.horas_disponibles.map(async (hora) => {
         const { data } = await supabase.functions.invoke("check-calendar-availability", {
-          body: { date: dateStr, time: hora, duration: duracion },
+          body: { date: dateStr, time: hora, duration: "1" },
         });
         return { hora, busy: data?.available === false };
       });
@@ -221,7 +223,7 @@ const ReservaForm = () => {
         body: {
           date: format(fecha, "yyyy-MM-dd"),
           time: hora,
-          duration: duracion,
+          duration: "1", // Only check the exact slot, not the full event duration
         },
       });
 
