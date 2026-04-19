@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { Building2, Users, Target, Trophy, Handshake, Clock, Star, Zap, Settings } from 'lucide-react';
 import SEOLandingLayout from '@/components/seo/SEOLandingLayout';
-import heroBg from '@/assets/hero-bg.jpg';
+import heroBg from '@/assets/recursos/eventos-empresa-laser-tag.jpg';
 
 const faqs = [
   {

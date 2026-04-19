@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { Cake, Users, Clock, Gift, Star, PartyPopper, Gamepad2, UserCheck } from 'lucide-react';
 import SEOLandingLayout from '@/components/seo/SEOLandingLayout';
-import heroBg from '@/assets/hero-bg.jpg';
+import heroBg from '@/assets/recursos/cumpleanos-laser-tag.jpg';
 
 const faqs = [
   {

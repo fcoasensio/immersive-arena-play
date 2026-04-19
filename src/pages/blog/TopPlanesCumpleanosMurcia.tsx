@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import BlogArticleLayout from '@/components/blog/BlogArticleLayout';
-import laserCard from '@/assets/laser-tag-card.webp';
-import vrCard from '@/assets/vr-card.jpg';
+import laserCard from '@/assets/recursos/cumpleanos-laser-tag.jpg';
+import vrCard from '@/assets/recursos/realidad-virtual-murcia.jpg';
 
 const TopPlanesCumpleanosMurcia = () => (
   <BlogArticleLayout slug="top-5-planes-cumpleanos-murcia">
