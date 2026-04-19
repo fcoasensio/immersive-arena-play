@@ -10,7 +10,7 @@ const faqs = [
   },
   {
     question: '¿A partir de qué edad se puede jugar?',
-    answer: 'La edad mínima recomendada es de 8 años, aunque depende de la experiencia elegida. Algunas experiencias de terror están recomendadas para mayores de 12 años.',
+    answer: 'La edad mínima recomendada es de 12 años, aunque depende de la experiencia elegida. Algunas experiencias de terror están recomendadas para mayores de 16 años.',
   },
   {
     question: '¿Cuánto dura la experiencia?',
