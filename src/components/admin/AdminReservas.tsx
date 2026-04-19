@@ -424,8 +424,69 @@ const AdminReservas = () => {
                   </SelectContent>
                 </Select>
               </div>
+              <div className="col-span-2 pt-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full gap-2"
+                  onClick={() => openReschedule(selected)}
+                >
+                  <CalendarClock size={16} /> Cambiar fecha u hora
+                </Button>
+              </div>
             </div>
           )}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={rescheduleOpen} onOpenChange={setRescheduleOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="font-display flex items-center gap-2">
+              <CalendarClock size={18} /> Cambiar fecha u hora
+            </DialogTitle>
+          </DialogHeader>
+          {selected && (
+            <div className="space-y-4">
+              <div className="text-sm text-muted-foreground">
+                Cliente: <span className="font-medium text-foreground">{selected.nombre_completo}</span>
+              </div>
+              <div className="text-xs p-3 rounded-md bg-muted">
+                Actual: <span className="font-mono">{selected.fecha} · {selected.hora.slice(0, 5)}</span>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <Label htmlFor="new-date" className="text-xs">Nueva fecha</Label>
+                  <Input
+                    id="new-date"
+                    type="date"
+                    value={newDate}
+                    onChange={(e) => setNewDate(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="new-time" className="text-xs">Nueva hora</Label>
+                  <Input
+                    id="new-time"
+                    type="time"
+                    value={newTime}
+                    onChange={(e) => setNewTime(e.target.value)}
+                  />
+                </div>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Se actualizará la reserva, se reprogramará el evento del calendario (si existe) y se enviará un email de confirmación al cliente y al administrador.
+              </p>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setRescheduleOpen(false)} disabled={rescheduling}>
+              Cancelar
+            </Button>
+            <Button onClick={handleReschedule} disabled={rescheduling}>
+              {rescheduling ? <><Loader2 size={14} className="animate-spin mr-1" /> Procesando...</> : "Confirmar cambio"}
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>
