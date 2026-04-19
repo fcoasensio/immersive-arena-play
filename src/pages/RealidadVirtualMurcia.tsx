@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { Glasses, Users, Clock, Gamepad2, Star, Crosshair, MapPin, Compass } from 'lucide-react';
 import SEOLandingLayout from '@/components/seo/SEOLandingLayout';
-import heroBg from '@/assets/hero-bg.jpg';
+import heroBg from '@/assets/recursos/realidad-virtual-murcia.jpg';
 
 const faqs = [
   {

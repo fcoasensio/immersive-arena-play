@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { Users, Crosshair, MapPin, PartyPopper, Building2, Calendar } from 'lucide-react';
 import SEOLandingLayout from '@/components/seo/SEOLandingLayout';
-import heroBg from '@/assets/hero-bg.jpg';
+import heroBg from '@/assets/recursos/laser-tag-murcia.jpg';
 
 const faqs = [
   {

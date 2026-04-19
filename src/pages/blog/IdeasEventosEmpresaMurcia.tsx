@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import BlogArticleLayout from '@/components/blog/BlogArticleLayout';
-import vrCard from '@/assets/vr-card.jpg';
-import laserCard from '@/assets/laser-tag-card.webp';
+import vrCard from '@/assets/recursos/realidad-virtual-murcia.jpg';
+import laserCard from '@/assets/recursos/eventos-empresa-laser-tag.jpg';
 
 const IdeasEventosEmpresaMurcia = () => (
   <BlogArticleLayout slug="ideas-eventos-empresa-murcia">
