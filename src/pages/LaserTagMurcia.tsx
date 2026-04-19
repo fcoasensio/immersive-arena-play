@@ -10,7 +10,7 @@ const faqs = [
   },
   {
     question: '¿A partir de qué edad se puede jugar?',
-    answer: 'La edad mínima para participar en nuestras partidas de laser tag es de 8 años. Los menores de 14 años deben ir acompañados por un adulto responsable.',
+    answer: 'La edad mínima para participar en nuestras partidas de laser tag es de 8 años. Los menores de 8 años deben ir acompañados por un adulto responsable.',
   },
   {
     question: '¿Cuánto dura la experiencia?',
