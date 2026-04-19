@@ -45,7 +45,7 @@ const CumpleanosLaserTagMurcia = () => {
           <div className="grid sm:grid-cols-2 gap-4">
             {[
               { icon: Gift, title: 'Packs de cumpleaños personalizados', desc: 'Adaptamos la experiencia al número de participantes, la edad y tus preferencias para que sea un día inolvidable.' },
-              { icon: Cake, title: 'Zona para merienda o celebración', desc: 'Espacio privado para la tarta, regalos y merienda. Puedes traer tu propia comida o consultarnos opciones de catering.' },
+              { icon: Cake, title: 'Zona para merienda o celebración', desc: 'Espacio privado para la tarta, regalos y merienda. En el cumpleaños se incluye el menú completo para los jugadores y se pueden añadir bandejas saladas y otros picoteos para los adultos.' },
               { icon: UserCheck, title: 'Monitores incluidos', desc: 'Un monitor dedicado se encarga de todo: explicar reglas, gestionar partidas y garantizar la seguridad y diversión.' },
               { icon: Gamepad2, title: 'Opciones con realidad virtual', desc: 'Combina laser tag con una sesión de realidad virtual free roaming para una fiesta todavía más completa.' },
             ].map((item, i) => (
