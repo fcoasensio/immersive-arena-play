@@ -18,7 +18,7 @@ const faqs = [
   },
   {
     question: '¿Se puede celebrar cumpleaños?',
-    answer: 'Por supuesto. Tenemos packs especiales de cumpleaños que incluyen partidas de laser tag, zona para merienda, invitaciones personalizadas, diploma, estadisticas de la sesión y coordinación completa del evento. Es una de las opciones más populares para cumpleaños infantiles y de adolescentes en Murcia.',
+    answer: 'Por supuesto. Tenemos packs especiales de cumpleaños que incluyen 3 partidas de laser tag, zona para merienda, invitaciones personalizadas, diploma, estadisticas de la sesión y coordinación completa del evento. Es una de las opciones más populares para cumpleaños infantiles y de adolescentes en Murcia.',
   },
 ];
 
