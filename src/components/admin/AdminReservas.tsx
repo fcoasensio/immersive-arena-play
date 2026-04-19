@@ -9,11 +9,12 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Loader2, Search, Eye } from "lucide-react";
+import { Loader2, Search, Eye, CalendarClock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
-  Dialog, DialogContent, DialogHeader, DialogTitle,
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 
 type Reserva = {
   id: string;
@@ -61,6 +62,124 @@ const AdminReservas = () => {
   const [search, setSearch] = useState("");
   const [filterEstado, setFilterEstado] = useState<string>("all");
   const [selected, setSelected] = useState<Reserva | null>(null);
+  const [rescheduleOpen, setRescheduleOpen] = useState(false);
+  const [newDate, setNewDate] = useState("");
+  const [newTime, setNewTime] = useState("");
+  const [rescheduling, setRescheduling] = useState(false);
+
+  const openReschedule = (r: Reserva) => {
+    setSelected(r);
+    setNewDate(r.fecha);
+    setNewTime(r.hora.slice(0, 5));
+    setRescheduleOpen(true);
+  };
+
+  const handleReschedule = async () => {
+    if (!selected) return;
+    if (!newDate || !newTime) {
+      toast.error("Indica fecha y hora");
+      return;
+    }
+    if (newDate === selected.fecha && newTime === selected.hora.slice(0, 5)) {
+      toast.info("No has cambiado la fecha ni la hora");
+      return;
+    }
+
+    setRescheduling(true);
+    try {
+      // 1. Check availability for the new slot (1-min window to avoid blocking other slots)
+      const { data: availData, error: availError } = await supabase.functions.invoke(
+        "check-calendar-availability",
+        { body: { date: newDate, time: newTime, duration: "1" } }
+      );
+      if (availError) throw availError;
+      if (availData && (availData as any).available === false) {
+        toast.error("Esa fecha y hora no está disponible");
+        setRescheduling(false);
+        return;
+      }
+
+      const previousDate = selected.fecha;
+      const previousTime = selected.hora;
+      const previousEventId = selected.google_calendar_event_id;
+
+      // 2. Update DB
+      const { error: updateError } = await supabase
+        .from("reservas")
+        .update({ fecha: newDate, hora: newTime } as any)
+        .eq("id", selected.id);
+      if (updateError) throw updateError;
+
+      // 3. Update Google Calendar (delete old, create new) if there was an event
+      let nextEventId = previousEventId;
+      if (previousEventId) {
+        try {
+          await supabase.functions.invoke("check-calendar-availability", {
+            body: { action: "delete", eventId: previousEventId },
+          });
+        } catch (e) {
+          console.error("Error deleting old calendar event:", e);
+        }
+
+        try {
+          const { data: createData, error: createError } = await supabase.functions.invoke(
+            "check-calendar-availability",
+            {
+              body: {
+                action: "create",
+                reservationId: selected.id,
+                date: newDate,
+                time: newTime,
+                duration: selected.duracion,
+                customerName: selected.nombre_completo,
+                customerPhone: selected.telefono,
+                customerEmail: selected.email,
+                activityType: selected.actividad,
+                reservationType: selected.tipo_reserva,
+                numberOfPeople: selected.num_participantes,
+                notes: selected.notas || undefined,
+              },
+            }
+          );
+          if (createError) throw createError;
+          nextEventId = (createData as { eventId?: string } | null)?.eventId ?? null;
+        } catch (e) {
+          console.error("Error creating new calendar event:", e);
+          toast.warning("Reserva actualizada, pero no se pudo recrear el evento del calendario");
+        }
+      }
+
+      // 4. Send notification emails (fire-and-forget)
+      supabase.functions.invoke("send-reschedule-notification", {
+        body: {
+          customerName: selected.nombre_completo,
+          customerEmail: selected.email,
+          customerPhone: selected.telefono,
+          previousDate,
+          previousTime,
+          newDate,
+          newTime,
+          numberOfPeople: selected.num_participantes,
+          activityType: selected.actividad,
+          reservationType: selected.tipo_reserva,
+        },
+      }).then(({ error: emailError }) => {
+        if (emailError) console.error("Error sending reschedule emails:", emailError);
+      });
+
+      // 5. Update local state
+      const updated = { ...selected, fecha: newDate, hora: newTime, google_calendar_event_id: nextEventId };
+      setReservas((prev) => prev.map((r) => r.id === selected.id ? updated : r));
+      setSelected(updated);
+      setRescheduleOpen(false);
+      toast.success("Reserva reprogramada y notificaciones enviadas");
+    } catch (e: any) {
+      console.error("Error rescheduling:", e);
+      toast.error("Error al reprogramar la reserva");
+    } finally {
+      setRescheduling(false);
+    }
+  };
 
   const syncCalendarEvent = async (reserva: Reserva) => {
     const { data, error } = await supabase.functions.invoke("check-calendar-availability", {
@@ -305,8 +424,69 @@ const AdminReservas = () => {
                   </SelectContent>
                 </Select>
               </div>
+              <div className="col-span-2 pt-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full gap-2"
+                  onClick={() => openReschedule(selected)}
+                >
+                  <CalendarClock size={16} /> Cambiar fecha u hora
+                </Button>
+              </div>
             </div>
           )}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={rescheduleOpen} onOpenChange={setRescheduleOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="font-display flex items-center gap-2">
+              <CalendarClock size={18} /> Cambiar fecha u hora
+            </DialogTitle>
+          </DialogHeader>
+          {selected && (
+            <div className="space-y-4">
+              <div className="text-sm text-muted-foreground">
+                Cliente: <span className="font-medium text-foreground">{selected.nombre_completo}</span>
+              </div>
+              <div className="text-xs p-3 rounded-md bg-muted">
+                Actual: <span className="font-mono">{selected.fecha} · {selected.hora.slice(0, 5)}</span>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <Label htmlFor="new-date" className="text-xs">Nueva fecha</Label>
+                  <Input
+                    id="new-date"
+                    type="date"
+                    value={newDate}
+                    onChange={(e) => setNewDate(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="new-time" className="text-xs">Nueva hora</Label>
+                  <Input
+                    id="new-time"
+                    type="time"
+                    value={newTime}
+                    onChange={(e) => setNewTime(e.target.value)}
+                  />
+                </div>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Se actualizará la reserva, se reprogramará el evento del calendario (si existe) y se enviará un email de confirmación al cliente y al administrador.
+              </p>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setRescheduleOpen(false)} disabled={rescheduling}>
+              Cancelar
+            </Button>
+            <Button onClick={handleReschedule} disabled={rescheduling}>
+              {rescheduling ? <><Loader2 size={14} className="animate-spin mr-1" /> Procesando...</> : "Confirmar cambio"}
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>
