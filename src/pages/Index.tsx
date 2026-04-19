@@ -79,7 +79,7 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Helmet>
         <title>Shoot and Run | Laser Tag y Realidad Virtual en Murcia</title>
-        <meta name="description" content="Centro de laser tag y realidad virtual Free Roaming en Alcantarilla, Murcia. Cumpleaños, eventos de empresa, despedidas y ocio. Desde 15€/persona. ¡Reserva ahora!" />
+        <meta name="description" content="Centro de laser tag y realidad virtual Free Roaming en Alcantarilla, Murcia. Cumpleaños, eventos de empresa, despedidas y ocio. Desde 18€/persona. ¡Reserva ahora!" />
         <link rel="canonical" href="https://shootandrunweb.lovable.app/" />
         <script type="application/ld+json">{JSON.stringify(localBusinessJsonLd)}</script>
       </Helmet>

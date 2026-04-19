@@ -33,7 +33,7 @@ const LaserTagVsPaintball = () => (
       <strong className="text-foreground">Paintball:</strong> El precio base suele ser bajo (10-15€), pero hay costes ocultos. Las bolas de pintura se pagan aparte (entre 5-15€ por carga adicional), y la mayoría de jugadores necesitan recargar al menos una vez. El coste real por persona suele estar entre 20-35€.
     </p>
     <p>
-      <strong className="text-foreground">Laser tag:</strong> Precio cerrado que incluye todo: equipamiento, partidas ilimitadas durante la sesión y sin costes adicionales. En Shoot and Run los packs empiezan desde 15€ por persona para grupos. No hay sorpresas ni gastos extra.
+      <strong className="text-foreground">Laser tag:</strong> Precio cerrado que incluye todo: equipamiento, partidas ilimitadas durante la sesión y sin costes adicionales. En Shoot and Run los packs empiezan desde 18€ por persona para grupos. No hay sorpresas ni gastos extra.
     </p>
     <p className="p-4 rounded-lg border border-neon-blue/30 bg-neon-blue/5">
       🏆 <strong className="text-foreground">Ganador: Laser tag.</strong> Precio cerrado, sin costes ocultos.

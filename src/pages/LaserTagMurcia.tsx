@@ -6,7 +6,7 @@ import heroBg from '@/assets/recursos/laser-tag-murcia.jpg';
 const faqs = [
   {
     question: '¿Cuánto cuesta jugar al laser tag en Murcia?',
-    answer: 'Los precios dependen del pack elegido y el número de participantes. Disponemos de packs desde 15€ por persona. Consulta nuestros packs en la web o contacta con nosotros para un presupuesto personalizado.',
+    answer: 'Los precios dependen del pack elegido y el número de participantes. Disponemos de packs desde 18€ por persona. Consulta nuestros packs en la web o contacta con nosotros para un presupuesto personalizado.',
   },
   {
     question: '¿A partir de qué edad se puede jugar?',
@@ -27,7 +27,7 @@ const LaserTagMurcia = () => {
     <>
       <Helmet>
         <title>Laser Tag en Murcia | Shoot and Run - La experiencia más realista</title>
-        <meta name="description" content="Laser tag en Murcia para grupos, cumpleaños y eventos. Equipamiento profesional, escenarios indoor y outdoor. Desde 15€/persona. ¡Reserva ahora!" />
+        <meta name="description" content="Laser tag en Murcia para grupos, cumpleaños y eventos. Equipamiento profesional, escenarios indoor y outdoor. Desde 18€/persona. ¡Reserva ahora!" />
         <link rel="canonical" href="https://shootandrunweb.lovable.app/laser-tag-murcia" />
       </Helmet>
 
