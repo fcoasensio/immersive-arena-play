@@ -17,8 +17,8 @@ const faqs = [
     answer: 'Ofrecemos sesiones de 90 minutos (varias partidas con descansos) y sesiones de 150 minutos para experiencias más completas. Cada partida individual dura unos 15 minutos con diferentes modos de juego.',
   },
   {
-    question: '¿Se puede celebrar cumpleaños?',
-    answer: 'Por supuesto. Tenemos packs especiales de cumpleaños que incluyen 3 partidas de laser tag, zona para merienda, invitaciones personalizadas, diploma, estadisticas de la sesión y coordinación completa del evento. Es una de las opciones más populares para cumpleaños infantiles y de adolescentes en Murcia.',
+    question: '¿Se puede incluir catering?',
+    answer: 'Sí, contamos con opciones de catering y picoteo para grupos. Pregúntanos al realizar tu reserva para conocer las opciones disponibles.',
   },
 ];
 

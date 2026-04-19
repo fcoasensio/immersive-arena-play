@@ -17,8 +17,8 @@ const faqs = [
     answer: 'La duración estándar de un cumpleaños es de 150 minutos (2 horas y media), que incluyen varias partidas de laser tag con descansos y tiempo para la merienda o celebración.',
   },
   {
-    question: '¿Se puede celebrar cumpleaños?',
-    answer: 'Por supuesto. Tenemos packs especiales de cumpleaños que incluyen 3 partidas de laser tag, zona para merienda, invitaciones personalizadas, diploma, estadisticas de la sesión y coordinación completa del evento. Es una de las opciones más populares para cumpleaños infantiles y de adolescentes en Murcia.',
+    question: '¿Se puede incluir catering?',
+    answer: 'Nuestros packs de cumpleaños ya incluyen merienda, pero si necesitas opciones adicionales de catering para adultos o peticiones especiales, no dudes en consultarnos.',
   },
 ];
 

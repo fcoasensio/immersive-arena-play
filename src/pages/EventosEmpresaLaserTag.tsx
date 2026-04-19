@@ -17,8 +17,8 @@ const faqs = [
     answer: 'Los eventos corporativos suelen durar entre 90 y 270 minutos dependiendo del formato. Podemos adaptar la duración a las necesidades de tu equipo.',
   },
   {
-    question: '¿Se puede celebrar cumpleaños?',
-    answer: 'Sí, también organizamos cumpleaños y celebraciones. Consulta nuestra página de cumpleaños para más información sobre los packs disponibles.',
+    question: '¿Se puede incluir catering?',
+    answer: 'Sí, disponemos de opciones de catering y picoteo para eventos de empresa. Consúltanos para conocer nuestros packs y menús disponibles.',
   },
 ];
 
