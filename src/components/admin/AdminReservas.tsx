@@ -111,7 +111,7 @@ const AdminReservas = () => {
       if (updateError) throw updateError;
 
       // 3. Update Google Calendar (delete old, create new) if there was an event
-      let nextEventId = previousEventId;
+      let nextEventId: string | null = previousEventId;
       if (previousEventId) {
         try {
           await supabase.functions.invoke("check-calendar-availability", {
@@ -120,6 +120,17 @@ const AdminReservas = () => {
         } catch (e) {
           console.error("Error deleting old calendar event:", e);
         }
+
+        // Clear the old event ID from DB so the create step actually creates a new one
+        // (the create endpoint skips creation if the reservation already has an event ID).
+        const { error: clearError } = await supabase
+          .from("reservas")
+          .update({ google_calendar_event_id: null } as any)
+          .eq("id", selected.id);
+        if (clearError) {
+          console.error("Error clearing old calendar event ID:", clearError);
+        }
+        nextEventId = null;
 
         try {
           const { data: createData, error: createError } = await supabase.functions.invoke(
