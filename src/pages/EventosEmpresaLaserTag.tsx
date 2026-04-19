@@ -126,7 +126,7 @@ const EventosEmpresaLaserTag = () => {
           </p>
           <ul className="space-y-2 mt-4">
             <li className="flex items-center gap-2"><Clock className="w-4 h-4 text-neon-blue" /> <strong className="text-foreground">Duración flexible:</strong> de 90 a 270 minutos</li>
-            <li className="flex items-center gap-2"><Users className="w-4 h-4 text-neon-blue" /> <strong className="text-foreground">Grupos:</strong> desde 4 personas</li>
+            <li className="flex items-center gap-2"><Users className="w-4 h-4 text-neon-blue" /> <strong className="text-foreground">Grupos:</strong> desde 10 personas</li>
             <li className="flex items-center gap-2"><Star className="w-4 h-4 text-neon-blue" /> <strong className="text-foreground">Factura:</strong> disponible para empresas</li>
           </ul>
         </div>
