@@ -17,8 +17,8 @@ const faqs = [
     answer: 'Las sesiones tienen una duración de entre 90 y 150 minutos, dependiendo del pack elegido. Cada experiencia individual dura entre 15 y 30 minutos.',
   },
   {
-    question: '¿Se puede incluir catering?',
-    answer: 'Sí, podemos organizar opciones de catering o picoteo para completar tu experiencia de realidad virtual. Consúltanos al reservar.',
+    question: '¿Se puede celebrar cumpleaños?',
+    answer: 'Sí, puedes añadir realidad virtual a tu cumpleaños o reservar una sesión VR exclusiva. Compatible con nuestros packs de laser tag para una fiesta completa.',
   },
 ];
 
