@@ -6,7 +6,7 @@ import heroBg from '@/assets/recursos/cumpleanos-laser-tag.jpg';
 const faqs = [
   {
     question: '¿Cuánto cuesta un cumpleaños de laser tag en Murcia?',
-    answer: 'El precio del pack de cumpleaños es de 25€ por participante (mínimo 6 jugadores). Incluye partidas de laser tag con monitor, menu completo, zona de merienda y gestión completa del evento. Consulta con nosotros para opciones personalizadas.',
+    answer: 'El precio del pack de cumpleaños es de 25€ por participante (mínimo 6 jugadores). Incluye video-invitación personalizada, diploma estadísticas de la sesión y partidas de laser tag con monitor, menu completo, zona de merienda y gestión completa del evento. Consulta con nosotros para opciones personalizadas.',
   },
   {
     question: '¿A partir de qué edad se puede jugar?',
@@ -121,7 +121,7 @@ const CumpleanosLaserTagMurcia = () => {
             <li className="flex items-center gap-2"><Clock className="w-4 h-4 text-neon-blue" /> <strong className="text-foreground">Duración:</strong> 150 minutos</li>
             <li className="flex items-start gap-2"><Users className="w-4 h-4 text-neon-blue mt-1" /> <div><strong className="text-foreground">Jugadores:</strong><br />6-16 participantes</div></li>
             <li className="flex items-center gap-2"><Star className="w-4 h-4 text-neon-blue" /> <strong className="text-foreground">Precio:</strong> desde 25€/participante</li>
-            <li className="flex items-center gap-2"><Gift className="w-4 h-4 text-neon-blue" /> <strong className="text-foreground">Incluye:</strong> partidas + monitor + menu completo + zona merienda</li>
+            <li className="flex items-center gap-2"><Gift className="w-4 h-4 text-neon-blue" /> <strong className="text-foreground">Incluye:</strong> video-invitación + diploma + partidas + monitor + menu completo + zona merienda</li>
           </ul>
         </div>
       </SEOLandingLayout>
