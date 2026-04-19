@@ -10,7 +10,7 @@ const faqs = [
   },
   {
     question: '¿A partir de qué edad se puede jugar?',
-    answer: 'La edad mínima es de 8 años, aunque los eventos corporativos suelen ser para adultos. El laser tag no requiere condición física especial, así que todo el equipo puede participar.',
+    answer: 'Los eventos corporativos suelen ser para adultos. El laser tag no requiere condición física especial, así que todo el equipo puede participar.',
   },
   {
     question: '¿Cuánto dura la experiencia?',
