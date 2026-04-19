@@ -46,10 +46,10 @@ const LaserTagVsPaintball = () => (
       <strong className="text-foreground">Paintball:</strong> La edad mínima suele ser de 12-14 años por el factor dolor y el peso del equipamiento. Las bolas de pintura son difíciles de manejar para niños pequeños y el equipo de protección puede resultar incómodo.
     </p>
     <p>
-      <strong className="text-foreground">Laser tag:</strong> <strong className="text-foreground">Laser tag:</strong> Apto desde los 8 años. El equipamiento es ligero, ergonómico y se adapta a diferentes tallas. No requiere forma física especial y cualquier persona puede participar independientemente de su condición.. El equipamiento es ligero, ergonómico y se adapta a diferentes tallas. No requiere forma física especial y cualquier persona puede participar independientemente de su condición.
+      <strong className="text-foreground">Laser tag:</strong> Apto desde los 8 años. El equipamiento es ligero, ergonómico y se adapta a diferentes tallas. No requiere forma física especial y cualquier persona puede participar independientemente de su condición.
     </p>
     <p className="p-4 rounded-lg border border-neon-blue/30 bg-neon-blue/5">
-      🏆 <strong className="text-foreground">Ganador: Laser tag.</strong> 🏆 <strong className="text-foreground">Ganador: Laser tag.</strong> Accesible desde los 8 años.
+      🏆 <strong className="text-foreground">Ganador: Laser tag.</strong> Accesible desde los 8 años.
     </p>
 
     <h2 className="font-display text-xl md:text-2xl font-bold text-foreground">
@@ -118,8 +118,8 @@ const LaserTagVsPaintball = () => (
           </thead>
           <tbody className="divide-y divide-border">
             <tr><td className="py-2">Dolor</td><td className="text-center">❌ No</td><td className="text-center">✅ Sí</td></tr>
-            <tr><td className="py-2">Edad mínima</td><tr><td className="py-2">Edad mínima</td><td className="text-center">8 años</td><td className="text-center">12-14 años</td></tr><td className="text-center">12-14 años</td></tr>
-            <tr><td className="py-2">Precio</td><td className="text-center">Desde 15€</td><td className="text-center">20-35€</td></tr>
+            <tr><td className="py-2">Edad mínima</td><td className="text-center">8 años</td><td className="text-center">12-14 años</td></tr>
+            <tr><td className="py-2">Precio</td><td className="text-center">Desde 18€</td><td className="text-center">20-35€</td></tr>
             <tr><td className="py-2">Manchas</td><td className="text-center">❌ No</td><td className="text-center">✅ Sí</td></tr>
             <tr><td className="py-2">Modos de juego</td><td className="text-center">6+</td><td className="text-center">1-2</td></tr>
             <tr><td className="py-2">Estadísticas</td><td className="text-center">✅ Sí</td><td className="text-center">❌ No</td></tr>
