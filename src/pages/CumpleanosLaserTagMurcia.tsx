@@ -119,7 +119,7 @@ const CumpleanosLaserTagMurcia = () => {
           </h2>
           <ul className="space-y-2 mt-4">
             <li className="flex items-center gap-2"><Clock className="w-4 h-4 text-neon-blue" /> <strong className="text-foreground">Duración:</strong> 150 minutos</li>
-            <li className="flex items-center gap-2"><Users className="w-4 h-4 text-neon-blue" /> <strong className="text-foreground">Jugadores:</strong> 6-16 participantes</li>
+            <li className="flex items-start gap-2"><Users className="w-4 h-4 text-neon-blue mt-1" /> <div><strong className="text-foreground">Jugadores:</strong><br />6-16 participantes</div></li>
             <li className="flex items-center gap-2"><Star className="w-4 h-4 text-neon-blue" /> <strong className="text-foreground">Precio:</strong> desde 25€/participante</li>
             <li className="flex items-center gap-2"><Gift className="w-4 h-4 text-neon-blue" /> <strong className="text-foreground">Incluye:</strong> partidas + monitor + zona merienda</li>
           </ul>
