@@ -93,7 +93,7 @@ const RealidadVirtualMurcia = () => {
           </p>
           <div className="grid sm:grid-cols-2 gap-4 mt-6">
             {[
-              { title: 'Familias', desc: 'Experiencias cooperativas aptas para niños a partir de 8 años. Una actividad que padres e hijos disfrutan juntos.' },
+              { title: 'Familias', desc: 'Experiencias cooperativas aptas para niños a partir de 12 años. Una actividad que padres e hijos disfrutan juntos.' },
               { title: 'Grupos de amigos', desc: 'Competid o colaborad en experiencias multijugador. La VR genera momentos memorables y muchas risas.' },
               { title: 'Cumpleaños', desc: 'Añade una experiencia VR a tu cumpleaños para hacerlo aún más especial. Compatible con nuestros packs de laser tag.' },
               { title: 'Eventos de empresa', desc: 'Team building innovador que sorprende a todo el equipo. Disponible como actividad individual o combinada con laser tag.' },
