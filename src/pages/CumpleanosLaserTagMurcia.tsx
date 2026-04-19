@@ -6,7 +6,7 @@ import heroBg from '@/assets/recursos/cumpleanos-laser-tag.jpg';
 const faqs = [
   {
     question: '¿Cuánto cuesta un cumpleaños de laser tag en Murcia?',
-    answer: 'El precio del pack de cumpleaños es de 25€ por participante (mínimo 6 jugadores). Incluye partidas de laser tag con monitor, menu completo, zona de merienda y gestión completa del evento. Consulta con nosotros para opciones personalizadas.',
+    answer: 'El precio del pack de cumpleaños es de 25€ por participante (mínimo 6 jugadores). Incluye video-invitación personalizada, diploma estadísticas de la sesión y partidas de laser tag con monitor, menu completo, zona de merienda y gestión completa del evento. Consulta con nosotros para opciones personalizadas.',
   },
   {
     question: '¿A partir de qué edad se puede jugar?',
