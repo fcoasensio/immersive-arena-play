@@ -46,7 +46,7 @@ const RealidadVirtualMurcia = () => {
             La <strong className="text-foreground">realidad virtual Free Roaming</strong> es la evolución definitiva del entretenimiento inmersivo. A diferencia de los sistemas VR convencionales donde te sientas con un casco y un mando, en Shoot & Run te equipamos con un sistema inalámbrico que te permite <strong className="text-foreground">caminar, correr, agacharte y explorar</strong> mundos virtuales con total libertad de movimiento.
           </p>
           <p className="mt-4">
-            Nuestras instalaciones en Alcantarilla (Murcia) cuentan con un espacio de juego dedicado donde hasta 4 jugadores simultáneos pueden compartir la misma experiencia virtual. Cada movimiento que haces en el mundo real se replica exactamente en el mundo virtual, creando una sensación de inmersión total.
+            Nuestras instalaciones en Alcantarilla (Murcia) cuentan con un espacio de juego dedicado donde hasta 12 jugadores simultáneos pueden compartir la misma experiencia virtual. Cada movimiento que haces en el mundo real se replica exactamente en el mundo virtual, creando una sensación de inmersión total.
           </p>
         </div>
 
