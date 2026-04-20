@@ -32,7 +32,7 @@ const FALLBACK_PACKS: PackData[] = [
   },
   {
     id: "2", nombre: "Cumpleaños", descripcion: "El cumpleaños más épico que puedan imaginar. ¡Recuerdos para siempre!",
-    precio: "Desde 20€/pers.", duracion: "150 min", jugadores: "Hasta 16 (LT) / 12 (VR)", icono: "PartyPopper",
+    precio: "Desde 25€/pers.", duracion: "150 min", jugadores: "Hasta 16 (LT) / 12 (VR)", icono: "PartyPopper",
     caracteristicas: ["Láser Tag (+8 años) o VR (+12 años)", "Pack Básico incluido", "Zona de merienda privada (resto hasta 150 min)", "Vídeo invitación personalizado", "Coordinador dedicado", "Sáb, dom y festivos: +2€/pers."],
     popular: true, color: "neon-purple", orden: 1,
   },
