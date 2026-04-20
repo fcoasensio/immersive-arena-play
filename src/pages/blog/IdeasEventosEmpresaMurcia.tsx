@@ -92,7 +92,7 @@ const IdeasEventosEmpresaMurcia = () => (
       </li>
       <li className="flex items-start gap-2">
         <span className="text-neon-blue font-bold">4.</span>
-        <span><strong className="text-foreground">Pide factura:</strong> la mayoría de actividades de team building son deducibles. En Shoot and Run emitimos factura con todos los datos fiscales.</span>
+        <span><strong className="text-foreground">Pide factura:</strong> la mayoría de actividades de team building son deducibles. En Shoot and Run emitimos factura correspondiente.</span>
       </li>
     </ul>
 
