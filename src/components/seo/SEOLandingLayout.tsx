@@ -15,12 +15,13 @@ interface SEOLandingLayoutProps {
   title: string;
   subtitle: string;
   heroImage: string;
+  heroImagePosition?: string;
   children: React.ReactNode;
   faqs: FAQ[];
   metaDescription?: string;
 }
 
-const SEOLandingLayout = ({ title, subtitle, heroImage, children, faqs }: SEOLandingLayoutProps) => {
+const SEOLandingLayout = ({ title, subtitle, heroImage, heroImagePosition = 'center', children, faqs }: SEOLandingLayoutProps) => {
   const navigate = useNavigate();
 
   return (
@@ -30,7 +31,7 @@ const SEOLandingLayout = ({ title, subtitle, heroImage, children, faqs }: SEOLan
       {/* Hero */}
       <section className="relative pt-24 pb-16 md:pt-32 md:pb-24 overflow-hidden">
         <div className="absolute inset-0">
-          <img src={heroImage} alt={title} className="w-full h-full object-cover" />
+          <img src={heroImage} alt={title} className="w-full h-full object-cover" style={{ objectPosition: heroImagePosition }} />
           <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background" />
         </div>
         <div className="absolute inset-0 bg-grid opacity-10" />
