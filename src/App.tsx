@@ -23,6 +23,7 @@ import TopPlanesCumpleanosMurcia from "./pages/blog/TopPlanesCumpleanosMurcia";
 import LaserTagVsPaintball from "./pages/blog/LaserTagVsPaintball";
 import IdeasEventosEmpresaMurcia from "./pages/blog/IdeasEventosEmpresaMurcia";
 import LaserTagInstitutosMurcia from "./pages/blog/LaserTagInstitutosMurcia";
+import LaserTagAyuntamientosFiestas from "./pages/blog/LaserTagAyuntamientosFiestas";
 
 const queryClient = new QueryClient();
 
@@ -48,6 +49,7 @@ const App = () => (
             <Route path="/blog/laser-tag-vs-paintball-cual-elegir" element={<LaserTagVsPaintball />} />
             <Route path="/blog/ideas-eventos-empresa-murcia" element={<IdeasEventosEmpresaMurcia />} />
             <Route path="/blog/laser-tag-institutos-murcia" element={<LaserTagInstitutosMurcia />} />
+            <Route path="/blog/laser-tag-ayuntamientos-fiestas-patronales" element={<LaserTagAyuntamientosFiestas />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<ProtectedAdminRoute><Admin /></ProtectedAdminRoute>} />
             <Route path="*" element={<NotFound />} />
