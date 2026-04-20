@@ -70,9 +70,9 @@ const GameCard = ({ game, index }: { game: VRGame; index: number }) => {
       </div>
 
       {/* Body */}
-      <div className="p-4">
-        <h3 className="font-display text-sm font-bold text-foreground mb-2 line-clamp-1">{game.name}</h3>
-        <p className="text-xs text-muted-foreground line-clamp-2 min-h-[2.5rem]">{game.description}</p>
+      <div className="p-4 flex flex-col flex-1">
+        <h3 className="font-display text-sm font-bold text-foreground mb-2">{game.name}</h3>
+        <p className="text-xs text-muted-foreground leading-relaxed">{game.description}</p>
       </div>
     </motion.div>
   );
