@@ -24,6 +24,8 @@ import LaserTagVsPaintball from "./pages/blog/LaserTagVsPaintball";
 import IdeasEventosEmpresaMurcia from "./pages/blog/IdeasEventosEmpresaMurcia";
 import LaserTagInstitutosMurcia from "./pages/blog/LaserTagInstitutosMurcia";
 import LaserTagAyuntamientosFiestas from "./pages/blog/LaserTagAyuntamientosFiestas";
+import RealidadVirtualFreeRoamNoMarea from "./pages/blog/RealidadVirtualFreeRoamNoMarea";
+import CatalogoJuegosVRMurcia from "./pages/blog/CatalogoJuegosVRMurcia";
 
 const queryClient = new QueryClient();
 
@@ -50,6 +52,8 @@ const App = () => (
             <Route path="/blog/ideas-eventos-empresa-murcia" element={<IdeasEventosEmpresaMurcia />} />
             <Route path="/blog/laser-tag-institutos-murcia" element={<LaserTagInstitutosMurcia />} />
             <Route path="/blog/laser-tag-ayuntamientos-fiestas-patronales" element={<LaserTagAyuntamientosFiestas />} />
+            <Route path="/blog/realidad-virtual-free-roam-no-marea" element={<RealidadVirtualFreeRoamNoMarea />} />
+            <Route path="/blog/catalogo-juegos-vr-murcia" element={<CatalogoJuegosVRMurcia />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<ProtectedAdminRoute><Admin /></ProtectedAdminRoute>} />
             <Route path="*" element={<NotFound />} />
