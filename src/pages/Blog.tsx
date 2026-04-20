@@ -8,6 +8,7 @@ import heroBg from '@/assets/hero-bg.jpg';
 import laserCard from '@/assets/recursos/cumpleanos-laser-tag.jpg';
 import vrCard from '@/assets/recursos/eventos-empresa-laser-tag.jpg';
 import laserEquip from '@/assets/recursos/laser-tag-outdoor-evento.jpg';
+import institutosImg from '@/assets/recursos/laser-tag-institutos.jpg';
 
 export interface BlogPost {
   slug: string;
@@ -51,7 +52,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'laser-tag-institutos-murcia',
     title: 'Laser tag en tu instituto: la actividad escolar definitiva',
     excerpt: 'Llevamos el laser tag outdoor al patio de tu centro educativo: hasta +200 alumnos en 3,5 horas, sin desplazamientos y alineado con la LOMLOE. Descarga el dossier para centros.',
-    image: laserEquip,
+    image: institutosImg,
     date: '2026-04-20',
     readTime: '8 min',
     category: 'Centros educativos',
