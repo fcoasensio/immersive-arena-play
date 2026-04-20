@@ -47,6 +47,15 @@ export const blogPosts: BlogPost[] = [
     readTime: '7 min',
     category: 'Empresas',
   },
+  {
+    slug: 'laser-tag-institutos-murcia',
+    title: 'Laser tag en tu instituto: la actividad escolar definitiva',
+    excerpt: 'Llevamos el laser tag outdoor al patio de tu centro educativo: hasta +200 alumnos en 3,5 horas, sin desplazamientos y alineado con la LOMLOE. Descarga el dossier para centros.',
+    image: laserEquip,
+    date: '2026-04-20',
+    readTime: '8 min',
+    category: 'Centros educativos',
+  },
 ];
 
 const Blog = () => {
