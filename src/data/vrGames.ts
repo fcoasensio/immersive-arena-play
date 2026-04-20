@@ -74,8 +74,8 @@ export const vrGames: VRGame[] = [
   { slug: 'vegas', name: 'Vegas', provider: 'battlestart', category: 'party', minAge: 5, maxPlayers: 16, description: 'Party game al estilo casino de Las Vegas. ¡La banca contra ti!' },
 
   // Premium experiences
-  { slug: 'vex-adventure', name: 'Adventure 4D', provider: 'vex', category: 'premium', minAge: 12, maxPlayers: 8, description: 'Aventura cooperativa narrativa con efectos 4D (viento, vibración, calor).' },
-  { slug: 'vex-arena', name: 'Arena Pro', provider: 'vex', category: 'shooter', minAge: 12, maxPlayers: 8, description: 'Shooter competitivo multijugador en arenas inmersivas premium.' },
-  { slug: 'vex-partydash', name: 'Party Dash', provider: 'vex', category: 'party', minAge: 8, maxPlayers: 8, description: 'Minijuegos tipo "fiesta" perfectos para grupos y celebraciones.' },
-  { slug: 'vex-escape-box', name: 'Escape Box', provider: 'vex', category: 'escape', minAge: 12, maxPlayers: 6, description: 'Sala de escape VR cooperativa: enigmas imposibles en la vida real.' },
+  { slug: 'vex-adventure', name: 'VEX Adventure', provider: 'vex', category: 'premium', minAge: 12, maxPlayers: 8, description: 'Aventura cooperativa narrativa con efectos 4D (viento, vibración, calor).' },
+  { slug: 'vex-arena', name: 'VEX Arena', provider: 'vex', category: 'shooter', minAge: 12, maxPlayers: 8, description: 'Shooter competitivo multijugador en arenas inmersivas premium.' },
+  { slug: 'vex-partydash', name: 'VEX PartyDash', provider: 'vex', category: 'party', minAge: 8, maxPlayers: 8, description: 'Minijuegos tipo "fiesta" perfectos para grupos y celebraciones.' },
+  { slug: 'vex-escape-box', name: 'VEX Escape Box', provider: 'vex', category: 'escape', minAge: 12, maxPlayers: 6, description: 'Sala de escape VR cooperativa: enigmas imposibles en la vida real.' },
 ];
