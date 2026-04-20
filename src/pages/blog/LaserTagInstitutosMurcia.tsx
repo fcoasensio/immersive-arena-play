@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import BlogArticleLayout from '@/components/blog/BlogArticleLayout';
-import laserOutdoor from '@/assets/recursos/laser-tag-outdoor-evento.jpg';
+import laserInstituto from '@/assets/recursos/laser-tag-instituto-patio.jpg';
 
 const LaserTagInstitutosMurcia = () => (
   <BlogArticleLayout slug="laser-tag-institutos-murcia">
@@ -17,8 +17,8 @@ const LaserTagInstitutosMurcia = () => (
 
     <div className="my-8 rounded-xl overflow-hidden border border-border">
       <img
-        src={laserOutdoor}
-        alt="Laser tag outdoor en instituto con campo de obstáculos hinchables"
+        src={laserInstituto}
+        alt="Campo de laser tag montado en patio deportivo de instituto con obstáculos hinchables"
         className="w-full h-auto"
         loading="lazy"
       />
