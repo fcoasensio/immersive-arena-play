@@ -9,6 +9,8 @@ import laserCard from '@/assets/recursos/cumpleanos-laser-tag.jpg';
 import vrCard from '@/assets/recursos/eventos-empresa-laser-tag.jpg';
 import laserEquip from '@/assets/recursos/laser-tag-vs-paintball.jpg';
 import institutosImg from '@/assets/recursos/laser-tag-institutos.jpg';
+import vrNoMarea from '@/assets/recursos/vr-free-roam-no-marea.jpg';
+import vrCatalogo from '@/assets/recursos/vr-variedad-juegos.png';
 
 export interface BlogPost {
   slug: string;
@@ -65,6 +67,24 @@ export const blogPosts: BlogPost[] = [
     date: '2026-04-20',
     readTime: '8 min',
     category: 'Ayuntamientos',
+  },
+  {
+    slug: 'realidad-virtual-free-roam-no-marea',
+    title: 'Realidad virtual Free Roam: por qué no marea como la VR doméstica',
+    excerpt: '¿Has probado las gafas VR en casa y has acabado mareado? Te explicamos por qué pasa y cómo el Free Roaming —caminando de verdad— elimina ese problema.',
+    image: vrNoMarea,
+    date: '2026-04-20',
+    readTime: '5 min',
+    category: 'Realidad Virtual',
+  },
+  {
+    slug: 'catalogo-juegos-vr-murcia',
+    title: 'Más de 20 juegos de realidad virtual para todas las edades',
+    excerpt: 'Shooters, aventura, escape rooms… más de 20 experiencias VR aptas desde 12 años y hasta 12 jugadores simultáneos en la misma partida. Descubre nuestro catálogo.',
+    image: vrCatalogo,
+    date: '2026-04-20',
+    readTime: '6 min',
+    category: 'Realidad Virtual',
   },
 ];
 
