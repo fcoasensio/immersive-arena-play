@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Users, Crosshair, Compass, Ghost, Skull, PartyPopper, KeyRound, Sparkles } from 'lucide-react';
+import { Crosshair, Compass, Ghost, Skull, PartyPopper, KeyRound, Sparkles } from 'lucide-react';
 import { vrGames, categoryLabels, type GameCategory, type VRGame } from '@/data/vrGames';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
@@ -72,13 +72,7 @@ const GameCard = ({ game, index }: { game: VRGame; index: number }) => {
       {/* Body */}
       <div className="p-4">
         <h3 className="font-display text-sm font-bold text-foreground mb-2 line-clamp-1">{game.name}</h3>
-        <p className="text-xs text-muted-foreground line-clamp-2 mb-3 min-h-[2.5rem]">{game.description}</p>
-        <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
-          <span className="inline-flex items-center gap-1">
-            <Users className="w-3 h-3 text-neon-blue" />
-            hasta {game.maxPlayers}
-          </span>
-        </div>
+        <p className="text-xs text-muted-foreground line-clamp-2 min-h-[2.5rem]">{game.description}</p>
       </div>
     </motion.div>
   );
