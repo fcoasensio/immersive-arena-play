@@ -46,7 +46,7 @@ const GameCard = ({ game, index }: { game: VRGame; index: number }) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-50px' }}
       transition={{ duration: 0.4, delay: Math.min(index * 0.03, 0.3) }}
-      className="group relative rounded-xl border border-border bg-card/50 overflow-hidden hover:border-neon-blue/60 hover:shadow-[0_0_25px_hsl(var(--neon-blue)/0.25)] transition-all duration-300"
+      className="group relative rounded-xl border border-border bg-card/50 overflow-hidden hover:border-neon-blue/60 hover:shadow-[0_0_25px_hsl(var(--neon-blue)/0.25)] transition-all duration-300 flex flex-col"
     >
       {/* Thumbnail / placeholder */}
       <div className={cn('relative aspect-video w-full overflow-hidden bg-gradient-to-br', categoryGradient[game.category])}>
