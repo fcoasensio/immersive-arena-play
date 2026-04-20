@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { Glasses, Users, Clock, Gamepad2, Star, Crosshair, MapPin, Compass } from 'lucide-react';
 import SEOLandingLayout from '@/components/seo/SEOLandingLayout';
+import VRGamesCatalog from '@/components/VRGamesCatalog';
 import heroBg from '@/assets/recursos/realidad-virtual-murcia.jpg';
 
 const faqs = [
@@ -70,6 +71,9 @@ const RealidadVirtualMurcia = () => {
             ))}
           </div>
         </div>
+
+        {/* Catálogo completo de juegos */}
+        <VRGamesCatalog />
 
         {/* Inmersión */}
         <div>
