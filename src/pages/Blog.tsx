@@ -7,7 +7,7 @@ import Footer from '@/components/Footer';
 import heroBg from '@/assets/hero-bg.jpg';
 import laserCard from '@/assets/recursos/cumpleanos-laser-tag.jpg';
 import vrCard from '@/assets/recursos/eventos-empresa-laser-tag.jpg';
-import laserEquip from '@/assets/recursos/laser-tag-outdoor-evento.jpg';
+import laserEquip from '@/assets/recursos/laser-tag-vs-paintball.jpg';
 import institutosImg from '@/assets/recursos/laser-tag-institutos.jpg';
 
 export interface BlogPost {
