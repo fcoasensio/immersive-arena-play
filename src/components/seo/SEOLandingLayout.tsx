@@ -15,12 +15,13 @@ interface SEOLandingLayoutProps {
   title: string;
   subtitle: string;
   heroImage: string;
+  heroImagePosition?: string;
   children: React.ReactNode;
   faqs: FAQ[];
   metaDescription?: string;
 }
 
-const SEOLandingLayout = ({ title, subtitle, heroImage, children, faqs }: SEOLandingLayoutProps) => {
+const SEOLandingLayout = ({ title, subtitle, heroImage, heroImagePosition = 'center', children, faqs }: SEOLandingLayoutProps) => {
   const navigate = useNavigate();
 
   return (
