@@ -34,7 +34,7 @@ const TopPlanesCumpleanosMurcia = () => (
       La realidad virtual Free Roaming es la última revolución en entretenimiento inmersivo. A diferencia de los cascos VR domésticos, en un centro especializado los jugadores se mueven libremente por el espacio mientras exploran mundos virtuales increíbles: shooters, aventuras cooperativas, escape rooms virtuales...
     </p>
     <p>
-      Es una opción perfecta para <strong className="text-foreground">cumpleaños de adolescentes y preadolescentes</strong> (a partir de 8 años) que buscan algo tecnológico y futurista. La cara de sorpresa cuando se ponen el casco por primera vez no tiene precio.
+      Es una opción perfecta para <strong className="text-foreground">cumpleaños de adolescentes y preadolescentes</strong> (a partir de 12 años) que buscan algo tecnológico y futurista. La cara de sorpresa cuando se ponen el casco por primera vez no tiene precio.
     </p>
     <p>
       👉 <Link to="/realidad-virtual-murcia" className="text-neon-blue hover:underline">Descubre la realidad virtual en Murcia</Link>
@@ -46,10 +46,10 @@ const TopPlanesCumpleanosMurcia = () => (
       3. Cumpleaños en la <span className="text-neon-blue">Naturaleza</span> 🌿
     </h2>
     <p>
-      Si el tiempo acompaña, un cumpleaños al aire libre siempre es un acierto. La Región de Murcia ofrece espacios naturales perfectos para organizar gimcanas, juegos de orientación o incluso partidas de laser tag outdoor. Parques como el de El Valle o Terra Natura combinan naturaleza y diversión.
+      Si el tiempo acompaña, un cumpleaños al aire libre siempre es un acierto. La Región de Murcia dispone de una climatología perfecta para organizar gimcanas, juegos de orientación o incluso partidas de laser tag outdoor en parcelas privadas.
     </p>
     <p>
-      La ventaja de las actividades outdoor es que los niños corren, se mueven y disfrutan del aire libre. El inconveniente es la dependencia del clima y la necesidad de más logística. En Shoot and Run también ofrecemos <strong className="text-foreground">experiencias outdoor de laser tag</strong> con montaje completo en la ubicación que elijas.
+      La ventaja de las actividades outdoor es que los niños corren, se mueven y disfrutan del aire libre. En Shoot and Run también ofrecemos <strong className="text-foreground">experiencias outdoor de laser tag</strong> con montaje completo en la ubicación que elijas.
     </p>
 
     <h2 className="font-display text-xl md:text-2xl font-bold text-foreground">
