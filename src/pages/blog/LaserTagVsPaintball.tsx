@@ -33,7 +33,7 @@ const LaserTagVsPaintball = () => (
       <strong className="text-foreground">Paintball:</strong> El precio base suele ser bajo (10-15€), pero hay costes ocultos. Las bolas de pintura se pagan aparte (entre 5-15€ por carga adicional), y la mayoría de jugadores necesitan recargar al menos una vez. El coste real por persona suele estar entre 20-35€.
     </p>
     <p>
-      <strong className="text-foreground">Laser tag:</strong> Precio cerrado que incluye todo: equipamiento, partidas ilimitadas durante la sesión y sin costes adicionales. En Shoot and Run los packs empiezan desde 18€ por persona para grupos. No hay sorpresas ni gastos extra.
+      <strong className="text-foreground">Laser tag:</strong> Precio cerrado que incluye todo: equipamiento, partidas completas durante la sesión y sin costes adicionales. En Shoot and Run los packs empiezan desde 18€ por persona para grupos. No hay sorpresas ni gastos extra.
     </p>
     <p className="p-4 rounded-lg border border-neon-blue/30 bg-neon-blue/5">
       🏆 <strong className="text-foreground">Ganador: Laser tag.</strong> Precio cerrado, sin costes ocultos.
@@ -72,7 +72,7 @@ const LaserTagVsPaintball = () => (
       <strong className="text-foreground">Paintball:</strong> Normalmente se juega un solo modo: eliminación. Algunos campos ofrecen captura la bandera o asalto, pero la variedad es limitada.
     </p>
     <p>
-      <strong className="text-foreground">Laser tag:</strong> En Shoot and Run ofrecemos <strong className="text-foreground">6 modos de juego diferentes</strong>: Captura la Bandera, Deathmatch, Último Héroe, Dominación, Pandora y Zombies vs Vampiros. Cada sesión incluye partidas con modos distintos para que la diversión no se repita.
+      <strong className="text-foreground">Laser tag:</strong> En Shoot and Run ofrecemos <strong className="text-foreground">6 modos de juego diferentes</strong>: Captura la Bandera, Deathmatch, Último Héroe, Dominación, Pandora y Zombies vs Vampiros. Cada sesión incluye partidas con modos distintos para que la diversión no se acabe.
     </p>
     <p className="p-4 rounded-lg border border-neon-blue/30 bg-neon-blue/5">
       🏆 <strong className="text-foreground">Ganador: Laser tag.</strong> 6 modos vs 1-2 del paintball.
