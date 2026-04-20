@@ -1,85 +1,35 @@
 
 
-## Plan: Lista de juegos VR con miniaturas en la landing
+Esto no es una petición de cambios en código sino una consulta de un cliente. Te preparo la respuesta lista para copiar/pegar en WhatsApp basándome en la información del proyecto (memoria + secciones de la web).
 
-### Objetivo
-Añadir una sección nueva en `/realidad-virtual-murcia` con la lista real de juegos de los proveedores **Battlestart** y **VEX Solutions**, con miniaturas oficiales (que tú me pasarás) y filtrado/agrupación por categoría.
+Datos relevantes que tengo confirmados:
+- Ubicación: Avda. Fernando III El Santo, 24. 30820 Alcantarilla (Murcia). Aparcamiento gratuito, 10 min del centro.
+- Edad mínima Laser Tag: 8+ / VR: 12+ (hay juegos VR aptos desde 9+ tipo party, pero el rango "oficial" del producto es 12+).
+- Capacidad VR Free Roaming: hasta 12 jugadores simultáneos.
+- Capacidad Laser Tag indoor: hasta 16. Outdoor: posible (hay landing dedicada y formulario de presupuesto outdoor).
+- Reservas requieren 50€ de anticipo por Bizum.
+- Teléfono/WhatsApp: +34 606 323 053. Email: hola@shootandrun.es.
+- Packs cumpleaños existen (PacksSection / página /cumpleanos-laser-tag-murcia).
 
-### Lista de juegos a incluir (extraída de las webs de los proveedores)
+Puntos a cubrir en la respuesta:
+1. Saludo + ubicación exacta + cómo llegar.
+2. Sí celebramos cumpleaños; grupo de 15 encaja perfecto (laser tag hasta 16, VR hasta 12 por turno → con 15 se rota).
+3. Para 11 años: laser tag ideal (8+); VR sí hay opciones aptas (party games / aventura), recomendamos combinar.
+4. Modalidades laser tag: indoor (en el local de Alcantarilla) y outdoor (en la ubicación que el cliente elija, presupuesto a medida).
+5. Precios orientativos del pack cumpleaños (sin inventar cifras concretas que no tengo verificadas → remitir a la sección de packs / pedir confirmación de fecha para enviar presupuesto cerrado).
+6. Merienda: no está incluida por defecto en los packs estándar; se puede traer de casa o gestionar a medida → confirmar al cliente.
+7. CTA: pedir fecha tentativa para reservar (anticipo 50€ Bizum) o enviar enlace a /cumpleanos-laser-tag-murcia.
 
-**Battlestart** (124 escenarios, 1-16 jugadores, agrupados por tipo):
+Voy a verificar dos cosas antes de redactar el mensaje final, para no inventar:
+- Si los packs cumpleaños tienen merienda incluida o no (revisar PacksSection y página de cumpleaños).
+- Precios visibles públicamente para 15 niños.
 
-*Tactical Shooter (14+)*
-1. Battle — batalla realista, una sola vida
-2. Tactics — eliminaciones desbloquean armas
-3. Bomb Defuse — atacantes vs defensores
-4. Agents — shooter táctico
+Pasos:
+1. Leer `src/components/PacksSection.tsx` y `src/pages/CumpleanosLaserTagMurcia.tsx` para confirmar contenido y si hay mención a merienda/catering.
+2. Redactar mensaje WhatsApp final, en tono cercano y profesional, con emojis moderados (estilo WhatsApp), estructurado en bloques cortos.
+3. Marcar claramente lo que necesito que tú confirmes (precio exacto, política de merienda) si no aparece en el código.
 
-*Action Adventure (9+)*
-5. Asia Battle — shooter PVP estética asiática
-6. Greek Arena — combate en la Antigüedad
-7. Neon City — ciudad futurista con superpoderes
-8. Mega City — batallas urbanas en azoteas
-9. Magic — aventura mágica
+Resultado esperado: un único bloque de texto listo para pegar en WhatsApp, en español, con la respuesta completa. Si tras revisar los archivos hay datos que no puedo afirmar con seguridad, los dejaré como huecos `[a confirmar]` para que los rellenes tú antes de enviar.
 
-*Horror (16+)*
-10. Doll Park — parque abandonado y muñeca siniestra
-11. Horror Quest
-
-*Survival (14+)*
-12. Zombies — oleadas de monstruos y jefes
-
-*Party Games (5+)*
-13. Penguins — rescatar pingüinos bebés
-14. Dino Dance — baile con Dino-boy
-15. Fireflies — atrapar luciérnagas
-16. Fishing — pesca cooperativa
-17. Sharks Rescue — salvavidas vs tiburones
-18. Cannon Battle — batalla naval
-19. Paint War — pintar territorio
-20. Safari Photo — fotografía de animales
-21. Maze Torches — laberinto con antorchas
-22. Pumpkin Farm — cultivo y aplastar plantaciones
-23. Treasure Hunt — castillo medieval con oro
-24. Diamond Diggers — excavar diamantes
-25. Apple Shooter — tiro al blanco
-26. Cowboy Hats — Lejano Oeste
-27. Snowball War — guerra de bolas de nieve navideña
-28. Lumberjack — talar árboles
-29. Dino Pizza — alimentar dinosaurios
-30. Jet Boxing — entrenamiento con sacos
-31. Family Quest — misión cooperativa familiar
-32. Vegas — party game tipo casino
-
-**VEX Solutions** (experiencias inmersivas premium):
-33. VEX Adventure — aventura cooperativa narrativa con efectos 4D
-34. VEX Arena — shooter competitivo multijugador (hasta 8)
-35. VEX PartyDash — minijuegos tipo "fiesta" para grupos
-36. VEX Escape Box — sala de escape VR
-
-### Cambios técnicos
-
-1. **Carpeta de assets**: crear `src/assets/games/` con subcarpetas `battlestart/` y `vex/` donde colocaré las miniaturas que me pases (formato esperado: JPG/PNG, slug del juego como nombre, ej. `battle.jpg`, `penguins.jpg`, `vex-adventure.jpg`).
-
-2. **Nuevo dato**: crear `src/data/vrGames.ts` con un array tipado:
-   ```ts
-   { slug, name, provider: 'battlestart' | 'vex', category, minAge, maxPlayers, description, image }
-   ```
-
-3. **Nuevo componente**: `src/components/VRGamesCatalog.tsx`
-   - Tabs para filtrar por categoría (Todos / Shooter / Aventura / Party / Horror / Escape & Adventure VEX)
-   - Grid responsivo (2 col móvil, 3 tablet, 4 desktop) de tarjetas con: miniatura, nombre, badge categoría, badge edad, badge "1-16 jugadores", descripción corta
-   - Estética cyberpunk (borde neón, hover glow azul) coherente con el resto
-
-4. **Integrar en la landing**: insertar `<VRGamesCatalog />` en `src/pages/RealidadVirtualMurcia.tsx`, justo después de la sección "Catálogo de Experiencias VR" (donde están las 3 categorías actuales), añadiendo un encabezado "Más de 35 juegos VR para elegir".
-
-5. **Imágenes pendientes**: como me pasarás tú las miniaturas oficiales, en una primera entrega usaré un placeholder neutro (icono + gradiente neón por categoría) para todas las tarjetas. Cuando subas las imágenes a chat las copiaré a `src/assets/games/` con el slug correcto y se mostrarán automáticamente.
-
-### Flujo de trabajo sugerido
-- **Paso 1 (esta tanda)**: implementar estructura, datos y componente con placeholders.
-- **Paso 2 (cuando subas las imágenes)**: te pediré las miniaturas en uno o dos batches (Battlestart por categorías + VEX), las integraré sustituyendo placeholders.
-
-### Notas
-- No se referenciarán los nombres de los proveedores en la UI pública (son tus suministradores, no marca cara al cliente). Internamente sí se mantienen para organizar assets.
-- La sección será 100% estática (sin DB), ideal para SEO.
+No hay cambios de código en esta tarea. Tras tu aprobación, simplemente te entrego el mensaje redactado en chat (no requiere editar archivos).
 
