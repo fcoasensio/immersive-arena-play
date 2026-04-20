@@ -56,6 +56,15 @@ export const blogPosts: BlogPost[] = [
     readTime: '8 min',
     category: 'Centros educativos',
   },
+  {
+    slug: 'laser-tag-ayuntamientos-fiestas-patronales',
+    title: 'Laser tag en las fiestas patronales: la actividad estrella para ayuntamientos',
+    excerpt: 'Llena la plaza de tu pueblo con un campo de laser tag outdoor: +250 vecinos por jornada, servicio llave en mano, seguro RC incluido. Descarga el dossier municipal.',
+    image: laserEquip,
+    date: '2026-04-20',
+    readTime: '8 min',
+    category: 'Ayuntamientos',
+  },
 ];
 
 const Blog = () => {
