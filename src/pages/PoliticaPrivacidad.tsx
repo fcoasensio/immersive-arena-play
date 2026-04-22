@@ -12,9 +12,9 @@ const PoliticaPrivacidad = () => {
           <section>
             <h2 className="text-lg font-semibold text-foreground">1. Responsable del tratamiento</h2>
             <p>
-              <strong>shootandrun</strong><br />
+              <strong>Francisco Jiménez Asensio</strong><br />
               Avda. Cristo Yacente, 24, 30820 Alcantarilla (Murcia)<br />
-              Email: reservas@shootandrun.es<br />
+              Email: gdpr@shootandrun.es<br />
               Teléfono: 606 323 053
             </p>
           </section>
