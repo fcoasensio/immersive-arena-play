@@ -17,9 +17,9 @@ const AvisoLegal = () => {
               siguientes datos:
             </p>
             <p>
-              <strong>Denominación:</strong> shootandrun<br />
+              <strong>Denominación:</strong> Francisco Jiménez Asensio<br />
               <strong>Domicilio:</strong> Avda. Cristo Yacente, 24, 30820 Alcantarilla (Murcia)<br />
-              <strong>Email:</strong> reservas@shootandrun.es<br />
+              <strong>Email:</strong> hola@shootandrun.es<br />
               <strong>Teléfono:</strong> 606 323 053
             </p>
           </section>
