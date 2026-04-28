@@ -252,8 +252,12 @@ serve(async (req: Request) => {
       }
 
       const durationMinutes = parseInt(duration) || 90;
+      // The Google Calendar block always lasts 75 minutes (effective arena occupation),
+      // regardless of the activity's nominal duration (90/150/270 min for cake, gifts, etc.).
+      // This frees adjacent slots so they can be booked.
+      const CALENDAR_BLOCK_MINUTES = 75;
       const endHours = parseInt(normalizedTime.split(":")[0]);
-      const endMins = parseInt(normalizedTime.split(":")[1]) + durationMinutes;
+      const endMins = parseInt(normalizedTime.split(":")[1]) + CALENDAR_BLOCK_MINUTES;
       const endH = endHours + Math.floor(endMins / 60);
       const endM = endMins % 60;
       const startDateTimeStr = `${date}T${normalizedTime}:00`;
