@@ -1,43 +1,23 @@
-## Ajustar edad mínima de juegos VR a 12 años
+## Bloquear siempre 75 min en Google Calendar
 
-Por política, ningún juego de realidad virtual puede ofrecerse a menores de 12 años. Hay que actualizar todos los juegos del catálogo cuya `minAge` sea inferior a 12.
+Actualmente los eventos creados en Google Calendar duran lo mismo que la actividad (90, 150 o 270 min), lo que bloquea franjas adyacentes innecesariamente. El cliente confirma que físicamente solo se solapan ~75 min entre reservas (el resto es preparación/tarta/regalos sin uso de pista).
 
-### Archivo a modificar
+### Cambio
 
-**src/data/vrGames.ts** — actualizar `minAge` a `12` en los siguientes juegos:
+En la edge function `supabase/functions/check-calendar-availability/index.ts`, dentro de la rama `action === "create"`:
 
-Battlestart (party, actualmente 5+):
-- `penguins` (5 → 12)
-- `dino-dance` (5 → 12)
-- `vegas` (5 → 12)
+- Ignorar el `duration` recibido y forzar siempre **75 minutos** al calcular `endDateTimeStr`.
+- Mantener `duration` recibido en la descripción del evento (campo "⏱") para que el admin sepa la duración real de la actividad reservada.
 
-Battlestart (adventure, actualmente 9+):
-- `magic` (9 → 12)
+Concretamente, sustituir el bloque que calcula `endHours/endMins/endH/endM` por un cálculo fijo de start + 75 min, y dejar la línea `⏱ ${durationMinutes} min` en la descripción mostrando la duración real (90/150/270).
 
-VEX (shooter, actualmente 10+):
-- `vex-superhero` (10 → 12)
-- `vex-pixel-hack` (10 → 12)
+### Lo que NO cambia
 
-VEX (adventure, actualmente 10+ y 8+):
-- `vex-dragonfall` (10 → 12)
-- `vex-kraken-island` (10 → 12)
-- `vex-temple-quest` (10 → 12)
-- `vex-lunar-scape` (10 → 12)
-- `vex-space-academy` (8 → 12)
-- `vex-school-of-magic` (8 → 12)
-- `vex-alice-in-wonderland` (8 → 12)
+- Las llamadas con `action === "check"` ya usan `duration: "1"` desde el frontend, así que no se tocan.
+- La duración almacenada en la base de datos (`reservas.duracion`) sigue siendo 90/150/270 según el tipo de reserva.
+- Los formularios y la UI siguen mostrando la duración real al cliente.
+- No se tocan los emails ni el flujo de pago.
 
-VEX (party, actualmente 6+):
-- `vex-party-playland` (6 → 12)
-- `vex-kitchen-panic` (6 → 12)
-- `vex-bblock` (6 → 12)
-- `vex-greenium` (6 → 12)
+### Resultado esperado
 
-VEX (escape, actualmente 10+):
-- `vex-parvus-box` (10 → 12)
-
-### Resultado
-Todos los juegos VR mostrarán el badge `+12` como mínimo, alineado con la política de edad mínima de la actividad VR (12+) ya establecida en el sistema de reservas.
-
-### Nota
-No se requieren cambios en validaciones de reserva ni en otros componentes: el filtro de edad mínima de la actividad VR (12+) ya bloquea reservas para menores. Este cambio sólo refleja correctamente la edad mínima por juego en el catálogo público.
+Cualquier reserva (cumpleaños 150 min, partida/despedida 90 min, evento 270 min) crea un evento en Google Calendar de exactamente 75 min desde la hora de inicio, dejando libres las franjas adyacentes para nuevas reservas.
