@@ -18,13 +18,17 @@ shootandrun es un centro de ocio en Alcantarilla (Murcia) especializado en Laser
 - Duración estándar de experiencia laser: 90 minutos (distribuidos en 3 partidas de 15 min)
 - Para cumpleaños: 150 minutos (incluye videoinvitación 1 min. aprox. + partidas + menu + estadisticas)
 - Menu cumpleaños: Bolsa de snack individual, agua, refresco, hot-dog o pizza individual y kinder bueno (pueden traerse la tarta)
-- Merienda: No se puede traer merienda. Unicamente podrían traer la tarta
+- Merienda: No se puede traer merienda. Unicamente podrían traer la tarta.
+- Si hay intolerancias alimenticias hay que avisarlo al reservar
 
 ### Realidad Virtual (a partir de 12 años, sin excepciones)
 - Capacidad: hasta 12 jugadores simultáneos en arena free-roam
 - Solo modalidad indoor
 - Tecnología free-roam: el jugador camina libremente sin marearse
 - Catálogo amplio de juegos cooperativos y competitivos
+- Menu cumpleaños: Bolsa de snack individual, agua, refresco, hot-dog o pizza individual y kinder bueno (pueden traerse la tarta)
+- Merienda: No se puede traer merienda. Unicamente podrían traer la tarta.
+- Si hay intolerancias alimenticias hay que avisarlo al reservar
 
 ## Reservas y pagos
 - Reserva online: https://shootandrun.es/reservar
@@ -32,6 +36,11 @@ shootandrun es un centro de ocio en Alcantarilla (Murcia) especializado en Laser
 - Antelación mínima: 48 horas
 - Cumpleaños: bloque de 150 min, requiere mínimo de participantes según pack
 - Despedidas, partidas estándar: 90 min
+
+## Cantina
+- Los padres pueden tomar algo de nuestra cantina mientras los niños juegan.
+- Para reservar bandeja de salados (pasteles, empanadillas y saladitos variados) hay que hacerlo al menos con 24 horas de antelación
+- No se puede traer comida del exterior (excepto la tarta)
 
 ## Eventos especiales
 - Cumpleaños infantiles y juveniles (laser tag o VR)
