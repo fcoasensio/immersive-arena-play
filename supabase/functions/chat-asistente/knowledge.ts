@@ -16,7 +16,8 @@ shootandrun es un centro de ocio en Alcantarilla (Murcia) especializado en Laser
 - Capacidad: hasta 16 jugadores por partida
 - Modalidad indoor (en nuestras instalaciones) o outdoor (a domicilio en eventos, ayuntamientos, fiestas patronales)
 - Duración estándar de partida: 90 minutos
-- Para cumpleaños: 150 minutos (incluye partida + sala para tarta)
+- Para cumpleaños: 150 minutos (incluye videoinvitación 1 min. aprox. + partidas + menu + estadisticas)
+- Menu cumpleaños: Bolsa de snack individual, agua, refresco, hot-dog o pizza individual y kinder bueno (pueden traerse la tarta)
 
 ### Realidad Virtual (a partir de 12 años, sin excepciones)
 - Capacidad: hasta 12 jugadores simultáneos en arena free-roam
