@@ -18,6 +18,7 @@ import EventosEmpresaLaserTag from "./pages/EventosEmpresaLaserTag";
 import RealidadVirtualMurcia from "./pages/RealidadVirtualMurcia";
 import ProtectedAdminRoute from "./components/admin/ProtectedAdminRoute";
 import CookieBanner from "./components/CookieBanner";
+import ChatWidget from "./components/chat/ChatWidget";
 import Blog from "./pages/Blog";
 import TopPlanesCumpleanosMurcia from "./pages/blog/TopPlanesCumpleanosMurcia";
 import LaserTagVsPaintball from "./pages/blog/LaserTagVsPaintball";
@@ -59,6 +60,7 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
           <CookieBanner />
+          <ChatWidget />
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
