@@ -18,6 +18,7 @@ shootandrun es un centro de ocio en Alcantarilla (Murcia) especializado en Laser
 - Duración estándar de experiencia laser: 90 minutos (distribuidos en 3 partidas de 15 min)
 - Para cumpleaños: 150 minutos (incluye videoinvitación 1 min. aprox. + partidas + menu + estadisticas)
 - Menu cumpleaños: Bolsa de snack individual, agua, refresco, hot-dog o pizza individual y kinder bueno (pueden traerse la tarta)
+- Merienda: No se puede traer merienda. Unicamente podrían traer la tarta
 
 ### Realidad Virtual (a partir de 12 años, sin excepciones)
 - Capacidad: hasta 12 jugadores simultáneos en arena free-roam
