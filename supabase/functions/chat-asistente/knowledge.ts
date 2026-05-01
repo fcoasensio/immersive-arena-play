@@ -17,8 +17,8 @@ shootandrun es un centro de ocio en Alcantarilla (Murcia) especializado en Laser
 - Modalidad indoor (en nuestras instalaciones) o outdoor (a domicilio en eventos, ayuntamientos, fiestas patronales)
 - Duración estándar de experiencia laser: 90 minutos (distribuidos en 3 partidas de 15 min)
 - Para cumpleaños: 150 minutos (incluye videoinvitación 1 min. aprox. + partidas + menu + estadisticas)
-- Menu cumpleaños: Bolsa de snack individual, agua, refresco, hot-dog o pizza individual y kinder bueno (pueden traerse la tarta)
-- Merienda: No se puede traer merienda. Unicamente podrían traer la tarta.
+- Menu cumpleaños incluido: bolsa de snack individual, agua, refresco, hot-dog o pizza individual y kinder bueno
+- IMPORTANTE - Comida del exterior: lo ÚNICO que se permite traer de fuera es la TARTA. Bajo ningún concepto se pueden traer menús infantiles, aperitivos, snacks, bebidas, merienda de los padres ni ningún otro alimento. Todo lo que se consuma (aparte de la tarta) debe ser del menú incluido o de nuestra cantina.
 - Si hay intolerancias alimenticias hay que avisarlo al reservar
 
 ### Realidad Virtual (a partir de 12 años, sin excepciones)
@@ -26,8 +26,8 @@ shootandrun es un centro de ocio en Alcantarilla (Murcia) especializado en Laser
 - Solo modalidad indoor
 - Tecnología free-roam: el jugador camina libremente sin marearse
 - Catálogo amplio de juegos cooperativos y competitivos
-- Menu cumpleaños: Bolsa de snack individual, agua, refresco, hot-dog o pizza individual y kinder bueno (pueden traerse la tarta)
-- Merienda: No se puede traer merienda. Unicamente podrían traer la tarta.
+- Menu cumpleaños incluido: bolsa de snack individual, agua, refresco, hot-dog o pizza individual y kinder bueno
+- IMPORTANTE - Comida del exterior: lo ÚNICO que se permite traer de fuera es la TARTA. Bajo ningún concepto se pueden traer menús infantiles, aperitivos, snacks, bebidas, merienda de los padres ni ningún otro alimento. Todo lo que se consuma (aparte de la tarta) debe ser del menú incluido o de nuestra cantina.
 - Si hay intolerancias alimenticias hay que avisarlo al reservar
 
 ## Reservas y pagos
