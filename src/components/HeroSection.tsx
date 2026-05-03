@@ -14,6 +14,8 @@ const HeroSection = () => {
           src={heroBg}
           alt="Laser Tag Arena"
           className="w-full h-full object-cover"
+          fetchPriority="high"
+          decoding="async"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background" />
         <div className="absolute inset-0 bg-grid opacity-30" />
