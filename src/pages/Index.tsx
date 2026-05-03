@@ -1,18 +1,17 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
 
-import VRGamesSection from '@/components/VRGamesSection';
-import LaserGamesSection from '@/components/LaserGamesSection';
-import HowItWorksSection from '@/components/HowItWorksSection';
-import PacksSection from '@/components/PacksSection';
-import EventsSection from '@/components/EventsSection';
-import EquipmentSection from '@/components/EquipmentSection';
-import CTASection from '@/components/CTASection';
-import Footer from '@/components/Footer';
-
-import OutdoorBudgetDialog from '@/components/OutdoorBudgetDialog';
+const VRGamesSection = lazy(() => import('@/components/VRGamesSection'));
+const LaserGamesSection = lazy(() => import('@/components/LaserGamesSection'));
+const HowItWorksSection = lazy(() => import('@/components/HowItWorksSection'));
+const PacksSection = lazy(() => import('@/components/PacksSection'));
+const EventsSection = lazy(() => import('@/components/EventsSection'));
+const EquipmentSection = lazy(() => import('@/components/EquipmentSection'));
+const CTASection = lazy(() => import('@/components/CTASection'));
+const Footer = lazy(() => import('@/components/Footer'));
+const OutdoorBudgetDialog = lazy(() => import('@/components/OutdoorBudgetDialog'));
 
 const localBusinessJsonLd = {
   "@context": "https://schema.org",
