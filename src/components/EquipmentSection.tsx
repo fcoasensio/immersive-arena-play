@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Shield, Cpu, Wifi, Battery, Glasses, Footprints } from 'lucide-react';
-import vrExperience from '@/assets/vr-experience.jpg';
-import laserTagBlasters from '@/assets/ak-15-laser-tag-gun.png';
+import vrExperience from '@/assets/vr-experience.webp';
+import laserTagBlasters from '@/assets/ak-15-laser-tag-gun.webp';
 
 const laserFeatures = [
 {
