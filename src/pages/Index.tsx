@@ -84,16 +84,17 @@ const Index = () => {
       </Helmet>
       <Navbar />
       <HeroSection />
-      
-      <LaserGamesSection />
-      <VRGamesSection />
-      <HowItWorksSection />
-      <PacksSection />
-      <EventsSection />
-      <EquipmentSection />
-      <CTASection onOutdoorClick={() => setOutdoorOpen(true)} />
-      <Footer />
-      <OutdoorBudgetDialog open={outdoorOpen} onOpenChange={setOutdoorOpen} />
+      <Suspense fallback={null}>
+        <LaserGamesSection />
+        <VRGamesSection />
+        <HowItWorksSection />
+        <PacksSection />
+        <EventsSection />
+        <EquipmentSection />
+        <CTASection onOutdoorClick={() => setOutdoorOpen(true)} />
+        <Footer />
+        <OutdoorBudgetDialog open={outdoorOpen} onOpenChange={setOutdoorOpen} />
+      </Suspense>
     </div>
   );
 };
