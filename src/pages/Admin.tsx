@@ -65,19 +65,6 @@ const Admin = () => {
           <TabsContent value="chatbot">
             <AdminChatbotStats />
           </TabsContent>
-
-          <TabsContent value="reservas">
-            <AdminReservas />
-          </TabsContent>
-          <TabsContent value="packs">
-            <AdminPacks />
-          </TabsContent>
-          <TabsContent value="configuracion">
-            <AdminConfiguracion />
-          </TabsContent>
-          <TabsContent value="festivos">
-            <AdminFestivos />
-          </TabsContent>
         </Tabs>
       </main>
     </div>
