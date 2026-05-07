@@ -74,6 +74,7 @@ export function useChatStream() {
             Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
           },
           body: JSON.stringify({
+            session_id: getSessionId(),
             messages: baseHistory.slice(-20).map((m) => ({
               role: m.role,
               content: m.content,
