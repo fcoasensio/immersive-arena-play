@@ -45,7 +45,26 @@ const Admin = () => {
             <TabsTrigger value="festivos" className="gap-2">
               <CalendarDays size={16} /> Festivos
             </TabsTrigger>
+            <TabsTrigger value="chatbot" className="gap-2">
+              <MessageCircle size={16} /> Chatbot
+            </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="reservas">
+            <AdminReservas />
+          </TabsContent>
+          <TabsContent value="packs">
+            <AdminPacks />
+          </TabsContent>
+          <TabsContent value="configuracion">
+            <AdminConfiguracion />
+          </TabsContent>
+          <TabsContent value="festivos">
+            <AdminFestivos />
+          </TabsContent>
+          <TabsContent value="chatbot">
+            <AdminChatbotStats />
+          </TabsContent>
 
           <TabsContent value="reservas">
             <AdminReservas />
