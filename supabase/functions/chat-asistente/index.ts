@@ -133,7 +133,36 @@ ${KNOWLEDGE_BASE}${packsInfo}`;
       );
     }
 
-    return new Response(response.body, {
+    // Interceptar el stream para detectar [ESCALAR] y marcar el evento
+    let assistantBuf = "";
+    let escaladaMarcada = false;
+    const decoder = new TextDecoder();
+    const encoder = new TextEncoder();
+    const passthrough = new TransformStream({
+      transform(chunk, controller) {
+        try {
+          const text = decoder.decode(chunk, { stream: true });
+          assistantBuf += text;
+          if (
+            !escaladaMarcada &&
+            eventoId &&
+            assistantBuf.includes("[ESCALAR]")
+          ) {
+            escaladaMarcada = true;
+            supabase
+              .from("chat_eventos")
+              .update({ escalada: true })
+              .eq("id", eventoId)
+              .then(({ error }) => {
+                if (error) console.warn("update escalada:", error.message);
+              });
+          }
+        } catch (_) { /* noop */ }
+        controller.enqueue(chunk);
+      },
+    });
+
+    return new Response(response.body!.pipeThrough(passthrough), {
       headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
     });
   } catch (e) {
