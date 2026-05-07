@@ -1,53 +1,67 @@
 ## Objetivo
 
-Añadir tests automatizados que verifiquen que el asistente del chat responde con los valores exactos de la base de conocimiento en los casos clave: edades mínimas, duración de las experiencias, "recargos"/anticipo, y límites indoor/outdoor por actividad.
+Saber cuánto se usa el chatbot, sin guardar contenido de las conversaciones. Solo métricas anónimas.
 
-## Aclaración importante sobre "recargos"
+## Qué se registra (y qué NO)
 
-La base de conocimiento del chat (`knowledge.ts`) **no contiene recargos de precio** (esos viven en el motor de pricing del servidor para reservas, no en el chat). Lo único equivalente que el asistente sí debe citar exactamente es:
+**Sí:**
+- Una fila por cada **mensaje del usuario** enviado al asistente.
+- Timestamp.
+- `session_id` (uuid generado en el cliente y guardado en `sessionStorage`, se renueva al cerrar la pestaña) — sirve para contar conversaciones únicas sin identificar a nadie.
+- `escalada` (bool) — si esa interacción terminó con `[ESCALAR]`.
 
-- **Anticipo obligatorio: 50 €** por Bizum al **606 323 053**
-- **Antelación mínima: 48 horas**
+**No:**
+- Ni el texto del usuario, ni la respuesta del asistente.
+- Ni IP, ni email, ni user agent.
 
-Los tests cubrirán esos dos como sustitutos coherentes de "recargos". Si quieres testear recargos reales de pricing (festivos, fines de semana, etc.) habría que añadirlos primero a la knowledge base — dímelo y lo hacemos en una segunda iteración.
+Esto evita cualquier problema de RGPD: no hay datos personales.
 
-## Casos a cubrir
+## Cambios técnicos
 
-| # | Pregunta del usuario | Debe aparecer en la respuesta |
-|---|---|---|
-| 1 | "¿A partir de qué edad se puede jugar a VR?" | `12` (años) |
-| 2 | "¿Mi hijo de 7 años puede jugar al laser tag?" | `8` (no, edad mínima 8) |
-| 3 | "¿Cuánto dura una partida estándar de laser tag?" | `90` y `min` |
-| 4 | "¿Cuánto dura un cumpleaños?" | `150` y `min` |
-| 5 | "¿Cuánto es el anticipo y cómo se paga?" | `50`, `Bizum`, `606 323 053` |
-| 6 | "¿Con cuánta antelación tengo que reservar?" | `48` (horas) |
-| 7 | "¿Hacéis VR outdoor?" | menciona que VR es **solo indoor** |
-| 8 | "¿Hacéis laser tag outdoor?" | confirma `indoor` y `outdoor` para laser tag |
-| 9 | "¿Cuántos pueden jugar a laser tag a la vez?" | `16` |
-| 10 | "¿Cuántos pueden jugar a VR a la vez?" | `12` |
+### 1. Nueva tabla `chat_eventos`
+```
+id uuid pk
+created_at timestamptz default now()
+session_id uuid not null
+escalada boolean not null default false
+```
+RLS:
+- SELECT solo para `admin` (vía `has_role`).
+- Sin INSERT desde cliente. La edge function inserta con `SERVICE_ROLE_KEY`.
+- Sin UPDATE/DELETE.
 
-Cada aserción será **case-insensitive** y buscará subcadenas (no match exacto), porque la salida del LLM es no determinista. Eso da robustez sin perder rigor sobre los valores que tienen que estar.
+Índice por `created_at` para las consultas del panel.
 
-## Implementación técnica
+### 2. Edge function `chat-asistente`
+- Generar/recibir `session_id` desde el body (lo manda el cliente).
+- Insertar una fila en `chat_eventos` justo al recibir el mensaje (antes del stream, no añade latencia perceptible).
+- Detectar `[ESCALAR]` en la respuesta acumulada y, al terminar el stream, hacer un `update` poniendo `escalada=true` en esa fila.
 
-**Archivo nuevo**: `supabase/functions/chat-asistente/index.test.ts`
+### 3. Cliente (`useChatStream.ts` + `ChatWidget.tsx`)
+- Generar `session_id` con `crypto.randomUUID()` y persistirlo en `sessionStorage` (`shootandrun_chat_session`).
+- Reutilizarlo en cada `send()` y enviarlo en el body.
+- El botón "Reiniciar chat" genera un nuevo `session_id`.
 
-- Usa `Deno.test` con `sanitizeOps/Resources: false` (porque consumimos un stream SSE).
-- Carga `.env` raíz vía `https://deno.land/std@0.224.0/dotenv/load.ts` para tener `VITE_SUPABASE_URL` y `VITE_SUPABASE_PUBLISHABLE_KEY`.
-- Helper `askAssistant(question: string): Promise<string>`:
-  1. `POST` a `${VITE_SUPABASE_URL}/functions/v1/chat-asistente` con `apikey` + `Authorization: Bearer <anon>` y body `{ messages: [{ role: "user", content: question }] }`.
-  2. Lee el `ReadableStream` SSE línea a línea, parsea cada `data: {...}` y concatena `choices[0].delta.content`.
-  3. Devuelve el texto final completo (sin la etiqueta `[ESCALAR]` para las aserciones).
-- Cada caso es un `Deno.test` independiente con `assertStringIncludes` (case-insensitive comparando en lowercase).
-- Timeout generoso por test (el modelo puede tardar varios segundos). Reutilizamos el mismo patrón de fetch que ya tienes en otros edge functions.
+### 4. Nueva pestaña en `/admin` → "Chatbot"
+Componente `AdminChatbotStats.tsx` con KPIs simples:
+- **Mensajes hoy / 7 días / 30 días**.
+- **Conversaciones únicas** (distinct `session_id`) hoy / 7d / 30d.
+- **Escalados** totales y % sobre conversaciones.
+- **Gráfico de barras** (recharts, ya está en el proyecto) con mensajes por día de los últimos 30 días.
 
-**Sin cambios** en `index.ts` ni en `knowledge.ts`. Los tests se ejecutan contra la función desplegada (mismo modelo, misma KB, mismo stream).
+Consultas vía `supabase.from('chat_eventos').select(...)` desde el cliente admin (RLS ya bloquea a los demás).
 
-## Ejecución
+## Lo que NO se hace
 
-Una vez creado el archivo, los tests se podrán lanzar desde la herramienta de tests de edge functions filtrando por `chat-asistente`. Los resultados mostrarán por consola la respuesta completa del asistente para cada pregunta, lo que también te servirá como forma rápida de auditar tono y exactitud.
+- Sin retención automática (los eventos no contienen nada sensible, ocupan ~50 bytes/fila).
+- Sin tabla de mensajes ni guardado de contenido.
+- Sin cambios en la política de privacidad (no hay datos personales).
 
-## Notas / limitaciones
+## Resumen de archivos
 
-- Como el modelo es no determinista, un test puede fallar puntualmente si el modelo parafrasea de forma poco habitual (p. ej. escribe "doce" en vez de "12"). Si ocurre, ampliamos las aserciones a aceptar variantes (`12|doce`).
-- Estos tests **consumen créditos de Lovable AI** cada vez que se ejecutan (10 llamadas al modelo por corrida completa). Usa el modelo más barato ya configurado (`gemini-3-flash-preview`).
+- **Migración SQL**: crear tabla `chat_eventos` + RLS + índice.
+- **Editar** `supabase/functions/chat-asistente/index.ts`: aceptar `session_id`, insertar evento, marcar `escalada` post-stream.
+- **Editar** `src/hooks/useChatStream.ts`: gestión de `session_id`.
+- **Editar** `src/components/chat/ChatWidget.tsx`: pasar reset de sesión.
+- **Crear** `src/components/admin/AdminChatbotStats.tsx`.
+- **Editar** `src/pages/Admin.tsx`: añadir pestaña "Chatbot".

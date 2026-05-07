@@ -3,11 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LogOut, CalendarCheck, Settings, CalendarDays, Package } from "lucide-react";
+import { LogOut, CalendarCheck, Settings, CalendarDays, Package, MessageCircle } from "lucide-react";
 import AdminReservas from "@/components/admin/AdminReservas";
 import AdminConfiguracion from "@/components/admin/AdminConfiguracion";
 import AdminFestivos from "@/components/admin/AdminFestivos";
 import AdminPacks from "@/components/admin/AdminPacks";
+import AdminChatbotStats from "@/components/admin/AdminChatbotStats";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -44,6 +45,9 @@ const Admin = () => {
             <TabsTrigger value="festivos" className="gap-2">
               <CalendarDays size={16} /> Festivos
             </TabsTrigger>
+            <TabsTrigger value="chatbot" className="gap-2">
+              <MessageCircle size={16} /> Chatbot
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="reservas">
@@ -57,6 +61,9 @@ const Admin = () => {
           </TabsContent>
           <TabsContent value="festivos">
             <AdminFestivos />
+          </TabsContent>
+          <TabsContent value="chatbot">
+            <AdminChatbotStats />
           </TabsContent>
         </Tabs>
       </main>

@@ -15,6 +15,7 @@ const MessageSchema = z.object({
 
 const BodySchema = z.object({
   messages: z.array(MessageSchema).min(1).max(20),
+  session_id: z.string().uuid().optional(),
 });
 
 Deno.serve(async (req) => {
@@ -35,15 +36,31 @@ Deno.serve(async (req) => {
       );
     }
 
-    const { messages } = parsed.data;
+    const { messages, session_id } = parsed.data;
+
+    const supabase = createClient(
+      Deno.env.get("SUPABASE_URL") ?? "",
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
+    );
+
+    // Registrar evento anónimo de uso (sin contenido)
+    let eventoId: string | null = null;
+    if (session_id) {
+      try {
+        const { data: ev } = await supabase
+          .from("chat_eventos")
+          .insert({ session_id })
+          .select("id")
+          .single();
+        eventoId = ev?.id ?? null;
+      } catch (e) {
+        console.warn("No se pudo registrar evento de chat:", e);
+      }
+    }
 
     // Cargar packs activos para mantener info actualizada
     let packsInfo = "";
     try {
-      const supabase = createClient(
-        Deno.env.get("SUPABASE_URL") ?? "",
-        Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
-      );
       const { data: packs } = await supabase
         .from("packs")
         .select("nombre, descripcion, precio, duracion, jugadores")
@@ -116,7 +133,36 @@ ${KNOWLEDGE_BASE}${packsInfo}`;
       );
     }
 
-    return new Response(response.body, {
+    // Interceptar el stream para detectar [ESCALAR] y marcar el evento
+    let assistantBuf = "";
+    let escaladaMarcada = false;
+    const decoder = new TextDecoder();
+    const encoder = new TextEncoder();
+    const passthrough = new TransformStream({
+      transform(chunk, controller) {
+        try {
+          const text = decoder.decode(chunk, { stream: true });
+          assistantBuf += text;
+          if (
+            !escaladaMarcada &&
+            eventoId &&
+            assistantBuf.includes("[ESCALAR]")
+          ) {
+            escaladaMarcada = true;
+            supabase
+              .from("chat_eventos")
+              .update({ escalada: true })
+              .eq("id", eventoId)
+              .then(({ error }) => {
+                if (error) console.warn("update escalada:", error.message);
+              });
+          }
+        } catch (_) { /* noop */ }
+        controller.enqueue(chunk);
+      },
+    });
+
+    return new Response(response.body!.pipeThrough(passthrough), {
       headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
     });
   } catch (e) {
