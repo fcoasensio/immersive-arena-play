@@ -3,6 +3,26 @@ import { useState, useRef, useCallback } from "react";
 export type ChatMessage = { role: "user" | "assistant"; content: string };
 
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat-asistente`;
+const SESSION_KEY = "shootandrun_chat_session";
+
+function getSessionId(): string {
+  try {
+    let id = sessionStorage.getItem(SESSION_KEY);
+    if (!id) {
+      id = crypto.randomUUID();
+      sessionStorage.setItem(SESSION_KEY, id);
+    }
+    return id;
+  } catch {
+    return crypto.randomUUID();
+  }
+}
+
+function resetSessionId(): string {
+  const id = crypto.randomUUID();
+  try { sessionStorage.setItem(SESSION_KEY, id); } catch { /* noop */ }
+  return id;
+}
 
 export function useChatStream() {
   const [messages, setMessages] = useState<ChatMessage[]>([
