@@ -14,6 +14,27 @@ export type Database = {
   }
   public: {
     Tables: {
+      chat_eventos: {
+        Row: {
+          created_at: string
+          escalada: boolean
+          id: string
+          session_id: string
+        }
+        Insert: {
+          created_at?: string
+          escalada?: boolean
+          id?: string
+          session_id: string
+        }
+        Update: {
+          created_at?: string
+          escalada?: boolean
+          id?: string
+          session_id?: string
+        }
+        Relationships: []
+      }
       configuracion: {
         Row: {
           clave: string
