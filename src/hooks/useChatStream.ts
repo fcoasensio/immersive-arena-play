@@ -149,6 +149,7 @@ export function useChatStream() {
   );
 
   const reset = useCallback(() => {
+    resetSessionId();
     setMessages([
       {
         role: "assistant",
