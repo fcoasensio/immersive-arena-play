@@ -15,6 +15,7 @@ const MessageSchema = z.object({
 
 const BodySchema = z.object({
   messages: z.array(MessageSchema).min(1).max(20),
+  session_id: z.string().uuid().optional(),
 });
 
 Deno.serve(async (req) => {
