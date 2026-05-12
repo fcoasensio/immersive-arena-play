@@ -1,67 +1,60 @@
 ## Objetivo
 
-Saber cuánto se usa el chatbot, sin guardar contenido de las conversaciones. Solo métricas anónimas.
+Detectar reservas falsas (como "JJJJJJ...") y marcarlas como **sospechosas** para que no contaminen el calendario ni te hagan perder tiempo, sin bloquear nunca a clientes legítimos.
 
-## Qué se registra (y qué NO)
+## Estrategia en 3 capas
 
-**Sí:**
-- Una fila por cada **mensaje del usuario** enviado al asistente.
-- Timestamp.
-- `session_id` (uuid generado en el cliente y guardado en `sessionStorage`, se renueva al cerrar la pestaña) — sirve para contar conversaciones únicas sin identificar a nadie.
-- `escalada` (bool) — si esa interacción terminó con `[ESCALAR]`.
+### 1. Validaciones más estrictas (frontend + edge function)
 
-**No:**
-- Ni el texto del usuario, ni la respuesta del asistente.
-- Ni IP, ni email, ni user agent.
+Reforzar `ReservationSchema` en `create-reservation` y replicar en el formulario:
 
-Esto evita cualquier problema de RGPD: no hay datos personales.
+- **Nombre completo**: mínimo 2 palabras de ≥2 letras, cada palabra con al menos una vocal, solo letras (incluye acentos), espacios, guiones y apóstrofes. Sin más de 3 caracteres iguales seguidos (`/(.)\1{3,}/i` rechaza "JJJJ").
+- **Teléfono**: se acepta extranjero. Regla mínima: 6–20 dígitos, opcional `+` inicial, no más de 4 dígitos iguales consecutivos (`6666...` se penaliza, no se bloquea).
+- **Email**: además del formato válido, comprobar que el dominio tenga **registros MX reales** vía DNS-over-HTTPS (`https://dns.google/resolve?type=MX`) desde la edge function. Esto descarta `@jjj.es` y similares.
+- **DNI / NIE / CIF español**: validar con algoritmo oficial de letra de control. Si no es español válido pero el teléfono parece extranjero, no se penaliza (por respeto a tu opción 1).
+- **Código postal**: regex `^\d{4,10}$` (permisivo para extranjeros).
+- **Repetición de caracteres**: cualquier campo de texto con >4 caracteres iguales consecutivos suma sospecha.
 
-## Cambios técnicos
+Las reglas duras (formato email, longitudes) se aplican en cliente y servidor; las reglas "blandas" alimentan el score.
 
-### 1. Nueva tabla `chat_eventos`
-```
-id uuid pk
-created_at timestamptz default now()
-session_id uuid not null
-escalada boolean not null default false
-```
-RLS:
-- SELECT solo para `admin` (vía `has_role`).
-- Sin INSERT desde cliente. La edge function inserta con `SERVICE_ROLE_KEY`.
-- Sin UPDATE/DELETE.
+### 2. Score de sospecha + nuevo estado
 
-Índice por `created_at` para las consultas del panel.
+Migración de BD:
+- Añadir valor `sospechosa` al enum `estado_reserva`.
+- Añadir columnas `score_sospecha int default 0` y `motivos_sospecha text[]` a `reservas`.
 
-### 2. Edge function `chat-asistente`
-- Generar/recibir `session_id` desde el body (lo manda el cliente).
-- Insertar una fila en `chat_eventos` justo al recibir el mensaje (antes del stream, no añade latencia perceptible).
-- Detectar `[ESCALAR]` en la respuesta acumulada y, al terminar el stream, hacer un `update` poniendo `escalada=true` en esa fila.
+En `create-reservation`, calcular score con pesos:
 
-### 3. Cliente (`useChatStream.ts` + `ChatWidget.tsx`)
-- Generar `session_id` con `crypto.randomUUID()` y persistirlo en `sessionStorage` (`shootandrun_chat_session`).
-- Reutilizarlo en cada `send()` y enviarlo en el body.
-- El botón "Reiniciar chat" genera un nuevo `session_id`.
+| Señal | Puntos |
+|---|---|
+| Email con dominio sin MX | +40 |
+| DNI español inválido (y teléfono parece ES) | +30 |
+| Nombre con 4+ caracteres iguales seguidos o sin vocales | +30 |
+| Cualquier otro campo con 5+ caracteres iguales seguidos | +15 |
+| Misma IP creando >2 reservas en 10 min | +25 |
 
-### 4. Nueva pestaña en `/admin` → "Chatbot"
-Componente `AdminChatbotStats.tsx` con KPIs simples:
-- **Mensajes hoy / 7 días / 30 días**.
-- **Conversaciones únicas** (distinct `session_id`) hoy / 7d / 30d.
-- **Escalados** totales y % sobre conversaciones.
-- **Gráfico de barras** (recharts, ya está en el proyecto) con mensajes por día de los últimos 30 días.
+- **Score ≥ 50** → estado `sospechosa`. **No** se crea evento en Google Calendar y **no** se envía email de confirmación al cliente.
+- **Score < 50** → flujo normal.
 
-Consultas vía `supabase.from('chat_eventos').select(...)` desde el cliente admin (RLS ya bloquea a los demás).
+### 3. Aviso por email al admin + revisión rápida
 
-## Lo que NO se hace
+- Nueva edge function `send-suspicious-reservation-alert` (vía Resend, ya configurado) que te envía a ti un correo con: datos de la reserva, score, lista de `motivos_sospecha` y enlace directo al panel admin. Se dispara solo cuando el score ≥ 50.
+- En `AdminReservas.tsx`:
+  - Filtro nuevo "Sospechosas" con badge de contador.
+  - En el detalle, mostrar `motivos_sospecha` como chips rojos y el score.
+  - Botones **"Aprobar"** (cambia estado a `pendiente_pago`, dispara email al cliente + evento en Calendar) y **"Eliminar"**.
 
-- Sin retención automática (los eventos no contienen nada sensible, ocupan ~50 bytes/fila).
-- Sin tabla de mensajes ni guardado de contenido.
-- Sin cambios en la política de privacidad (no hay datos personales).
+Así nunca pierdes una reserva legítima: si hay un falso positivo, la apruebas en 1 click.
 
-## Resumen de archivos
+## Cambios técnicos resumidos
 
-- **Migración SQL**: crear tabla `chat_eventos` + RLS + índice.
-- **Editar** `supabase/functions/chat-asistente/index.ts`: aceptar `session_id`, insertar evento, marcar `escalada` post-stream.
-- **Editar** `src/hooks/useChatStream.ts`: gestión de `session_id`.
-- **Editar** `src/components/chat/ChatWidget.tsx`: pasar reset de sesión.
-- **Crear** `src/components/admin/AdminChatbotStats.tsx`.
-- **Editar** `src/pages/Admin.tsx`: añadir pestaña "Chatbot".
+- **Migración**: enum `estado_reserva` + `sospechosa`, columnas `score_sospecha` y `motivos_sospecha`.
+- **Edge function `create-reservation`**: helpers `validarDNI`, `comprobarMX`, `calcularScore`; bifurcación según score; saltar Calendar/email si sospechosa; invocar `send-suspicious-reservation-alert` si score ≥ 50.
+- **Nueva edge function `send-suspicious-reservation-alert`** (Resend).
+- **Frontend `ReservationForm.tsx` / `ReservaForm.tsx`**: validaciones zod replicadas para feedback inmediato (nombre, repeticiones).
+- **`AdminReservas.tsx`**: filtro Sospechosas, chips de motivos, botones Aprobar/Eliminar.
+- Tipos Supabase se regeneran solos.
+
+## Lo que no se cambia
+
+- Flujo de pago (Bizum 50€), lógica de precios, chatbot, otras reservas existentes.
