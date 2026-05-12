@@ -40,6 +40,8 @@ type Reserva = {
   anticipo: number | null;
   notas: string | null;
   google_calendar_event_id: string | null;
+  score_sospecha?: number | null;
+  motivos_sospecha?: string[] | null;
 };
 
 const estadoColors: Record<string, string> = {
@@ -47,6 +49,7 @@ const estadoColors: Record<string, string> = {
   pago_recibido: "bg-neon-blue/20 text-neon-blue border-neon-blue/30",
   confirmada: "bg-neon-green/20 text-neon-green border-neon-green/30",
   cancelada: "bg-neon-red/20 text-neon-red border-neon-red/30",
+  sospechosa: "bg-orange-500/20 text-orange-400 border-orange-500/30",
 };
 
 const estadoLabels: Record<string, string> = {
@@ -54,6 +57,7 @@ const estadoLabels: Record<string, string> = {
   pago_recibido: "Pago recibido",
   confirmada: "Confirmada",
   cancelada: "Cancelada",
+  sospechosa: "⚠️ Sospechosa",
 };
 
 const AdminReservas = () => {
