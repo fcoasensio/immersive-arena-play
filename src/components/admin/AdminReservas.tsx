@@ -328,6 +328,7 @@ const AdminReservas = () => {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Todos</SelectItem>
+            <SelectItem value="sospechosa">⚠️ Sospechosas</SelectItem>
             <SelectItem value="pendiente_pago">Pendiente pago</SelectItem>
             <SelectItem value="pago_recibido">Pago recibido</SelectItem>
             <SelectItem value="confirmada">Confirmada</SelectItem>
