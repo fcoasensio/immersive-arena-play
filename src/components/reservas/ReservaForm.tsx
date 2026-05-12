@@ -287,6 +287,14 @@ const ReservaForm = () => {
       if (error) throw error;
       const insertedReserva = { id: responseData.id };
 
+      // Si la reserva es sospechosa, no enviamos email al cliente ni creamos evento.
+      // El backend ya ha avisado al admin internamente.
+      if (responseData?.sospechosa) {
+        setSubmitted(true);
+        toast.success("¡Reserva recibida! Te contactaremos en breve para confirmarla.");
+        return;
+      }
+
       // Send email notifications via Resend edge function
       const tipoLabel = tipoOptions.find(t => t.value === data.tipo_reserva)?.label || data.tipo_reserva;
       const actLabel = actividadOptions.find(a => a.value === data.actividad)?.label || data.actividad;
