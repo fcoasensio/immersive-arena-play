@@ -40,6 +40,8 @@ type Reserva = {
   anticipo: number | null;
   notas: string | null;
   google_calendar_event_id: string | null;
+  score_sospecha?: number | null;
+  motivos_sospecha?: string[] | null;
 };
 
 const estadoColors: Record<string, string> = {
@@ -47,6 +49,7 @@ const estadoColors: Record<string, string> = {
   pago_recibido: "bg-neon-blue/20 text-neon-blue border-neon-blue/30",
   confirmada: "bg-neon-green/20 text-neon-green border-neon-green/30",
   cancelada: "bg-neon-red/20 text-neon-red border-neon-red/30",
+  sospechosa: "bg-orange-500/20 text-orange-400 border-orange-500/30",
 };
 
 const estadoLabels: Record<string, string> = {
@@ -54,6 +57,7 @@ const estadoLabels: Record<string, string> = {
   pago_recibido: "Pago recibido",
   confirmada: "Confirmada",
   cancelada: "Cancelada",
+  sospechosa: "⚠️ Sospechosa",
 };
 
 const AdminReservas = () => {
@@ -324,6 +328,7 @@ const AdminReservas = () => {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Todos</SelectItem>
+            <SelectItem value="sospechosa">⚠️ Sospechosas</SelectItem>
             <SelectItem value="pendiente_pago">Pendiente pago</SelectItem>
             <SelectItem value="pago_recibido">Pago recibido</SelectItem>
             <SelectItem value="confirmada">Confirmada</SelectItem>
@@ -422,6 +427,31 @@ const AdminReservas = () => {
               {selected.nombre_menor && <Detail label="Menor" value={`${selected.nombre_menor} (${selected.edad_menor} años)`} full />}
               {selected.tematica_invitacion && <Detail label="Temática" value={selected.tematica_invitacion} full />}
               {selected.notas && <Detail label="Notas" value={selected.notas} full />}
+              {selected.estado === "sospechosa" && (
+                <div className="col-span-2 p-3 rounded-md border border-orange-500/40 bg-orange-500/5 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="text-xs font-bold text-orange-400 uppercase tracking-wide">
+                      ⚠️ Reserva sospechosa · score {selected.score_sospecha ?? 0}/100
+                    </div>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="h-7 text-xs border-orange-500/40 text-orange-300 hover:bg-orange-500/10"
+                      onClick={() => updateEstado(selected.id, "pendiente_pago")}
+                    >
+                      Aprobar
+                    </Button>
+                  </div>
+                  {selected.motivos_sospecha && selected.motivos_sospecha.length > 0 && (
+                    <ul className="text-xs text-orange-200/90 list-disc pl-5 space-y-0.5">
+                      {selected.motivos_sospecha.map((m, i) => <li key={i}>{m}</li>)}
+                    </ul>
+                  )}
+                  <p className="text-[11px] text-muted-foreground">
+                    No se ha enviado email al cliente ni evento al calendario. Aprueba si es válida o cambia el estado a "Cancelada" para descartarla.
+                  </p>
+                </div>
+              )}
               <div className="col-span-2 pt-2">
                 <span className="text-muted-foreground text-xs">Estado:</span>
                 <Select value={selected.estado} onValueChange={(v) => updateEstado(selected.id, v)}>
