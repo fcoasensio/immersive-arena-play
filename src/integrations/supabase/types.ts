@@ -147,12 +147,14 @@ export type Database = {
           google_calendar_event_id: string | null
           hora: string
           id: string
+          motivos_sospecha: string[]
           nombre_completo: string
           nombre_menor: string | null
           notas: string | null
           num_participantes: number
           precio_base: number | null
           precio_final: number | null
+          score_sospecha: number
           telefono: string
           tematica_invitacion: string | null
           tipo_reserva: Database["public"]["Enums"]["tipo_reserva"]
@@ -172,12 +174,14 @@ export type Database = {
           google_calendar_event_id?: string | null
           hora: string
           id?: string
+          motivos_sospecha?: string[]
           nombre_completo: string
           nombre_menor?: string | null
           notas?: string | null
           num_participantes: number
           precio_base?: number | null
           precio_final?: number | null
+          score_sospecha?: number
           telefono: string
           tematica_invitacion?: string | null
           tipo_reserva: Database["public"]["Enums"]["tipo_reserva"]
@@ -197,12 +201,14 @@ export type Database = {
           google_calendar_event_id?: string | null
           hora?: string
           id?: string
+          motivos_sospecha?: string[]
           nombre_completo?: string
           nombre_menor?: string | null
           notas?: string | null
           num_participantes?: number
           precio_base?: number | null
           precio_final?: number | null
+          score_sospecha?: number
           telefono?: string
           tematica_invitacion?: string | null
           tipo_reserva?: Database["public"]["Enums"]["tipo_reserva"]
@@ -249,6 +255,7 @@ export type Database = {
         | "pago_recibido"
         | "confirmada"
         | "cancelada"
+        | "sospechosa"
       tipo_reserva: "cumpleanos" | "grupos" | "despedida"
     }
     CompositeTypes: {
@@ -385,6 +392,7 @@ export const Constants = {
         "pago_recibido",
         "confirmada",
         "cancelada",
+        "sospechosa",
       ],
       tipo_reserva: ["cumpleanos", "grupos", "despedida"],
     },
