@@ -70,6 +70,59 @@ const AdminReservas = () => {
   const [newDate, setNewDate] = useState("");
   const [newTime, setNewTime] = useState("");
   const [rescheduling, setRescheduling] = useState(false);
+  const [discountValue, setDiscountValue] = useState<string>("");
+  const [discountType, setDiscountType] = useState<"eur" | "pct">("eur");
+  const [applyingDiscount, setApplyingDiscount] = useState(false);
+
+  const computeDiscountedPrice = (): number | null => {
+    if (!selected || selected.precio_base == null) return null;
+    const base = Number(selected.precio_base);
+    const v = parseFloat(discountValue.replace(",", "."));
+    if (isNaN(v) || v < 0) return null;
+    const final = discountType === "pct" ? base * (1 - v / 100) : base - v;
+    return Math.max(0, Math.round(final * 100) / 100);
+  };
+
+  const applyDiscount = async () => {
+    if (!selected) return;
+    const nuevoPrecio = computeDiscountedPrice();
+    if (nuevoPrecio == null) {
+      toast.error("Introduce un descuento válido");
+      return;
+    }
+    setApplyingDiscount(true);
+    const { error } = await supabase
+      .from("reservas")
+      .update({ precio_final: nuevoPrecio } as any)
+      .eq("id", selected.id);
+    setApplyingDiscount(false);
+    if (error) {
+      console.error(error);
+      toast.error("Error aplicando descuento");
+      return;
+    }
+    setReservas((prev) => prev.map((r) => r.id === selected.id ? { ...r, precio_final: nuevoPrecio } : r));
+    setSelected({ ...selected, precio_final: nuevoPrecio });
+    setDiscountValue("");
+    toast.success(`Precio actualizado a ${nuevoPrecio}€`);
+  };
+
+  const resetPrecio = async () => {
+    if (!selected || selected.precio_base == null) return;
+    const base = Number(selected.precio_base);
+    // recalcular con recargo: si precio_final original era base + recargo*part, no lo sabemos sin recalcular.
+    // Simplificación: restablecer a precio_base.
+    setApplyingDiscount(true);
+    const { error } = await supabase
+      .from("reservas")
+      .update({ precio_final: base } as any)
+      .eq("id", selected.id);
+    setApplyingDiscount(false);
+    if (error) { toast.error("Error restableciendo precio"); return; }
+    setReservas((prev) => prev.map((r) => r.id === selected.id ? { ...r, precio_final: base } : r));
+    setSelected({ ...selected, precio_final: base });
+    toast.success("Precio restablecido al base");
+  };
 
   const openReschedule = (r: Reserva) => {
     setSelected(r);
