@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Loader2, Search, Eye, CalendarClock } from "lucide-react";
+import { Loader2, Search, Eye, CalendarClock, Percent, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
@@ -70,6 +70,59 @@ const AdminReservas = () => {
   const [newDate, setNewDate] = useState("");
   const [newTime, setNewTime] = useState("");
   const [rescheduling, setRescheduling] = useState(false);
+  const [discountValue, setDiscountValue] = useState<string>("");
+  const [discountType, setDiscountType] = useState<"eur" | "pct">("eur");
+  const [applyingDiscount, setApplyingDiscount] = useState(false);
+
+  const computeDiscountedPrice = (): number | null => {
+    if (!selected || selected.precio_base == null) return null;
+    const base = Number(selected.precio_base);
+    const v = parseFloat(discountValue.replace(",", "."));
+    if (isNaN(v) || v < 0) return null;
+    const final = discountType === "pct" ? base * (1 - v / 100) : base - v;
+    return Math.max(0, Math.round(final * 100) / 100);
+  };
+
+  const applyDiscount = async () => {
+    if (!selected) return;
+    const nuevoPrecio = computeDiscountedPrice();
+    if (nuevoPrecio == null) {
+      toast.error("Introduce un descuento válido");
+      return;
+    }
+    setApplyingDiscount(true);
+    const { error } = await supabase
+      .from("reservas")
+      .update({ precio_final: nuevoPrecio } as any)
+      .eq("id", selected.id);
+    setApplyingDiscount(false);
+    if (error) {
+      console.error(error);
+      toast.error("Error aplicando descuento");
+      return;
+    }
+    setReservas((prev) => prev.map((r) => r.id === selected.id ? { ...r, precio_final: nuevoPrecio } : r));
+    setSelected({ ...selected, precio_final: nuevoPrecio });
+    setDiscountValue("");
+    toast.success(`Precio actualizado a ${nuevoPrecio}€`);
+  };
+
+  const resetPrecio = async () => {
+    if (!selected || selected.precio_base == null) return;
+    const base = Number(selected.precio_base);
+    // recalcular con recargo: si precio_final original era base + recargo*part, no lo sabemos sin recalcular.
+    // Simplificación: restablecer a precio_base.
+    setApplyingDiscount(true);
+    const { error } = await supabase
+      .from("reservas")
+      .update({ precio_final: base } as any)
+      .eq("id", selected.id);
+    setApplyingDiscount(false);
+    if (error) { toast.error("Error restableciendo precio"); return; }
+    setReservas((prev) => prev.map((r) => r.id === selected.id ? { ...r, precio_final: base } : r));
+    setSelected({ ...selected, precio_final: base });
+    toast.success("Precio restablecido al base");
+  };
 
   const openReschedule = (r: Reserva) => {
     setSelected(r);
@@ -452,6 +505,55 @@ const AdminReservas = () => {
                   </p>
                 </div>
               )}
+              <div className="col-span-2 p-3 rounded-md border border-border bg-muted/30 space-y-2">
+                <div className="text-xs font-bold uppercase tracking-wide text-primary flex items-center gap-1.5">
+                  <Tag size={14} /> Aplicar descuento
+                </div>
+                <div className="text-[11px] text-muted-foreground">
+                  Base: {selected.precio_base}€ · Actual: <span className="font-semibold text-foreground">{selected.precio_final}€</span>
+                </div>
+                <div className="flex gap-2 items-center">
+                  <Input
+                    type="number"
+                    min={0}
+                    step="0.01"
+                    placeholder="0"
+                    value={discountValue}
+                    onChange={(e) => setDiscountValue(e.target.value)}
+                    className="h-8 text-sm"
+                  />
+                  <Select value={discountType} onValueChange={(v) => setDiscountType(v as "eur" | "pct")}>
+                    <SelectTrigger className="h-8 w-20 text-xs">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="eur">€</SelectItem>
+                      <SelectItem value="pct">%</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <Button size="sm" className="h-8" onClick={applyDiscount} disabled={applyingDiscount || !discountValue}>
+                    {applyingDiscount ? <Loader2 size={14} className="animate-spin" /> : "Aplicar"}
+                  </Button>
+                </div>
+                {discountValue && computeDiscountedPrice() != null && (
+                  <div className="text-xs text-neon-green">
+                    Nuevo precio: <span className="font-bold">{computeDiscountedPrice()}€</span>
+                  </div>
+                )}
+                {selected.precio_base != null && Number(selected.precio_final) !== Number(selected.precio_base) && (
+                  <button
+                    type="button"
+                    onClick={resetPrecio}
+                    disabled={applyingDiscount}
+                    className="text-[11px] text-muted-foreground hover:text-foreground underline"
+                  >
+                    Restablecer precio al base ({selected.precio_base}€)
+                  </button>
+                )}
+                <p className="text-[11px] text-muted-foreground">
+                  El descuento se aplica sobre el precio base. El cliente verá el nuevo importe en los emails de cambio de estado.
+                </p>
+              </div>
               <div className="col-span-2 pt-2">
                 <span className="text-muted-foreground text-xs">Estado:</span>
                 <Select value={selected.estado} onValueChange={(v) => updateEstado(selected.id, v)}>
