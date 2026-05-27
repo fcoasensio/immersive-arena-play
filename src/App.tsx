@@ -22,6 +22,7 @@ const RealidadVirtualMurcia = lazy(() => import("./pages/RealidadVirtualMurcia")
 const ProtectedAdminRoute = lazy(() => import("./components/admin/ProtectedAdminRoute"));
 const CookieBanner = lazy(() => import("./components/CookieBanner"));
 const ChatWidget = lazy(() => import("./components/chat/ChatWidget"));
+const LeadCapturePopup = lazy(() => import("./components/LeadCapturePopup"));
 const Blog = lazy(() => import("./pages/Blog"));
 const TopPlanesCumpleanosMurcia = lazy(() => import("./pages/blog/TopPlanesCumpleanosMurcia"));
 const LaserTagVsPaintball = lazy(() => import("./pages/blog/LaserTagVsPaintball"));
@@ -65,6 +66,7 @@ const App = () => (
             </Routes>
             <CookieBanner />
             <ChatWidget />
+            <LeadCapturePopup />
           </Suspense>
         </BrowserRouter>
       </TooltipProvider>
