@@ -58,13 +58,13 @@ const Navbar = () => {
     }
   };
 
-  const linkClass = "font-body text-[10px] uppercase tracking-wider text-foreground hover:text-neon-blue transition-colors duration-300 relative group";
+  const linkClass = "font-body uppercase tracking-wider text-foreground hover:text-neon-blue transition-colors duration-300 relative group text-lg";
   const mobileLinkClass = "font-body text-lg uppercase tracking-wider text-muted-foreground hover:text-neon-blue transition-colors duration-300 py-2";
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16 md:h-20">
+        <div className="flex items-center justify-between h-16 md:h-20 font-bold text-xl">
           <a href="/" onClick={handleLogoClick} className="flex items-center group">
             <img src={logoImg} alt="Shoot and Run" className="h-[52px] md:h-[62px] w-auto" translate="no" />
           </a>
