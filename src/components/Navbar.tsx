@@ -58,7 +58,7 @@ const Navbar = () => {
     }
   };
 
-  const linkClass = "font-body uppercase tracking-wider text-foreground hover:text-neon-blue transition-colors duration-300 relative group text-lg";
+  const linkClass = "font-body uppercase tracking-wider text-foreground hover:text-neon-blue transition-colors duration-300 relative group text-xl";
   const mobileLinkClass = "font-body text-lg uppercase tracking-wider text-muted-foreground hover:text-neon-blue transition-colors duration-300 py-2";
 
   return (
