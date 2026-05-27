@@ -80,6 +80,63 @@ export type Database = {
         }
         Relationships: []
       }
+      leads_rapidos: {
+        Row: {
+          client_timestamp: string | null
+          consentimiento: boolean
+          created_at: string
+          fecha_orientativa: string | null
+          id: string
+          nombre: string
+          num_personas: string | null
+          page_url: string | null
+          source: string
+          telefono: string
+          tipo_evento: string
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          utm_term: string | null
+        }
+        Insert: {
+          client_timestamp?: string | null
+          consentimiento?: boolean
+          created_at?: string
+          fecha_orientativa?: string | null
+          id?: string
+          nombre: string
+          num_personas?: string | null
+          page_url?: string | null
+          source?: string
+          telefono: string
+          tipo_evento: string
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+        }
+        Update: {
+          client_timestamp?: string | null
+          consentimiento?: boolean
+          created_at?: string
+          fecha_orientativa?: string | null
+          id?: string
+          nombre?: string
+          num_personas?: string | null
+          page_url?: string | null
+          source?: string
+          telefono?: string
+          tipo_evento?: string
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+        }
+        Relationships: []
+      }
       packs: {
         Row: {
           activo: boolean
