@@ -98,6 +98,8 @@ const AdminLeads = () => {
   const filtered = leads.filter(l => {
     if (filterCat !== "all" && l.categoria !== filterCat) return false;
     if (filterEvento !== "all" && l.tipo_evento !== filterEvento) return false;
+    if (filterSource === "instagram" && l.source !== "instagram_sheet") return false;
+    if (filterSource === "web" && l.source === "instagram_sheet") return false;
     return true;
   });
 
