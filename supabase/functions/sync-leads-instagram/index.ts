@@ -350,7 +350,7 @@ serve(async (req) => {
             .from("leads_rapidos")
             .insert({
               nombre: nombre.trim().slice(0, 100),
-              telefono: null,
+              telefono: telefono.trim() ? telefono.trim().slice(0, 30) : null,
               email: email.trim().slice(0, 150),
               tipo_evento: tipo,
               actividad_interes: "no_se",
