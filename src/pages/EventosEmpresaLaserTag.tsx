@@ -20,6 +20,10 @@ const faqs = [
     question: '¿Se puede incluir catering?',
     answer: 'Sí, disponemos de opciones de catering y picoteo para eventos de empresa. Consúltanos para conocer nuestros packs y menús disponibles.',
   },
+  {
+    question: '¿Qué pasa si el número real de asistentes no coincide con la reserva?',
+    answer: 'No pasa nada. El número de participantes que indicas al reservar es orientativo: el importe final se calcula con los asistentes reales el día del evento.',
+  },
 ];
 
 const EventosEmpresaLaserTag = () => {

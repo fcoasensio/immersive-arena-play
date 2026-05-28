@@ -36,6 +36,7 @@ shootandrun es un centro de ocio en Alcantarilla (Murcia) especializado en Laser
 - Antelación mínima: 48 horas
 - Cumpleaños: bloque de 150 min, requiere mínimo de participantes según pack
 - Despedidas, partidas estándar: 90 min
+- Número de jugadores orientativo: si el número real de jugadores no coincide con la reserva, no pasa nada. El importe final se calcula con los jugadores reales que asistan el día de la actividad.
 
 ## Cantina
 - Los padres pueden tomar algo de nuestra cantina mientras los niños juegan.

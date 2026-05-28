@@ -21,6 +21,10 @@ const faqs = [
     question: '¿Se puede celebrar cumpleaños?',
     answer: 'Sí, puedes añadir realidad virtual a tu cumpleaños o reservar una sesión VR exclusiva. Compatible con nuestros packs de laser tag para una fiesta completa.',
   },
+  {
+    question: '¿Qué pasa si el número real de jugadores no coincide con mi reserva?',
+    answer: 'No pasa nada. El número de jugadores que indicas al reservar es orientativo: el importe final se calcula con los jugadores reales que asistan el día de la actividad.',
+  },
 ];
 
 const RealidadVirtualMurcia = () => {
