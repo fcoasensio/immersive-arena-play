@@ -18,7 +18,7 @@ type Lead = {
   id: string;
   created_at: string;
   nombre: string;
-  telefono: string;
+  telefono: string | null;
   email: string | null;
   tipo_evento: string;
   actividad_interes: string | null;
@@ -33,6 +33,7 @@ type Lead = {
   utm_source: string | null;
   utm_medium: string | null;
   utm_campaign: string | null;
+  source: string | null;
   score: number;
   categoria: "A" | "B" | "C" | string;
   motivos_score: string[] | null;
@@ -75,6 +76,7 @@ const AdminLeads = () => {
   const [loading, setLoading] = useState(true);
   const [filterCat, setFilterCat] = useState<string>("all");
   const [filterEvento, setFilterEvento] = useState<string>("all");
+  const [filterSource, setFilterSource] = useState<string>("all");
   const [selected, setSelected] = useState<Lead | null>(null);
 
   const load = async () => {
@@ -96,6 +98,8 @@ const AdminLeads = () => {
   const filtered = leads.filter(l => {
     if (filterCat !== "all" && l.categoria !== filterCat) return false;
     if (filterEvento !== "all" && l.tipo_evento !== filterEvento) return false;
+    if (filterSource === "instagram" && l.source !== "instagram_sheet") return false;
+    if (filterSource === "web" && l.source === "instagram_sheet") return false;
     return true;
   });
 
@@ -120,6 +124,14 @@ const AdminLeads = () => {
             {Object.entries(EVENT_LABELS).map(([k, v]) => <SelectItem key={k} value={k}>{v}</SelectItem>)}
           </SelectContent>
         </Select>
+        <Select value={filterSource} onValueChange={setFilterSource}>
+          <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Todos los orígenes</SelectItem>
+            <SelectItem value="web">🌐 Web</SelectItem>
+            <SelectItem value="instagram">📸 Instagram</SelectItem>
+          </SelectContent>
+        </Select>
         <div className="text-sm text-muted-foreground">{filtered.length} leads</div>
       </div>
 
@@ -140,24 +152,38 @@ const AdminLeads = () => {
           </TableHeader>
           <TableBody>
             {filtered.map(l => {
-              const phone = l.telefono.replace(/\D/g, "");
+              const phone = (l.telefono || "").replace(/\D/g, "");
+              const isIG = l.source === "instagram_sheet";
               return (
                 <TableRow key={l.id}>
                   <TableCell><Badge variant="outline" className={catBadge(l.categoria)}>{l.categoria}</Badge></TableCell>
                   <TableCell className="font-mono">{l.score}</TableCell>
                   <TableCell className="text-xs text-muted-foreground">{new Date(l.created_at).toLocaleString("es-ES", { dateStyle: "short", timeStyle: "short" })}</TableCell>
-                  <TableCell className="font-semibold">{l.nombre}</TableCell>
+                  <TableCell className="font-semibold">
+                    <div className="flex items-center gap-2">
+                      {isIG && <span title="Lead de Instagram" className="text-pink-400">📸</span>}
+                      {l.nombre}
+                    </div>
+                  </TableCell>
                   <TableCell>{EVENT_LABELS[l.tipo_evento] || l.tipo_evento}</TableCell>
                   <TableCell>{l.num_personas ? PEOPLE_LABELS[l.num_personas] || l.num_personas : "—"}</TableCell>
                   <TableCell className="text-xs">{l.cuando ? WHEN_LABELS[l.cuando] || l.cuando : "—"}</TableCell>
                   <TableCell className="text-xs">{l.presupuesto ? BUDGET_LABELS[l.presupuesto] || l.presupuesto : "—"}</TableCell>
                   <TableCell className="text-right">
                     <div className="flex gap-1 justify-end">
-                      <Button asChild size="sm" variant="outline">
-                        <a href={`https://wa.me/${phone}`} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
-                          <MessageCircle className="w-4 h-4" />
-                        </a>
-                      </Button>
+                      {phone ? (
+                        <Button asChild size="sm" variant="outline">
+                          <a href={`https://wa.me/${phone}`} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+                            <MessageCircle className="w-4 h-4" />
+                          </a>
+                        </Button>
+                      ) : l.email ? (
+                        <Button asChild size="sm" variant="outline">
+                          <a href={`mailto:${l.email}`} aria-label="Email">
+                            <Mail className="w-4 h-4" />
+                          </a>
+                        </Button>
+                      ) : null}
                       <Button size="sm" variant="ghost" onClick={() => setSelected(l)}><Eye className="w-4 h-4" /></Button>
                     </div>
                   </TableCell>
@@ -176,12 +202,15 @@ const AdminLeads = () => {
           <DialogHeader><DialogTitle>Lead — {selected?.nombre}</DialogTitle></DialogHeader>
           {selected && (
             <div className="space-y-3 text-sm">
-              <div className="flex gap-2 items-center">
+              <div className="flex gap-2 items-center flex-wrap">
                 <Badge variant="outline" className={catBadge(selected.categoria)}>{selected.categoria}</Badge>
                 <span className="font-mono">{selected.score} pts</span>
+                {selected.source === "instagram_sheet" && (
+                  <Badge variant="outline" className="bg-pink-500/20 text-pink-300 border-pink-500/40">📸 Instagram</Badge>
+                )}
               </div>
               <div className="grid grid-cols-2 gap-2">
-                <div><span className="text-muted-foreground">Teléfono:</span> <a className="text-primary" href={`tel:${selected.telefono}`}><Phone className="inline w-3 h-3" /> {selected.telefono}</a></div>
+                <div><span className="text-muted-foreground">Teléfono:</span> {selected.telefono ? <a className="text-primary" href={`tel:${selected.telefono}`}><Phone className="inline w-3 h-3" /> {selected.telefono}</a> : "—"}</div>
                 <div><span className="text-muted-foreground">Email:</span> {selected.email ? <a className="text-primary" href={`mailto:${selected.email}`}><Mail className="inline w-3 h-3" /> {selected.email}</a> : "—"}</div>
                 <div><span className="text-muted-foreground">Evento:</span> {EVENT_LABELS[selected.tipo_evento] || selected.tipo_evento}</div>
                 <div><span className="text-muted-foreground">Actividad:</span> {selected.actividad_interes ? ACTIVITY_LABELS[selected.actividad_interes] : "—"}</div>

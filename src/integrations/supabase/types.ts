@@ -80,6 +80,36 @@ export type Database = {
         }
         Relationships: []
       }
+      instagram_sync_config: {
+        Row: {
+          active: boolean
+          created_at: string
+          id: string
+          last_sync_at: string | null
+          sheet_name: string
+          spreadsheet_id: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          last_sync_at?: string | null
+          sheet_name?: string
+          spreadsheet_id: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          last_sync_at?: string | null
+          sheet_name?: string
+          spreadsheet_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       lead_emails_pendientes: {
         Row: {
           body_html: string
@@ -151,7 +181,7 @@ export type Database = {
           presupuesto: string | null
           score: number
           source: string
-          telefono: string
+          telefono: string | null
           tipo_evento: string
           utm_campaign: string | null
           utm_content: string | null
@@ -179,7 +209,7 @@ export type Database = {
           presupuesto?: string | null
           score?: number
           source?: string
-          telefono: string
+          telefono?: string | null
           tipo_evento: string
           utm_campaign?: string | null
           utm_content?: string | null
@@ -207,7 +237,7 @@ export type Database = {
           presupuesto?: string | null
           score?: number
           source?: string
-          telefono?: string
+          telefono?: string | null
           tipo_evento?: string
           utm_campaign?: string | null
           utm_content?: string | null
