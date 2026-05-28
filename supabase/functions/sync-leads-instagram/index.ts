@@ -264,8 +264,10 @@ serve(async (req) => {
     const summary = { procesados: 0, errores: 0, omitidos: 0, sheets: [] as any[] };
 
     for (const cfg of configs) {
-      const sheetName = cfg.sheet_name || "Instagram";
-      const range = `${sheetName}!A2:G1000`;
+      const sheetName = cfg.sheet_name || "Leads";
+      // Layout esperado de la pestaña:
+      // A: Fecha/Hora | B: Nombre | C: Email | D: Telefono | E: Tipo evento | F: Nº personas | G: Procesado | H: Fecha evento
+      const range = `${sheetName}!A2:H1000`;
       const url = `${GW}/spreadsheets/${cfg.spreadsheet_id}/values/${range}`;
 
       const sheetRes = await fetch(url, {
@@ -292,9 +294,14 @@ serve(async (req) => {
       for (let i = 0; i < rows.length; i++) {
         const row = rows[i];
         const rowNum = i + 2; // header at row 1
-        const [fechaCell, nombre, email, tipoEvento, numPersonasRaw, fechaEvento, procesado] = [
-          row[0] || "", row[1] || "", row[2] || "", row[3] || "", row[4] || "", row[5] || "", row[6] || "",
-        ];
+        const fechaCell = row[0] || "";
+        const nombre = row[1] || "";
+        const email = row[2] || "";
+        const telefono = row[3] || "";
+        const tipoEvento = row[4] || "";
+        const numPersonasRaw = row[5] || "";
+        const procesado = row[6] || "";
+        const fechaEvento = row[7] || "";
         if (procesado.trim()) continue; // already processed
         if (!nombre.trim() || !email.trim()) {
           skippedThisSheet++;
