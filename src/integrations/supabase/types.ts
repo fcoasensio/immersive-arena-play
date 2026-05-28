@@ -80,16 +80,76 @@ export type Database = {
         }
         Relationships: []
       }
+      lead_emails_pendientes: {
+        Row: {
+          body_html: string
+          categoria: string
+          created_at: string
+          id: string
+          lead_id: string
+          recipient_email: string
+          recipient_nombre: string
+          sent_at: string | null
+          status: string
+          subject: string
+          updated_at: string
+        }
+        Insert: {
+          body_html: string
+          categoria: string
+          created_at?: string
+          id?: string
+          lead_id: string
+          recipient_email: string
+          recipient_nombre: string
+          sent_at?: string | null
+          status?: string
+          subject: string
+          updated_at?: string
+        }
+        Update: {
+          body_html?: string
+          categoria?: string
+          created_at?: string
+          id?: string
+          lead_id?: string
+          recipient_email?: string
+          recipient_nombre?: string
+          sent_at?: string | null
+          status?: string
+          subject?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lead_emails_pendientes_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads_rapidos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       leads_rapidos: {
         Row: {
+          actividad_interes: string | null
+          categoria: string
           client_timestamp: string | null
+          codigo_postal: string | null
+          como_nos_conociste: string | null
           consentimiento: boolean
           created_at: string
+          cuando: string | null
+          edad_participantes: string | null
+          email: string | null
           fecha_orientativa: string | null
           id: string
+          motivos_score: Json
           nombre: string
           num_personas: string | null
           page_url: string | null
+          presupuesto: string | null
+          score: number
           source: string
           telefono: string
           tipo_evento: string
@@ -100,14 +160,24 @@ export type Database = {
           utm_term: string | null
         }
         Insert: {
+          actividad_interes?: string | null
+          categoria?: string
           client_timestamp?: string | null
+          codigo_postal?: string | null
+          como_nos_conociste?: string | null
           consentimiento?: boolean
           created_at?: string
+          cuando?: string | null
+          edad_participantes?: string | null
+          email?: string | null
           fecha_orientativa?: string | null
           id?: string
+          motivos_score?: Json
           nombre: string
           num_personas?: string | null
           page_url?: string | null
+          presupuesto?: string | null
+          score?: number
           source?: string
           telefono: string
           tipo_evento: string
@@ -118,14 +188,24 @@ export type Database = {
           utm_term?: string | null
         }
         Update: {
+          actividad_interes?: string | null
+          categoria?: string
           client_timestamp?: string | null
+          codigo_postal?: string | null
+          como_nos_conociste?: string | null
           consentimiento?: boolean
           created_at?: string
+          cuando?: string | null
+          edad_participantes?: string | null
+          email?: string | null
           fecha_orientativa?: string | null
           id?: string
+          motivos_score?: Json
           nombre?: string
           num_personas?: string | null
           page_url?: string | null
+          presupuesto?: string | null
+          score?: number
           source?: string
           telefono?: string
           tipo_evento?: string
