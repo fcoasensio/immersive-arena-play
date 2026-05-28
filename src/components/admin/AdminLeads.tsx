@@ -76,6 +76,7 @@ const AdminLeads = () => {
   const [loading, setLoading] = useState(true);
   const [filterCat, setFilterCat] = useState<string>("all");
   const [filterEvento, setFilterEvento] = useState<string>("all");
+  const [filterSource, setFilterSource] = useState<string>("all");
   const [selected, setSelected] = useState<Lead | null>(null);
 
   const load = async () => {
