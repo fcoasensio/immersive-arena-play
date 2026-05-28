@@ -18,7 +18,7 @@ type Lead = {
   id: string;
   created_at: string;
   nombre: string;
-  telefono: string;
+  telefono: string | null;
   email: string | null;
   tipo_evento: string;
   actividad_interes: string | null;
@@ -33,6 +33,7 @@ type Lead = {
   utm_source: string | null;
   utm_medium: string | null;
   utm_campaign: string | null;
+  source: string | null;
   score: number;
   categoria: "A" | "B" | "C" | string;
   motivos_score: string[] | null;
