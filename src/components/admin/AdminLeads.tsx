@@ -202,12 +202,15 @@ const AdminLeads = () => {
           <DialogHeader><DialogTitle>Lead — {selected?.nombre}</DialogTitle></DialogHeader>
           {selected && (
             <div className="space-y-3 text-sm">
-              <div className="flex gap-2 items-center">
+              <div className="flex gap-2 items-center flex-wrap">
                 <Badge variant="outline" className={catBadge(selected.categoria)}>{selected.categoria}</Badge>
                 <span className="font-mono">{selected.score} pts</span>
+                {selected.source === "instagram_sheet" && (
+                  <Badge variant="outline" className="bg-pink-500/20 text-pink-300 border-pink-500/40">📸 Instagram</Badge>
+                )}
               </div>
               <div className="grid grid-cols-2 gap-2">
-                <div><span className="text-muted-foreground">Teléfono:</span> <a className="text-primary" href={`tel:${selected.telefono}`}><Phone className="inline w-3 h-3" /> {selected.telefono}</a></div>
+                <div><span className="text-muted-foreground">Teléfono:</span> {selected.telefono ? <a className="text-primary" href={`tel:${selected.telefono}`}><Phone className="inline w-3 h-3" /> {selected.telefono}</a> : "—"}</div>
                 <div><span className="text-muted-foreground">Email:</span> {selected.email ? <a className="text-primary" href={`mailto:${selected.email}`}><Mail className="inline w-3 h-3" /> {selected.email}</a> : "—"}</div>
                 <div><span className="text-muted-foreground">Evento:</span> {EVENT_LABELS[selected.tipo_evento] || selected.tipo_evento}</div>
                 <div><span className="text-muted-foreground">Actividad:</span> {selected.actividad_interes ? ACTIVITY_LABELS[selected.actividad_interes] : "—"}</div>
