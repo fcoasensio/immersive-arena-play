@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Loader2, X, MessageCircle, Zap, Check } from "lucide-react";
+import { Loader2, X, MessageCircle, Zap, Check, ArrowRight, ArrowLeft } from "lucide-react";
 import { motion } from "framer-motion";
 
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -29,6 +29,7 @@ import { captureUtmsFromUrl, getAllUtms } from "@/lib/utm";
 const WHATSAPP_URL = "https://wa.me/34606323053";
 
 const schema = z.object({
+  // Paso 1
   nombre: z.string().trim().min(2, "Indica tu nombre").max(100),
   telefono: z
     .string()
@@ -36,19 +37,26 @@ const schema = z.object({
     .min(9, "Teléfono obligatorio")
     .max(30)
     .regex(/^[+\d\s().-]{9,30}$/, "Teléfono inválido"),
+  email: z.string().trim().email("Email inválido").max(150).optional().or(z.literal("")),
+  consentimiento: z.literal(true, {
+    errorMap: () => ({ message: "Debes aceptar para continuar" }),
+  }),
+  // Paso 2
   tipo_evento: z.enum(
     ["cumpleanos", "empresa", "despedida", "colegio", "amigos", "otro"],
     { required_error: "Selecciona el tipo de evento" }
   ),
-  num_personas: z.string().max(30).optional().or(z.literal("")),
+  actividad_interes: z.enum(["laser_tag", "vr", "no_se"]).optional().or(z.literal("")),
+  edad_participantes: z.enum(["8_11", "12_mas", "mixto"]).optional().or(z.literal("")),
+  num_personas: z.enum(["1_7", "8_15", "16_25", "25_mas", ""]).optional().or(z.literal("")),
+  presupuesto: z.enum(["menos_200", "200_400", "mas_400", "no_se", ""]).optional().or(z.literal("")),
+  cuando: z.enum(["esta_semana", "este_mes", "1_2_meses", "informandome", ""]).optional().or(z.literal("")),
   fecha_orientativa: z.string().max(20).optional().or(z.literal("")),
-  consentimiento: z.literal(true, {
-    errorMap: () => ({ message: "Debes aceptar para continuar" }),
-  }),
+  codigo_postal: z.string().max(10).optional().or(z.literal("")),
+  como_nos_conociste: z.enum(["google", "instagram", "tiktok", "recomendacion", "otro", ""]).optional().or(z.literal("")),
 });
 
 type FormData = z.infer<typeof schema>;
-
 type Status = "idle" | "loading" | "success" | "error";
 
 const isAdminRoute = (pathname: string) =>
@@ -56,17 +64,34 @@ const isAdminRoute = (pathname: string) =>
 
 const FormBody = ({ onClose }: { onClose: () => void }) => {
   const [status, setStatus] = useState<Status>("idle");
+  const [step, setStep] = useState<1 | 2>(1);
 
   const form = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
       nombre: "",
       telefono: "",
-      num_personas: "",
+      email: "",
+      num_personas: "" as any,
       fecha_orientativa: "",
+      actividad_interes: "" as any,
+      edad_participantes: "" as any,
+      presupuesto: "" as any,
+      cuando: "" as any,
+      codigo_postal: "",
+      como_nos_conociste: "" as any,
       consentimiento: false as unknown as true,
     },
   });
+
+  const actividad = form.watch("actividad_interes");
+  const edad = form.watch("edad_participantes");
+  const showVrAgeWarning = actividad === "vr" && edad === "8_11";
+
+  const onNext = async () => {
+    const ok = await form.trigger(["nombre", "telefono", "email", "consentimiento"]);
+    if (ok) setStep(2);
+  };
 
   const onSubmit = async (data: FormData) => {
     setStatus("loading");
@@ -76,9 +101,16 @@ const FormBody = ({ onClose }: { onClose: () => void }) => {
         body: {
           nombre: data.nombre,
           telefono: data.telefono,
+          email: data.email || "",
           tipo_evento: data.tipo_evento,
+          actividad_interes: data.actividad_interes || "",
+          edad_participantes: data.edad_participantes || "",
           num_personas: data.num_personas || "",
+          presupuesto: data.presupuesto || "",
+          cuando: data.cuando || "",
           fecha_orientativa: data.fecha_orientativa || "",
+          codigo_postal: data.codigo_postal || "",
+          como_nos_conociste: data.como_nos_conociste || "",
           consentimiento: data.consentimiento === true,
           source: "popup_contacto_rapido",
           page_url: typeof window !== "undefined" ? window.location.href : "",
@@ -117,155 +149,357 @@ const FormBody = ({ onClose }: { onClose: () => void }) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <FormField
-          control={form.control}
-          name="nombre"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Nombre *</FormLabel>
-              <FormControl>
-                <Input placeholder="Tu nombre" {...field} className="bg-background/60" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="telefono"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Teléfono / WhatsApp *</FormLabel>
-              <FormControl>
-                <Input
-                  inputMode="tel"
-                  placeholder="+34 600 000 000"
-                  {...field}
-                  className="bg-background/60"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="tipo_evento"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Tipo de evento *</FormLabel>
-              <Select onValueChange={field.onChange} value={field.value}>
-                <FormControl>
-                  <SelectTrigger className="bg-background/60">
-                    <SelectValue placeholder="Selecciona una opción" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="cumpleanos">🎂 Cumpleaños</SelectItem>
-                  <SelectItem value="empresa">💼 Empresa / Team Building</SelectItem>
-                  <SelectItem value="despedida">🎉 Despedida</SelectItem>
-                  <SelectItem value="colegio">🏫 Colegio / Instituto</SelectItem>
-                  <SelectItem value="amigos">👥 Grupo de amigos</SelectItem>
-                  <SelectItem value="otro">✨ Otro</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <div className="grid grid-cols-2 gap-3">
-          <FormField
-            control={form.control}
-            name="num_personas"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-xs">Nº personas</FormLabel>
-                <FormControl>
-                  <Input
-                    inputMode="numeric"
-                    placeholder="Aprox."
-                    {...field}
-                    className="bg-background/60"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="fecha_orientativa"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-xs">Fecha orientativa</FormLabel>
-                <FormControl>
-                  <Input type="date" {...field} className="bg-background/60" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
+          <span className={step === 1 ? "text-primary font-semibold" : ""}>1. Contacto</span>
+          <ArrowRight className="w-3 h-3" />
+          <span className={step === 2 ? "text-primary font-semibold" : ""}>2. Detalles</span>
         </div>
 
-        <FormField
-          control={form.control}
-          name="consentimiento"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-start gap-3 space-y-0 rounded-md border border-border bg-background/40 p-3">
-              <FormControl>
-                <Checkbox
-                  checked={field.value === true}
-                  onCheckedChange={(v) => field.onChange(v === true)}
-                />
-              </FormControl>
-              <div className="space-y-1 leading-none">
-                <FormLabel className="text-xs font-normal text-muted-foreground">
-                  Acepto que <span translate="no">shootandrun</span> contacte
-                  conmigo para informarme sobre disponibilidad, packs y reservas.
-                </FormLabel>
-                <FormMessage />
-              </div>
-            </FormItem>
-          )}
-        />
+        {step === 1 && (
+          <>
+            <FormField
+              control={form.control}
+              name="nombre"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nombre *</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Tu nombre" {...field} className="bg-background/60" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-        {status === "error" && (
-          <div className="text-sm rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-3">
-            Ha ocurrido un error. También puedes{" "}
-            <a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline font-semibold"
+            <FormField
+              control={form.control}
+              name="telefono"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Teléfono / WhatsApp *</FormLabel>
+                  <FormControl>
+                    <Input
+                      inputMode="tel"
+                      placeholder="+34 600 000 000"
+                      {...field}
+                      className="bg-background/60"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email <span className="text-muted-foreground text-xs">(opcional)</span></FormLabel>
+                  <FormControl>
+                    <Input
+                      type="email"
+                      inputMode="email"
+                      placeholder="tu@email.com"
+                      {...field}
+                      className="bg-background/60"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="consentimiento"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-start gap-3 space-y-0 rounded-md border border-border bg-background/40 p-3">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value === true}
+                      onCheckedChange={(v) => field.onChange(v === true)}
+                    />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <FormLabel className="text-xs font-normal text-muted-foreground">
+                      Acepto que <span translate="no">shootandrun</span> contacte
+                      conmigo para informarme sobre disponibilidad, packs y reservas.
+                    </FormLabel>
+                    <FormMessage />
+                  </div>
+                </FormItem>
+              )}
+            />
+
+            <Button
+              type="button"
+              variant="hero"
+              size="lg"
+              className="w-full"
+              onClick={onNext}
             >
-              escribirnos directamente por WhatsApp
-            </a>
-            .
-          </div>
+              Siguiente <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
+          </>
         )}
 
-        <Button
-          type="submit"
-          variant="hero"
-          size="lg"
-          className="w-full"
-          disabled={status === "loading"}
-        >
-          {status === "loading" ? (
-            <>
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              Enviando...
-            </>
-          ) : (
-            <>
-              <MessageCircle className="w-4 h-4 mr-2" />
-              Contactadme por WhatsApp
-            </>
-          )}
-        </Button>
+        {step === 2 && (
+          <>
+            <FormField
+              control={form.control}
+              name="tipo_evento"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Tipo de evento *</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger className="bg-background/60">
+                        <SelectValue placeholder="Selecciona una opción" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="cumpleanos">🎂 Cumpleaños</SelectItem>
+                      <SelectItem value="empresa">💼 Empresa / Team Building</SelectItem>
+                      <SelectItem value="despedida">🎉 Despedida</SelectItem>
+                      <SelectItem value="colegio">🏫 Colegio / Instituto</SelectItem>
+                      <SelectItem value="amigos">👥 Grupo de amigos</SelectItem>
+                      <SelectItem value="otro">✨ Otro</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <div className="grid grid-cols-2 gap-3">
+              <FormField
+                control={form.control}
+                name="actividad_interes"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs">Actividad</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value || ""}>
+                      <FormControl>
+                        <SelectTrigger className="bg-background/60">
+                          <SelectValue placeholder="¿Cuál?" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="laser_tag">🎯 Laser Tag (8+)</SelectItem>
+                        <SelectItem value="vr">🥽 Realidad Virtual (12+)</SelectItem>
+                        <SelectItem value="no_se">🤔 No lo sé aún</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="edad_participantes"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs">Edad participantes</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value || ""}>
+                      <FormControl>
+                        <SelectTrigger className="bg-background/60">
+                          <SelectValue placeholder="Edad" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="8_11">8 - 11 años</SelectItem>
+                        <SelectItem value="12_mas">12+ años</SelectItem>
+                        <SelectItem value="mixto">Mixto adultos y niños</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            {showVrAgeWarning && (
+              <div className="text-xs rounded-md border border-amber-400/40 bg-amber-400/10 text-amber-300 p-2">
+                La Realidad Virtual es a partir de 12 años. Para 8-11 años te recomendamos Laser Tag.
+              </div>
+            )}
+
+            <div className="grid grid-cols-2 gap-3">
+              <FormField
+                control={form.control}
+                name="num_personas"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs">Nº personas</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value || ""}>
+                      <FormControl>
+                        <SelectTrigger className="bg-background/60">
+                          <SelectValue placeholder="Rango" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="1_7">1 - 7</SelectItem>
+                        <SelectItem value="8_15">8 - 15</SelectItem>
+                        <SelectItem value="16_25">16 - 25</SelectItem>
+                        <SelectItem value="25_mas">+25</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="presupuesto"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs">Presupuesto</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value || ""}>
+                      <FormControl>
+                        <SelectTrigger className="bg-background/60">
+                          <SelectValue placeholder="Aprox." />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="menos_200">&lt; 200€</SelectItem>
+                        <SelectItem value="200_400">200 - 400€</SelectItem>
+                        <SelectItem value="mas_400">+ 400€</SelectItem>
+                        <SelectItem value="no_se">No lo sé</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <FormField
+                control={form.control}
+                name="cuando"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs">¿Cuándo?</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value || ""}>
+                      <FormControl>
+                        <SelectTrigger className="bg-background/60">
+                          <SelectValue placeholder="Plazo" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="esta_semana">Esta semana</SelectItem>
+                        <SelectItem value="este_mes">Este mes</SelectItem>
+                        <SelectItem value="1_2_meses">1 - 2 meses</SelectItem>
+                        <SelectItem value="informandome">Solo informándome</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="fecha_orientativa"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs">Fecha orientativa</FormLabel>
+                    <FormControl>
+                      <Input type="date" {...field} className="bg-background/60" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <FormField
+                control={form.control}
+                name="codigo_postal"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs">CP <span className="text-muted-foreground">(opcional)</span></FormLabel>
+                    <FormControl>
+                      <Input inputMode="numeric" placeholder="30820" {...field} className="bg-background/60" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="como_nos_conociste"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs">¿Cómo nos conociste?</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value || ""}>
+                      <FormControl>
+                        <SelectTrigger className="bg-background/60">
+                          <SelectValue placeholder="Origen" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="google">Google</SelectItem>
+                        <SelectItem value="instagram">Instagram</SelectItem>
+                        <SelectItem value="tiktok">TikTok</SelectItem>
+                        <SelectItem value="recomendacion">Recomendación</SelectItem>
+                        <SelectItem value="otro">Otro</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            {status === "error" && (
+              <div className="text-sm rounded-md border border-destructive/40 bg-destructive/10 text-destructive p-3">
+                Ha ocurrido un error. También puedes{" "}
+                <a
+                  href={WHATSAPP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline font-semibold"
+                >
+                  escribirnos directamente por WhatsApp
+                </a>
+                .
+              </div>
+            )}
+
+            <div className="flex gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="lg"
+                onClick={() => setStep(1)}
+                disabled={status === "loading"}
+              >
+                <ArrowLeft className="w-4 h-4 mr-1" /> Atrás
+              </Button>
+              <Button
+                type="submit"
+                variant="hero"
+                size="lg"
+                className="flex-1"
+                disabled={status === "loading"}
+              >
+                {status === "loading" ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Enviando...
+                  </>
+                ) : (
+                  <>
+                    <MessageCircle className="w-4 h-4 mr-2" />
+                    Enviar
+                  </>
+                )}
+              </Button>
+            </div>
+          </>
+        )}
       </form>
     </Form>
   );
