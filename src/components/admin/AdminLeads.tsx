@@ -124,6 +124,14 @@ const AdminLeads = () => {
             {Object.entries(EVENT_LABELS).map(([k, v]) => <SelectItem key={k} value={k}>{v}</SelectItem>)}
           </SelectContent>
         </Select>
+        <Select value={filterSource} onValueChange={setFilterSource}>
+          <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Todos los orígenes</SelectItem>
+            <SelectItem value="web">🌐 Web</SelectItem>
+            <SelectItem value="instagram">📸 Instagram</SelectItem>
+          </SelectContent>
+        </Select>
         <div className="text-sm text-muted-foreground">{filtered.length} leads</div>
       </div>
 
