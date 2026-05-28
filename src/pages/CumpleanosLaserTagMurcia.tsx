@@ -20,6 +20,10 @@ const faqs = [
     question: '¿Se puede celebrar cumpleaños?',
     answer: 'Por supuesto. Tenemos packs especiales de cumpleaños que incluyen 3 partidas de laser tag, zona para merienda, invitaciones personalizadas, diploma, estadisticas de la sesión y coordinación completa del evento. Es una de las opciones más populares para cumpleaños infantiles y de adolescentes en Murcia.',
   },
+  {
+    question: '¿Qué pasa si el número real de jugadores no coincide con mi reserva?',
+    answer: 'No pasa nada. El número de jugadores que indicas al reservar es orientativo: el importe final se calcula con los jugadores reales que asistan el día de la fiesta.',
+  },
 ];
 
 const CumpleanosLaserTagMurcia = () => {
