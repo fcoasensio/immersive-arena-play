@@ -152,24 +152,38 @@ const AdminLeads = () => {
           </TableHeader>
           <TableBody>
             {filtered.map(l => {
-              const phone = l.telefono.replace(/\D/g, "");
+              const phone = (l.telefono || "").replace(/\D/g, "");
+              const isIG = l.source === "instagram_sheet";
               return (
                 <TableRow key={l.id}>
                   <TableCell><Badge variant="outline" className={catBadge(l.categoria)}>{l.categoria}</Badge></TableCell>
                   <TableCell className="font-mono">{l.score}</TableCell>
                   <TableCell className="text-xs text-muted-foreground">{new Date(l.created_at).toLocaleString("es-ES", { dateStyle: "short", timeStyle: "short" })}</TableCell>
-                  <TableCell className="font-semibold">{l.nombre}</TableCell>
+                  <TableCell className="font-semibold">
+                    <div className="flex items-center gap-2">
+                      {isIG && <span title="Lead de Instagram" className="text-pink-400">📸</span>}
+                      {l.nombre}
+                    </div>
+                  </TableCell>
                   <TableCell>{EVENT_LABELS[l.tipo_evento] || l.tipo_evento}</TableCell>
                   <TableCell>{l.num_personas ? PEOPLE_LABELS[l.num_personas] || l.num_personas : "—"}</TableCell>
                   <TableCell className="text-xs">{l.cuando ? WHEN_LABELS[l.cuando] || l.cuando : "—"}</TableCell>
                   <TableCell className="text-xs">{l.presupuesto ? BUDGET_LABELS[l.presupuesto] || l.presupuesto : "—"}</TableCell>
                   <TableCell className="text-right">
                     <div className="flex gap-1 justify-end">
-                      <Button asChild size="sm" variant="outline">
-                        <a href={`https://wa.me/${phone}`} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
-                          <MessageCircle className="w-4 h-4" />
-                        </a>
-                      </Button>
+                      {phone ? (
+                        <Button asChild size="sm" variant="outline">
+                          <a href={`https://wa.me/${phone}`} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+                            <MessageCircle className="w-4 h-4" />
+                          </a>
+                        </Button>
+                      ) : l.email ? (
+                        <Button asChild size="sm" variant="outline">
+                          <a href={`mailto:${l.email}`} aria-label="Email">
+                            <Mail className="w-4 h-4" />
+                          </a>
+                        </Button>
+                      ) : null}
                       <Button size="sm" variant="ghost" onClick={() => setSelected(l)}><Eye className="w-4 h-4" /></Button>
                     </div>
                   </TableCell>
