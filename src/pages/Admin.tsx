@@ -45,6 +45,9 @@ const Admin = () => {
             <TabsTrigger value="emails" className="gap-2">
               <Mail size={16} /> Emails pendientes
             </TabsTrigger>
+            <TabsTrigger value="instagram" className="gap-2">
+              <Instagram size={16} /> Instagram
+            </TabsTrigger>
             <TabsTrigger value="packs" className="gap-2">
               <Package size={16} /> Packs
             </TabsTrigger>
