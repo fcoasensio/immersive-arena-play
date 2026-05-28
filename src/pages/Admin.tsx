@@ -71,6 +71,9 @@ const Admin = () => {
           <TabsContent value="emails">
             <AdminEmailsPendientes />
           </TabsContent>
+          <TabsContent value="instagram">
+            <AdminInstagramSync />
+          </TabsContent>
           <TabsContent value="packs">
             <AdminPacks />
           </TabsContent>
