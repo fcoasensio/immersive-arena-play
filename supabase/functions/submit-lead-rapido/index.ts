@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 import { Resend } from "https://esm.sh/resend@2.0.0";
+import { appendGdprFooter } from "../_shared/gdpr-footer.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -398,7 +399,7 @@ serve(async (req) => {
           recipient_email: email,
           recipient_nombre: nombre,
           subject: draft.subject,
-          body_html: draft.html,
+          body_html: appendGdprFooter(draft.html),
           categoria,
           status: "pendiente_aprobacion",
         });
@@ -426,7 +427,7 @@ serve(async (req) => {
           to: [ADMIN_EMAIL],
           cc: [CC_EMAIL],
           subject: adminEmail.subject,
-          html: adminEmail.html,
+          html: appendGdprFooter(adminEmail.html),
         });
         if (r.error) console.error("Resend error (non-fatal):", r.error);
       } catch (e) {

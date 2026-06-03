@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "https://esm.sh/resend@2.0.0";
+import { appendGdprFooter } from "../_shared/gdpr-footer.ts";
 
 const resendApiKey = Deno.env.get("RESEND_API_KEY");
 const resend = resendApiKey ? new Resend(resendApiKey) : null;
@@ -340,7 +341,7 @@ const handler = async (req: Request): Promise<Response> => {
       to: [ADMIN_EMAIL],
       cc: [CC_EMAIL],
       subject: `🎯 Nueva Reserva - ${data.customerName} - ${formattedDate} - ${getReservationTypeLabel(data.reservationType)}`,
-      html: buildAdminEmail(data, formattedDate),
+      html: appendGdprFooter(buildAdminEmail(data, formattedDate)),
     });
 
     if (adminEmailResult.error) {
@@ -353,7 +354,7 @@ const handler = async (req: Request): Promise<Response> => {
       from: "shootandrun <reservas@web.shootandrun.es>",
       to: [data.customerEmail],
       subject: `✅ Tu reserva en shootandrun - ${formattedDate}`,
-      html: buildCustomerEmail(data, formattedDate),
+      html: appendGdprFooter(buildCustomerEmail(data, formattedDate)),
     });
 
     if (customerEmailResult.error) {
