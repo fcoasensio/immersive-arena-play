@@ -1,7 +1,9 @@
 // GDPR / LOPDGDD legal footer for all outbound emails.
 // Bilingual (Spanish + English) text supplied by the data controller.
 
-export const gdprFooterHtml = `
+const GDPR_MARKER = "<!--gdpr-footer-v1-->";
+
+export const gdprFooterHtml = `${"<!--gdpr-footer-v1-->"}
 <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:0;border-top:1px solid #e5e5e5;background:#fafafa;">
   <tr>
     <td style="padding:18px 24px;font-family:Arial,Helvetica,sans-serif;font-size:10px;line-height:1.5;color:#888;">
