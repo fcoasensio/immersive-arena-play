@@ -1,4 +1,5 @@
 import { z } from "https://esm.sh/zod@3.23.8";
+import { appendGdprFooter } from "../_shared/gdpr-footer.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -73,7 +74,7 @@ Deno.serve(async (req) => {
         to: ["hola@shootandrun.es"],
         reply_to: contacto.includes("@") ? contacto : undefined,
         subject: `Consulta del chat: ${nombre}`,
-        html,
+        html: appendGdprFooter(html),
       }),
     });
 

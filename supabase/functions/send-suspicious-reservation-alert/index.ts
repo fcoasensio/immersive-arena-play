@@ -98,7 +98,7 @@ serve(async (req: Request) => {
       to: [ADMIN_EMAIL],
       cc: [CC_EMAIL],
       subject: `⚠️ Reserva sospechosa (${score}/100) — ${datos.nombre_completo}`,
-      html,
+      html: appendGdprFooter(html),
     });
 
     if (error) {
