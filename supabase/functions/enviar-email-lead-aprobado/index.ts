@@ -103,7 +103,7 @@ serve(async (req) => {
       status: "enviado",
       sent_at: new Date().toISOString(),
       subject: finalSubject,
-      body_html: finalHtml,
+      body_html: appendGdprFooter(finalHtml),
     }).eq("id", draftId);
 
     return new Response(JSON.stringify({ success: true }), {
