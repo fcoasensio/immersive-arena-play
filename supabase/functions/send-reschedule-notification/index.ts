@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "https://esm.sh/resend@2.0.0";
+import { appendGdprFooter } from "../_shared/gdpr-footer.ts";
 
 const resendApiKey = Deno.env.get("RESEND_API_KEY");
 const resend = resendApiKey ? new Resend(resendApiKey) : null;
@@ -159,13 +160,13 @@ const handler = async (req: Request): Promise<Response> => {
         from: `shootandrun <noreply@web.shootandrun.es>`,
         to: [data.customerEmail],
         subject: `📅 Cambio de fecha — Tu reserva en shootandrun`,
-        html: customerHtml,
+        html: appendGdprFooter(customerHtml),
       }),
       resend.emails.send({
         from: `shootandrun <noreply@web.shootandrun.es>`,
         to: [ADMIN_EMAIL],
         subject: `[Admin] Cambio de fecha/hora — ${data.customerName}`,
-        html: adminHtml,
+        html: appendGdprFooter(adminHtml),
       }),
     ]);
 

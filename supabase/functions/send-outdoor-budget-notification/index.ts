@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "https://esm.sh/resend@2.0.0";
+import { appendGdprFooter } from "../_shared/gdpr-footer.ts";
 
 const resendApiKey = Deno.env.get("RESEND_API_KEY");
 const resend = resendApiKey ? new Resend(resendApiKey) : null;
@@ -136,7 +137,7 @@ const handler = async (req: Request): Promise<Response> => {
       to: [ADMIN_EMAIL],
       cc: [CC_EMAIL],
       subject: `🌿 Solicitud Presupuesto Outdoor - ${safeName}`,
-      html: `<!DOCTYPE html><html><head><style>${emailStyles}</style></head><body>
+      html: appendGdprFooter(`<!DOCTYPE html><html><head><style>${emailStyles}</style></head><body>
         <div class="container">
           <div class="logo-bar"><img src="${LOGO_URL}" alt="shootandrun" /></div>
           <div class="header"><h1>🌿 Presupuesto Outdoor</h1></div>
@@ -152,7 +153,7 @@ const handler = async (req: Request): Promise<Response> => {
           </div>
           <div class="footer">shootandrun · C/ Independencia 31, Alcantarilla (Murcia)</div>
         </div>
-      </body></html>`,
+      </body></html>`),
     });
 
     if (adminEmailResult.error) {
@@ -165,7 +166,7 @@ const handler = async (req: Request): Promise<Response> => {
       from: "shootandrun <outdoor@web.shootandrun.es>",
       to: [customerEmail],
       subject: `✅ Solicitud de presupuesto recibida - shootandrun Outdoor`,
-      html: `<!DOCTYPE html><html><head><style>${emailStyles}</style></head><body>
+      html: appendGdprFooter(`<!DOCTYPE html><html><head><style>${emailStyles}</style></head><body>
         <div class="container">
           <div class="logo-bar"><img src="${LOGO_URL}" alt="shootandrun" /></div>
           <div class="header"><h1>🌿 ¡Solicitud Recibida!</h1></div>
@@ -198,7 +199,7 @@ const handler = async (req: Request): Promise<Response> => {
           </div>
           <div class="footer">© ${new Date().getFullYear()} shootandrun · Alcantarilla, Murcia</div>
         </div>
-      </body></html>`,
+      </body></html>`),
     });
 
     if (customerEmailResult.error) {

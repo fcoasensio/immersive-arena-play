@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "https://esm.sh/resend@2.0.0";
+import { appendGdprFooter } from "../_shared/gdpr-footer.ts";
 
 const resendApiKey = Deno.env.get("RESEND_API_KEY");
 const resend = resendApiKey ? new Resend(resendApiKey) : null;
@@ -97,7 +98,7 @@ serve(async (req: Request) => {
       to: [ADMIN_EMAIL],
       cc: [CC_EMAIL],
       subject: `⚠️ Reserva sospechosa (${score}/100) — ${datos.nombre_completo}`,
-      html,
+      html: appendGdprFooter(html),
     });
 
     if (error) {
