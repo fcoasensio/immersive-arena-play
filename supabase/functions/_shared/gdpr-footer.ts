@@ -31,3 +31,18 @@ Este mensaje va dirigido, de manera exclusiva, a su destinatario y puede contene
 
 This message may contain confidential information. If you are not the intended recipient, please delete it. Under GDPR you may exercise your rights at rgpd@shootandrun.es or C/ Independencia, 31, 30820 - Alcantarilla (Murcia).
 `;
+
+/**
+ * Idempotently appends the GDPR legal footer to an HTML email body.
+ * If the marker is already present, returns the html unchanged.
+ * Inserts before </body> when present, otherwise appends at the end.
+ */
+export function appendGdprFooter(html: string): string {
+  if (!html) return gdprFooterHtml;
+  if (html.includes(GDPR_MARKER)) return html;
+  if (/<\/body>/i.test(html)) {
+    return html.replace(/<\/body>/i, `${gdprFooterHtml}</body>`);
+  }
+  return html + gdprFooterHtml;
+}
+
