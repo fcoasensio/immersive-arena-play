@@ -1,83 +1,39 @@
-## Objetivo
+# Pie legal RGPD en emails
 
-Importar automáticamente los leads que llegan por Instagram a una Google Sheet hacia la tabla `leads_rapidos`, pasando por el mismo motor de scoring y borradores de email que el popup de la web. Sin trabajo manual.
+Añadir el texto legal RGPD (español + inglés) como pie de página en todos los emails que envía la web.
 
-## Cómo va a funcionar
+## Alcance
 
-```
-Instagram → Google Sheet ── (cada 10 min) ──▶ Edge Function `sync-leads-instagram`
-                                                    │
-                                                    ├─ Lee filas nuevas de la Sheet
-                                                    ├─ Marca cada fila como "procesada" en la propia Sheet
-                                                    ├─ Calcula score + categoría (mismo motor)
-                                                    ├─ Inserta en `leads_rapidos` (source = "instagram_sheet")
-                                                    ├─ Genera borrador en `lead_emails_pendientes` (A/B con email)
-                                                    └─ Envía notificación interna al admin (Resend)
-```
+Se aplicará a los emails enviados desde estas funciones:
 
-## Pasos
+- `send-reservation-notification` (confirmación al cliente + aviso admin)
+- `send-status-change-notification` (cambio de estado al cliente)
+- `send-reschedule-notification` (cambio fecha/hora al cliente + admin)
+- `send-outdoor-budget-notification` (presupuesto outdoor)
+- `send-suspicious-reservation-alert` (aviso admin)
+- `enviar-email-lead-aprobado` (respuesta a lead aprobada)
+- `submit-lead-rapido` (confirmación lead)
+- `escalar-consulta-chat` (escalado consulta chat)
 
-### 1. Conectar Google Sheets
-Conectar el connector `google_sheets` al proyecto (un click). El connector se autentica con tu cuenta Google y deja disponibles `LOVABLE_API_KEY` y `GOOGLE_SHEETS_API_KEY` para usarlas desde la edge function.
+Se añade siempre, tanto en emails a clientes como a admin (el texto es genérico y válido para ambos).
 
-### 2. Preparar la Google Sheet (tú, una vez)
-Estructura recomendada de columnas (en este orden):
+## Implementación
 
-```
-A: Fecha | B: Nombre | C: Email | D: Tipo evento | E: Nº personas | F: Fecha evento | G: Procesado
-```
+1. Crear archivo compartido `supabase/functions/_shared/gdpr-footer.ts` que exporte:
+   - `gdprFooterHtml`: bloque HTML con el texto RGPD en español e inglés, estilado en gris claro, tipografía pequeña (11px), separador superior, padding cómodo. Usa colores neutros que funcionan tanto en fondo claro (#f8f9fa) como sobre el patrón actual de los emails.
+   - `gdprFooterText`: versión texto plano (por si se usa en algún email sin HTML).
 
-- Las 6 primeras ya las tienes.
-- Añadir **columna G "Procesado"** vacía. La edge function la rellenará con la fecha al importar para no duplicar.
-- Opcional pero recomendado: columna `Teléfono` si lo capturas en algún momento. Si no llega teléfono desde Instagram, el sistema permitirá guardar el lead solo con email (ver punto 5).
+2. En cada función de email listada arriba, importar `gdprFooterHtml` e insertarlo justo antes del cierre del `<table>` de footer existente (o al final del `<body>` si no hay footer). Mantener el contenido actual (dirección, teléfono, email) y añadir el bloque RGPD debajo, separado por una línea.
 
-Me das el ID de la Sheet (cadena entre `/d/` y `/edit` en la URL) y el nombre de la pestaña.
-
-### 3. Refactor mínimo del scoring
-Extraer la función `calcScore` y `buildLeadDraft` de `submit-lead-rapido/index.ts` a un módulo compartido `supabase/functions/_shared/lead-scoring.ts` para reutilizar desde la nueva función sin duplicar lógica.
-
-### 4. Nueva edge function `sync-leads-instagram`
-Hace:
-- `GET` a la Sheet vía gateway: `…/spreadsheets/{ID}/values/Instagram!A2:G1000`
-- Filtra filas con columna G vacía (no procesadas)
-- Mapea valores → estructura de `leads_rapidos` (con valores por defecto razonables: `actividad_interes = "no_se"`, `como_nos_conociste = "instagram"`, `cuando` deducido de la fecha del evento)
-- Ejecuta scoring, inserta lead, genera borrador si A/B, envía email interno
-- `BATCH UPDATE` a la Sheet marcando columna G con timestamp de procesado
-- Devuelve resumen `{ procesados, errores }`
-
-### 5. Ajuste pequeño del esquema
-El campo `telefono` en `leads_rapidos` es `NOT NULL`. Como Instagram normalmente solo trae email, hacerlo nullable o aceptar string vacío. Migración mínima:
-- `ALTER TABLE leads_rapidos ALTER COLUMN telefono DROP NOT NULL`
-
-### 6. Programación cada 10 minutos
-Usar `pg_cron` + `pg_net` para invocar la función periódicamente (vía `supabase--insert`, no migration, porque incluye URL/anon key específicos del proyecto).
-
-### 7. UI admin (mínimo)
-En `AdminLeads.tsx` ya se ve el `source`. Añadir badge visual cuando `source = "instagram_sheet"` y filtro por origen para diferenciarlos del popup web. Sin pantallas nuevas.
+3. Redeploy automático de las funciones afectadas.
 
 ## Detalles técnicos
 
-**Mapeo Sheet → lead:**
-- `cuando` se calcula automáticamente comparando `Fecha evento` con hoy: ≤7 días → `esta_semana`, ≤30 → `este_mes`, resto → `1_2_meses`.
-- `num_personas`: se intenta parsear el número y mapear al rango (`1-7`, `8-15`, `16-25`, `+25`).
-- `tipo_evento`: normalización flexible (acepta "cumple", "cumpleaños", "birthday" → `cumpleanos`; "empresa", "team building" → `empresa`; etc.). Si no matchea, → `otro`.
-- `consentimiento = true` (contacto vino por DM voluntario, queda registrado en notas internas).
+- El componente HTML usa tablas inline (compatibilidad con clientes de correo Outlook/Gmail), font-size 10–11px, color `#888`, line-height 1.4, max-width heredado del contenedor.
+- Texto exacto facilitado por el usuario, sin alteraciones, en dos bloques (ES arriba, EN debajo) separados por un `<hr>` fino.
+- El email `rgpd@shootandrun.es` y la dirección postal van como enlaces `mailto:`/texto plano según corresponda.
+- No se modifica `chat-asistente` ni `create-reservation` porque no envían emails directamente.
 
-**Idempotencia:** la columna "Procesado" en la Sheet evita duplicados aunque el cron solape ejecuciones. Además, validación extra: si ya existe un lead con mismo email + fecha_orientativa en las últimas 24h, se omite.
+## Resultado
 
-**Errores:** si una fila falla el parseo, se loguea pero no se marca como procesada → se reintenta en la siguiente pasada. Si falla 3 veces, se marca con `ERROR: <motivo>` para revisión manual.
-
-## Archivos
-
-- **Nuevo:** `supabase/functions/_shared/lead-scoring.ts` (extracción)
-- **Nuevo:** `supabase/functions/sync-leads-instagram/index.ts`
-- **Modificado:** `supabase/functions/submit-lead-rapido/index.ts` (importa el módulo compartido)
-- **Modificado:** `src/components/admin/AdminLeads.tsx` (badge de origen + filtro)
-- **Migración:** `telefono` nullable en `leads_rapidos`
-- **Cron job:** vía `supabase--insert` con `cron.schedule(...)` cada 10 min
-
-## Lo que necesito de ti antes de implementar
-
-1. Aprobar la conexión del conector **Google Sheets** cuando aparezca el prompt.
-2. Pasarme el **ID de la Sheet** y el **nombre de la pestaña** (ej: `Instagram`).
-3. Añadir la columna **"Procesado"** al final de la Sheet (vacía).
+Todos los emails salientes incluyen al final el aviso legal RGPD en español e inglés, cumpliendo con la LOPDGDD y el Reglamento (UE) 2016/679.
