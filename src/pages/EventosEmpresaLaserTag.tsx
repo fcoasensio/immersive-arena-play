@@ -85,6 +85,9 @@ const EventosEmpresaLaserTag = () => {
           </ul>
         </div>
 
+        {/* Empresas que han confiado en nosotros */}
+        <ClientLogosMarquee />
+
         {/* Cómo funciona */}
         <div>
           <h2 className="font-display text-xl md:text-2xl font-bold text-foreground mb-6">
