@@ -1,39 +1,47 @@
-# Pie legal RGPD en emails
+# Carrusel "Empresas que confían en nosotros"
 
-Añadir el texto legal RGPD (español + inglés) como pie de página en todos los emails que envía la web.
+Añadir una sección con un marquee infinito en escala de grises a la página `/eventos-empresa-laser-tag`, mostrando los logos (versiones monocromas estilizadas) de las 10 empresas indicadas.
 
-## Alcance
+## Empresas
 
-Se aplicará a los emails enviados desde estas funciones:
+Decathlon Almería · Decathlon Toledo · Abundantia Investments SL · CITROMUR SL · ASEGRICOLA SL · VERISURE · EPAM · NEORIS · SKYNET SYSTEMS SL · SIM SEGURIDAD SL · LIDL
 
-- `send-reservation-notification` (confirmación al cliente + aviso admin)
-- `send-status-change-notification` (cambio de estado al cliente)
-- `send-reschedule-notification` (cambio fecha/hora al cliente + admin)
-- `send-outdoor-budget-notification` (presupuesto outdoor)
-- `send-suspicious-reservation-alert` (aviso admin)
-- `enviar-email-lead-aprobado` (respuesta a lead aprobada)
-- `submit-lead-rapido` (confirmación lead)
-- `escalar-consulta-chat` (escalado consulta chat)
+(EPAM y NEORIS se tratan como dos marcas separadas — confírmame si debieran ser una sola "EPAM NEORIS".)
 
-Se añade siempre, tanto en emails a clientes como a admin (el texto es genérico y válido para ambos).
+## Diseño visual
 
-## Implementación
+- Banda horizontal con scroll continuo (sin botones), pausa al hover.
+- Logos en blanco/gris claro sobre fondo oscuro, opacidad ~50%, al hover sube a 100%.
+- Altura uniforme (~48–56px), separación generosa, máscara con fade en los bordes laterales para que entren/salgan suavemente.
+- Encabezado discreto: "Empresas que ya han confiado en nosotros".
+- Ubicación: nueva sección dentro de `SEOLandingLayout`, colocada justo después del bloque de "Beneficios" y antes de "Cómo organizar tu evento".
 
-1. Crear archivo compartido `supabase/functions/_shared/gdpr-footer.ts` que exporte:
-   - `gdprFooterHtml`: bloque HTML con el texto RGPD en español e inglés, estilado en gris claro, tipografía pequeña (11px), separador superior, padding cómodo. Usa colores neutros que funcionan tanto en fondo claro (#f8f9fa) como sobre el patrón actual de los emails.
-   - `gdprFooterText`: versión texto plano (por si se usa en algún email sin HTML).
+## Logos (monocromos estilizados)
 
-2. En cada función de email listada arriba, importar `gdprFooterHtml` e insertarlo justo antes del cierre del `<table>` de footer existente (o al final del `<body>` si no hay footer). Mantener el contenido actual (dirección, teléfono, email) y añadir el bloque RGPD debajo, separado por una línea.
+Para evitar problemas con marcas registradas y mantener coherencia visual:
 
-3. Redeploy automático de las funciones afectadas.
+- Generaré 10 SVG monocromos (blanco) tipográficos/marca-denominativa con el nombre de cada empresa en una tipografía sobria que evoque su identidad sin reproducir el logo oficial.
+- Se guardarán como SVGs inline en un único archivo `src/components/seo/ClientLogosMarquee.tsx` (sin assets binarios), lo que mantiene el bundle ligero y permite recolorearlos con `currentColor`.
 
-## Detalles técnicos
+## Implementación técnica
 
-- El componente HTML usa tablas inline (compatibilidad con clientes de correo Outlook/Gmail), font-size 10–11px, color `#888`, line-height 1.4, max-width heredado del contenedor.
-- Texto exacto facilitado por el usuario, sin alteraciones, en dos bloques (ES arriba, EN debajo) separados por un `<hr>` fino.
-- El email `rgpd@shootandrun.es` y la dirección postal van como enlaces `mailto:`/texto plano según corresponda.
-- No se modifica `chat-asistente` ni `create-reservation` porque no envían emails directamente.
+1. **Nuevo componente** `src/components/seo/ClientLogosMarquee.tsx`
+   - Array con `{ name, Logo }` (10 entradas, SVG monocromos inline).
+   - Renderiza dos copias consecutivas de la lista dentro de un contenedor con `overflow-hidden`, aplicando animación CSS `translateX(-50%)` infinita (~40s lineal).
+   - Máscara con `mask-image: linear-gradient(...)` para fade lateral.
+   - `pause-on-hover` mediante `:hover { animation-play-state: paused }`.
+   - Accesibilidad: cada logo con `aria-label`, contenedor con `role="region"` y `aria-label="Empresas que confían en nosotros"`.
 
-## Resultado
+2. **Keyframes** añadidos en `tailwind.config.ts`:
+   ```
+   "marquee": { "0%": { transform: "translateX(0)" }, "100%": { transform: "translateX(-50%)" } }
+   ```
+   y `animation: { marquee: "marquee 40s linear infinite" }`.
 
-Todos los emails salientes incluyen al final el aviso legal RGPD en español e inglés, cumpliendo con la LOPDGDD y el Reglamento (UE) 2016/679.
+3. **Integración** en `src/pages/EventosEmpresaLaserTag.tsx`: importar el componente y colocarlo entre los bloques "Beneficios" y "Cómo organizar tu evento".
+
+## Fuera de alcance
+
+- No se descargan logos oficiales ni se suben binarios.
+- No se modifican otras páginas (puede replicarse después si quieres).
+- Sin cambios en backend ni base de datos.
