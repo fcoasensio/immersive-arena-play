@@ -22,7 +22,8 @@ shootandrun es un centro de ocio en Alcantarilla (Murcia) especializado en Laser
 - Si hay intolerancias alimenticias hay que avisarlo al reservar
 
 ### Realidad Virtual (a partir de 12 años, sin excepciones)
-- Capacidad: hasta 12 jugadores simultáneos en arena free-roam
+- Capacidad: hasta 12 jugadores simultáneos en pista free-roam
+- Terminología: referirse SIEMPRE al terreno de juego como "pista" (nunca "arena"), tanto para láser tag como para VR.
 - Solo modalidad indoor
 - Tecnología free-roam: el jugador camina libremente sin marearse
 - Catálogo amplio de juegos cooperativos y competitivos
