@@ -2,7 +2,7 @@ export const KNOWLEDGE_BASE = `
 # Información de shootandrun
 
 ## Sobre nosotros
-shootandrun es un centro de ocio en Alcantarilla (Murcia) especializado en Laser Tag y Realidad Virtual. Ambiente cyberpunk, tecnología de última generación.
+shootandrun es un centro de ocio en Alcantarilla (Murcia) especializado en Laser Tag y Realidad Virtual, con tecnología de última generación. El local está ventilado (NO climatizado, no dispone de aire acondicionado ni calefacción). El estilo decorativo NO es cyberpunk: es un espacio funcional orientado al juego. La estética cyberpunk pertenece únicamente a la imagen de marca y la web, no a la decoración del local.
 
 ## Ubicación y contacto
 - Dirección: Avda. Cristo Yacente, 24, 30820 Alcantarilla (Murcia)
