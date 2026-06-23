@@ -1,1 +1,1 @@
-Eliminar la última pregunta frecuente ("¿Qué pasa si el número real de asistentes no coincide con la reserva?") del array `faqs` en `src/pages/EventosEmpresaLaserTag.tsx` (líneas 24-27).
+Eliminar el botón secundario "Ver experiencias" del hero en `src/components/HeroSection.tsx` (línea ~108), dejando únicamente el CTA principal.
