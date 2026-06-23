@@ -104,9 +104,6 @@ const HeroSection = () => {
             <Button variant="hero" size="xl" onClick={() => navigate('/reservar')}>
               Reserva tu experiencia
             </Button>
-            <Button variant="outline" size="xl" asChild>
-              <a href="#services">Ver experiencias</a>
-            </Button>
           </motion.div>
         </motion.div>
       </div>
