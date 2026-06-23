@@ -130,7 +130,7 @@ const EquipmentSection = () => {
                 transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut", delay: 0.5 }}
                 className="absolute bottom-8 left-8 px-4 py-2 rounded-lg bg-card/80 backdrop-blur-sm border border-neon-blue/30">
                 
-                <span className="font-body text-xs text-neon-blue uppercase tracking-wider">+500m alcance</span>
+                <span className="font-body text-xs text-neon-blue uppercase tracking-wider">+200m alcance</span>
               </motion.div>
             </div>
           </motion.div>

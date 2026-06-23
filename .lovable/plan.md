@@ -1,1 +1,1 @@
-Eliminar el botón secundario "Ver experiencias" del hero en `src/components/HeroSection.tsx` (línea ~108), dejando únicamente el CTA principal.
+Cambiar el texto "+500m alcance" por "+200m alcance" en `src/components/EquipmentSection.tsx` (línea 133). Es un texto superpuesto sobre la imagen, no parte del PNG, así que basta con editar el span.
