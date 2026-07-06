@@ -32,7 +32,7 @@ const CumpleanosLaserTagMurcia = () => {
       <Helmet>
         <title>Cumpleaños Laser Tag en Murcia | Shoot and Run - Fiestas infantiles</title>
         <meta name="description" content="Cumpleaños con laser tag en Murcia para niños y adolescentes. Packs personalizados, monitores, zona merienda y opción de realidad virtual. ¡Reserva ahora!" />
-        <link rel="canonical" href="https://shootandrunweb.lovable.app/cumpleanos-laser-tag-murcia" />
+        <link rel="canonical" href="https://shootandrun.es/cumpleanos-laser-tag-murcia" />
       </Helmet>
 
       <SEOLandingLayout

@@ -21,7 +21,7 @@ const BlogArticleLayout = ({ slug, children }: BlogArticleLayoutProps) => {
       <Helmet>
         <title>{post.title} | Blog Shoot and Run</title>
         <meta name="description" content={post.excerpt} />
-        <link rel="canonical" href={`https://shootandrunweb.lovable.app/blog/${post.slug}`} />
+        <link rel="canonical" href={`https://shootandrun.es/blog/${post.slug}`} />
       </Helmet>
 
       <div className="min-h-screen bg-background">

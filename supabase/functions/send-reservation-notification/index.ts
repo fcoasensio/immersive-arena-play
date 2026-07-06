@@ -295,7 +295,7 @@ function buildCustomerEmail(data: ReservationNotification, formattedDate: string
           <p><a href="${MAPS_URL}" style="color:#00d4ff">Avda. Fernando III El Santo, 24. 30820-Alcantarilla (Murcia)</a></p>
           <p style="margin-top:14px">📞 <a href="tel:+34606323053">+34 606 323 053</a></p>
           <p>✉️ <a href="mailto:reservas@shootandrun.es">reservas@shootandrun.es</a></p>
-          <p>🌐 <a href="https://shootandrunweb.lovable.app">shootandrun.es</a></p>
+          <p>🌐 <a href="https://shootandrun.es">shootandrun.es</a></p>
         </div>
       </div>
       <div class="footer">© ${new Date().getFullYear()} shootandrun · Alcantarilla, Murcia</div>

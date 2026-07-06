@@ -33,7 +33,7 @@ const RealidadVirtualMurcia = () => {
       <Helmet>
         <title>Realidad Virtual en Murcia | VR Free Roaming | Shoot and Run</title>
         <meta name="description" content="Realidad virtual en Murcia para grupos. Juegos multijugador, escape rooms VR y experiencias inmersivas Free Roaming. ¡Reserva tu experiencia VR!" />
-        <link rel="canonical" href="https://shootandrunweb.lovable.app/realidad-virtual-murcia" />
+        <link rel="canonical" href="https://shootandrun.es/realidad-virtual-murcia" />
       </Helmet>
 
       <SEOLandingLayout
