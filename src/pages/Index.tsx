@@ -18,7 +18,7 @@ const localBusinessJsonLd = {
   "@type": "LocalBusiness",
   "name": "Shoot and Run",
   "description": "Centro de laser tag y realidad virtual Free Roaming en Alcantarilla, Murcia. Cumpleaños, eventos de empresa, despedidas y actividades de ocio.",
-  "url": "https://shootandrunweb.lovable.app",
+  "url": "https://shootandrun.es",
   "telephone": "+34606323053",
   "email": "reservas@shootandrun.es",
   "address": {
@@ -34,7 +34,7 @@ const localBusinessJsonLd = {
     "latitude": 37.9693,
     "longitude": -1.2265
   },
-  "image": "https://shootandrunweb.lovable.app/og-image.jpg",
+  "image": "https://shootandrun.es/og-image.jpg",
   "priceRange": "€€",
   "currenciesAccepted": "EUR",
   "paymentAccepted": "Efectivo, Bizum, Transferencia",
@@ -79,7 +79,7 @@ const Index = () => {
       <Helmet>
         <title>Shoot and Run | Laser Tag y Realidad Virtual en Murcia</title>
         <meta name="description" content="Centro de laser tag y realidad virtual Free Roaming en Alcantarilla, Murcia. Cumpleaños, eventos de empresa, despedidas y ocio. Desde 18€/persona. ¡Reserva ahora!" />
-        <link rel="canonical" href="https://shootandrunweb.lovable.app/" />
+        <link rel="canonical" href="https://shootandrun.es/" />
         <script type="application/ld+json">{JSON.stringify(localBusinessJsonLd)}</script>
       </Helmet>
       <Navbar />

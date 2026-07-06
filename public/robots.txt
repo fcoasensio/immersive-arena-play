@@ -15,4 +15,4 @@ Allow: /
 Disallow: /admin
 Disallow: /admin/login
 
-Sitemap: https://shootandrunweb.lovable.app/sitemap.xml
+Sitemap: https://shootandrun.es/sitemap.xml

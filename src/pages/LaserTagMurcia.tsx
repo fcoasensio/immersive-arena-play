@@ -32,7 +32,7 @@ const LaserTagMurcia = () => {
       <Helmet>
         <title>Laser Tag en Murcia | Shoot and Run - La experiencia más realista</title>
         <meta name="description" content="Laser tag en Murcia para grupos, cumpleaños y eventos. Equipamiento profesional, escenarios indoor y outdoor. Desde 18€/persona. ¡Reserva ahora!" />
-        <link rel="canonical" href="https://shootandrunweb.lovable.app/laser-tag-murcia" />
+        <link rel="canonical" href="https://shootandrun.es/laser-tag-murcia" />
       </Helmet>
 
       <SEOLandingLayout

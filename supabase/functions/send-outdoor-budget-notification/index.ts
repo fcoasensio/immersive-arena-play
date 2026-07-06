@@ -194,7 +194,7 @@ const handler = async (req: Request): Promise<Response> => {
               <p style="font-size:15px;color:#fff;font-weight:600;margin-bottom:10px">📞 ¿Prefieres hablar directamente?</p>
               <p>📞 <a href="tel:+34606323053">+34 606 323 053</a></p>
               <p>✉️ <a href="mailto:hola@shootandrun.es">hola@shootandrun.es</a></p>
-              <p>🌐 <a href="https://shootandrunweb.lovable.app">shootandrun.es</a></p>
+              <p>🌐 <a href="https://shootandrun.es">shootandrun.es</a></p>
             </div>
           </div>
           <div class="footer">© ${new Date().getFullYear()} shootandrun · Alcantarilla, Murcia</div>

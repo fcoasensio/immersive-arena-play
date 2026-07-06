@@ -29,7 +29,7 @@ const EventosEmpresaLaserTag = () => {
       <Helmet>
         <title>Eventos de Empresa Laser Tag Murcia | Team Building | Shoot and Run</title>
         <meta name="description" content="Team building y eventos corporativos con laser tag en Murcia. Dinámicas adaptadas, actividades competitivas y experiencias personalizadas. Solicita presupuesto." />
-        <link rel="canonical" href="https://shootandrunweb.lovable.app/eventos-empresa-laser-tag" />
+        <link rel="canonical" href="https://shootandrun.es/eventos-empresa-laser-tag" />
       </Helmet>
 
       <SEOLandingLayout

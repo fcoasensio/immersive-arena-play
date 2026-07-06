@@ -94,7 +94,7 @@ const Blog = () => {
       <Helmet>
         <title>Blog | Shoot and Run - Laser Tag y VR en Murcia</title>
         <meta name="description" content="Blog de Shoot and Run: artículos sobre laser tag, realidad virtual, cumpleaños, eventos de empresa y planes de ocio en Murcia." />
-        <link rel="canonical" href="https://shootandrunweb.lovable.app/blog" />
+        <link rel="canonical" href="https://shootandrun.es/blog" />
       </Helmet>
 
       <div className="min-h-screen bg-background">
