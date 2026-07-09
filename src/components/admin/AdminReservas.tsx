@@ -388,7 +388,46 @@ const AdminReservas = () => {
             <SelectItem value="cancelada">Cancelada</SelectItem>
           </SelectContent>
         </Select>
+        <Button
+          variant="outline"
+          onClick={() => {
+            const rows = filtered;
+            if (rows.length === 0) {
+              toast.error("No hay clientes para exportar");
+              return;
+            }
+            const headers = [
+              "Nombre completo","DNI/CIF","Dirección","Código postal","Email","Teléfono",
+              "Fecha","Hora","Actividad","Tipo","Participantes","Precio final (€)","Anticipo (€)","Estado","Creada",
+            ];
+            const esc = (v: unknown) => {
+              const s = v == null ? "" : String(v);
+              return `"${s.replace(/"/g, '""')}"`;
+            };
+            const csv = [
+              headers.join(";"),
+              ...rows.map(r => [
+                r.nombre_completo, r.dni_cif, r.direccion, r.codigo_postal, r.email, r.telefono,
+                r.fecha, r.hora, r.actividad, r.tipo_reserva, r.num_participantes,
+                r.precio_final ?? "", r.anticipo ?? "", r.estado,
+                new Date(r.created_at).toLocaleString("es-ES"),
+              ].map(esc).join(";")),
+            ].join("\n");
+            const blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8;" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `clientes-shootandrun-${new Date().toISOString().slice(0,10)}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+            toast.success(`${rows.length} cliente(s) exportado(s)`);
+          }}
+        >
+          <Download size={16} className="mr-2" />
+          Descargar CSV
+        </Button>
       </div>
+
 
       <div className="text-sm text-muted-foreground">{filtered.length} reserva(s)</div>
 
