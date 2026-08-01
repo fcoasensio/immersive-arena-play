@@ -59,24 +59,43 @@ const CTASection = ({ onOutdoorClick }: CTASectionProps) => {
 
           {/* Contact Info */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {contactInfo.map((item, index) => (
-              <motion.div
-                key={item.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1, duration: 0.5 }}
-                className="p-6 rounded-xl bg-card/50 border border-border backdrop-blur-sm hover:border-neon-blue/50 transition-colors duration-300 group"
-              >
-                <item.icon className="w-8 h-8 text-neon-blue mx-auto mb-4 group-hover:scale-110 transition-transform duration-300" />
-                <p className="font-body text-xs uppercase tracking-wider text-muted-foreground mb-1">
-                  {item.label}
-                </p>
-                <p className="font-body text-sm text-foreground font-medium">
-                  {item.value}
-                </p>
-              </motion.div>
-            ))}
+            {contactInfo.map((item, index) => {
+              const content = (
+                <>
+                  <item.icon className="w-8 h-8 text-neon-blue mx-auto mb-4 group-hover:scale-110 transition-transform duration-300" />
+                  <p className="font-body text-xs uppercase tracking-wider text-muted-foreground mb-1">
+                    {item.label}
+                  </p>
+                  <p className="font-body text-sm text-foreground font-medium">
+                    {item.value}
+                  </p>
+                </>
+              );
+
+              return (
+                <motion.div
+                  key={item.label}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1, duration: 0.5 }}
+                  className="p-6 rounded-xl bg-card/50 border border-border backdrop-blur-sm hover:border-neon-blue/50 transition-colors duration-300 group"
+                >
+                  {item.label === 'Ubicación' ? (
+                    <a
+                      href="https://maps.app.goo.gl/Tv66ozXJ7QfR1U4dA"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block"
+                    >
+                      {content}
+                    </a>
+                  ) : (
+                    content
+                  )}
+                </motion.div>
+              );
+            })}
           </div>
         </motion.div>
       </div>
