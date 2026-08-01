@@ -13,7 +13,7 @@ const PoliticaPrivacidad = () => {
             <h2 className="text-lg font-semibold text-foreground">1. Responsable del tratamiento</h2>
             <p>
               <strong>Francisco Jiménez Asensio</strong><br />
-              Avda. Cristo Yacente, 24, 30820 Alcantarilla (Murcia)<br />
+              Avda. Fernando III El Santo, 24, 30820 Alcantarilla (Murcia)<br />
               Email: gdpr@shootandrun.es<br />
               Teléfono: 606 323 053
             </p>

@@ -21,7 +21,7 @@ const LegalNoticeDialog = ({ children }: LegalNoticeDialogProps) => {
             <ul className="space-y-1">
               <li><strong>Denominación social:</strong> Francisco Jiménez Asensio</li>
               <li><strong>NIF:</strong> 52806442Y</li>
-              <li><strong>Domicilio:</strong> C/ Independencia, 31, 30820 – Alcantarilla (Murcia)</li>
+              <li><strong>Domicilio:</strong> Avda. Fernando III El Santo, 24, 30820 Alcantarilla (Murcia)</li>
             </ul>
 
             <p>Con los límites establecidos en la ley, Francisco Jiménez Asensio no asume ninguna responsabilidad derivada de la falta de veracidad, integridad, actualización y precisión de los datos o informaciones que contienen sus páginas web.</p>
@@ -34,7 +34,7 @@ const LegalNoticeDialog = ({ children }: LegalNoticeDialogProps) => {
 
             <p>Asimismo, para acceder a algunos de los servicios que Francisco Jiménez Asensio ofrece a través del sitio web, deberá proporcionar algunos datos de carácter personal. En cumplimiento de lo establecido en el Reglamento (UE) 2016/679 del Parlamento Europeo y del Consejo, de 27 de abril de 2016, relativo a la protección de las personas físicas en lo que respecta al tratamiento de datos personales y a la libre circulación de estos datos le informamos que, mediante la cumplimentación de los presentes formularios, sus datos personales quedarán incorporados y serán tratados en los ficheros de Francisco Jiménez Asensio con el fin de poderle prestar y ofrecer nuestros servicios así como para informarle de las mejoras del sitio Web.</p>
 
-            <p>Le informamos también de que tendrá la posibilidad en todo momento de ejercer los derechos de acceso, rectificación, cancelación, oposición, limitación y portabilidad de sus datos de carácter personal, de manera gratuita mediante email a: fcoasensio@gmail.com o en la dirección: C/ Independencia, 31, 30820 – Alcantarilla (Murcia).</p>
+            <p>Le informamos también de que tendrá la posibilidad en todo momento de ejercer los derechos de acceso, rectificación, cancelación, oposición, limitación y portabilidad de sus datos de carácter personal, de manera gratuita mediante email a: fcoasensio@gmail.com o en la dirección: Avda. Fernando III El Santo, 24, 30820 Alcantarilla (Murcia).</p>
 
             <p className="pt-4 text-xs text-muted-foreground/70">REV: 20.3009</p>
           </div>

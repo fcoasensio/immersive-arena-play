@@ -19,7 +19,7 @@ const TermsDialog = ({ children }: TermsDialogProps) => {
             <h3 className="text-foreground font-semibold">IDENTIFICADOR DEL PRESTADOR</h3>
             <ul className="space-y-1">
               <li><strong>Titular:</strong> Francisco Jiménez Asensio</li>
-              <li><strong>Domicilio social:</strong> C/ Independencia, 31. – 30820 – Alcantarilla (Murcia)</li>
+              <li><strong>Domicilio social:</strong> Avda. Fernando III El Santo, 24. – 30820 – Alcantarilla (Murcia)</li>
               <li><strong>CIF/NIF:</strong> 52806442Y</li>
               <li><strong>Teléfono:</strong> +34 606323053</li>
               <li><strong>E-mail:</strong> hola@shootandrun.es</li>
@@ -65,7 +65,7 @@ const TermsDialog = ({ children }: TermsDialogProps) => {
             <p>De conformidad con lo dispuesto en el Real Decreto Legislativo 1/2007, de 16 de noviembre, por el que se aprueba el texto refundido de la Ley General para la Defensa de los Consumidores y Usuarios y otras leyes complementarias, junto con el artículo 45 de la Ley 7/1996, del Comercio Minorista, el usuario tiene derecho a desistir del contrato durante el plazo de desde el momento en que se ha contratado el servicio.</p>
             <p>Para ejercer el derecho al desistimiento, el usuario simplemente deberá solicitarlo por escrito a cualquiera de las direcciones mencionadas a continuación, indicando expresamente su solicitud de ejercicio del derecho de desistimiento:</p>
             <ul className="list-disc pl-5 space-y-1">
-              <li>Dirección Postal: C/ Independencia, 31. – 30820 – Alcantarilla (Murcia)</li>
+              <li>Dirección Postal: Avda. Fernando III El Santo, 24. – 30820 – Alcantarilla (Murcia)</li>
               <li>Correo electrónico: hola@shootandrun.es</li>
             </ul>
             <p>En cualquier caso, corresponde al consumidor y usuario probar que ha ejercitado su derecho de desistimiento conforme a lo dispuesto en este capítulo.</p>

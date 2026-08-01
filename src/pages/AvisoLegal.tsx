@@ -18,7 +18,7 @@ const AvisoLegal = () => {
             </p>
             <p>
               <strong>Denominación:</strong> Francisco Jiménez Asensio<br />
-              <strong>Domicilio:</strong> Avda. Cristo Yacente, 24, 30820 Alcantarilla (Murcia)<br />
+              <strong>Domicilio:</strong> Avda. Fernando III El Santo, 24, 30820 Alcantarilla (Murcia)<br />
               <strong>Email:</strong> hola@shootandrun.es<br />
               <strong>Teléfono:</strong> 606 323 053
             </p>
