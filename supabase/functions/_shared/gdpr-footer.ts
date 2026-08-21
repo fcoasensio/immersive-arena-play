@@ -18,7 +18,7 @@ export const gdprFooterHtml = `${"<!--gdpr-footer-v1-->"}
         This message and its contents may contain confidential information and its non-authorised use is prohibited by law. If you are not the intended recipient of this email, please advise this fact using the same, or other mode, and delete this message and its contents from your system without copying, forwarding or revealing the contents of the message to any other person. In addition, we inform you that the distribution, copy or use of this message and its attached documents with any purpose are prohibited by law.
       </p>
       <p style="margin:0;">
-        In order to comply with General Data Protection Regulation (GDPR), you can exercise right of access, rectification, erasure, restriction of processing, portability and object, sending an e-mail to: <a href="mailto:rgpd@shootandrun.es" style="color:#888;text-decoration:underline;">rgpd@shootandrun.es</a> or written communication to the following address: C/ Independencia, 31, 30820 - Alcantarilla (Murcia).
+        In order to comply with General Data Protection Regulation (GDPR), you can exercise right of access, rectification, erasure, restriction of processing, portability and object, sending an e-mail to: <a href="mailto:rgpd@shootandrun.es" style="color:#888;text-decoration:underline;">rgpd@shootandrun.es</a> or written communication to the following address: Avda. Fernando III El Santo, 24, 30820 - Alcantarilla (Murcia).
       </p>
     </td>
   </tr>
@@ -29,7 +29,7 @@ export const gdprFooterText = `
 ---
 Este mensaje va dirigido, de manera exclusiva, a su destinatario y puede contener información confidencial y sujeta al secreto profesional. Si lo ha recibido por error, comuníquenoslo y elimínelo. En cumplimiento del RGPD (UE) 2016/679 y la LOPDGDD 3/2018, el Responsable del tratamiento es Francisco Jiménez Asensio (NIF 52806442Y). Ejercite sus derechos en rgpd@shootandrun.es.
 
-This message may contain confidential information. If you are not the intended recipient, please delete it. Under GDPR you may exercise your rights at rgpd@shootandrun.es or C/ Independencia, 31, 30820 - Alcantarilla (Murcia).
+This message may contain confidential information. If you are not the intended recipient, please delete it. Under GDPR you may exercise your rights at rgpd@shootandrun.es or Avda. Fernando III El Santo, 24, 30820 - Alcantarilla (Murcia).
 `;
 
 /**

@@ -8,7 +8,7 @@ const resend = resendApiKey ? new Resend(resendApiKey) : null;
 const ADMIN_EMAIL = "reservas@shootandrun.es";
 const CC_EMAIL = "info@shootandrun.es";
 const LOGO_URL = "https://pbfvhwgnpewmljkvckfw.supabase.co/storage/v1/object/public/email-assets/logo-shootandrun.png";
-const MAPS_URL = "https://maps.google.com/?q=C/+Independencia+31,+30820+Alcantarilla,+Murcia";
+const MAPS_URL = "https://maps.google.com/?q=Avda.+Fernando+III+El+Santo,+24,+30820+Alcantarilla,+Murcia";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -232,7 +232,7 @@ function buildAdminEmail(data: ReservationNotification, formattedDate: string): 
         ${data.videoInvitationTheme ? `<div class="section-title">🎬 Videoinvitación</div>${buildAdminInfoItem('Temática', data.videoInvitationTheme)}` : ''}
         ${data.specialRequests ? `<div class="section-title">💬 Notas</div>${buildAdminInfoItem('Peticiones especiales', data.specialRequests)}` : ''}
       </div>
-      <div class="footer">shootandrun · C/ Independencia 31, Alcantarilla (Murcia)</div>
+      <div class="footer">shootandrun · Avda. Fernando III El Santo, 24, 30820 Alcantarilla (Murcia)</div>
     </div>
   </body></html>`;
 }

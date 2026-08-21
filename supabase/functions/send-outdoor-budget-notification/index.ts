@@ -151,7 +151,7 @@ const handler = async (req: Request): Promise<Response> => {
             <div class="info-item"><div class="info-label">Tipo de evento</div><div class="info-value">${getEventLabel(eventType)}</div></div>
             ${safeDetails ? `<div class="info-item"><div class="info-label">Detalles</div><div class="info-value">${safeDetails}</div></div>` : ''}
           </div>
-          <div class="footer">shootandrun · C/ Independencia 31, Alcantarilla (Murcia)</div>
+          <div class="footer">shootandrun · Avda. Fernando III El Santo, 24, 30820 Alcantarilla (Murcia)</div>
         </div>
       </body></html>`),
     });
