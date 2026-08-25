@@ -1,36 +1,26 @@
-# Cambiar correos de notificación: outdoor@ → hola@ y info@ → fcoasensio@
+# Cambio de correos internos: outdoor@ → hola@ y info@ → fcoasensio@
 
-Sustituir en todas las funciones de correo las dos direcciones internas, para que las notificaciones del negocio lleguen a los bucles actualizados:
+## Objetivo
+Las direcciones `outdoor@shootandrun.es` e `info@shootandrun.es` no existen como buzones reales. Sustituirlas en todo el backend:
 
 - `outdoor@shootandrun.es` → `hola@shootandrun.es`
-- `info@shootandrun.es` → `fcoasensio@shootandrun.es`
+- `info@shootandrun.es` (copia CC) → `fcoasensio@shootandrun.es`
 
-## Cambios por archivo
+## Archivos a modificar (6 Edge Functions)
 
-### 1. `supabase/functions/submit-lead-rapido/index.ts` (líneas 12-13)
-- `ADMIN_EMAIL`: `outdoor@shootandrun.es` → `hola@shootandrun.es`
-- `CC_EMAIL`: `info@shootandrun.es` → `fcoasensio@shootandrun.es`
+| Función | Cambio |
+|---|---|
+| `supabase/functions/send-reservation-notification/index.ts` | `CC_EMAIL` info@ → fcoasensio@ |
+| `supabase/functions/send-outdoor-budget-notification/index.ts` | `ADMIN_EMAIL` outdoor@ → hola@, `CC_EMAIL` info@ → fcoasensio@ |
+| `supabase/functions/submit-lead-rapido/index.ts` | `ADMIN_EMAIL` outdoor@ → hola@, `CC_EMAIL` info@ → fcoasensio@ |
+| `supabase/functions/sync-leads-instagram/index.ts` | `ADMIN_EMAIL` outdoor@ → hola@, `CC_EMAIL` info@ → fcoasensio@ |
+| `supabase/functions/enviar-email-lead-aprobado/index.ts` | `REPLY_TO` outdoor@ → hola@ |
+| `supabase/functions/send-suspicious-reservation-alert/index.ts` | `CC_EMAIL` info@ → fcoasensio@ |
 
-### 2. `supabase/functions/enviar-email-lead-aprobado/index.ts` (línea 13)
-- `REPLY_TO`: `outdoor@shootandrun.es` → `hola@shootandrun.es`
+## Qué NO cambia
+- El remitente `outdoor@web.shootandrun.es` se mantiene: no es un buzón, es la dirección de envío del dominio verificado en Resend (`web.shootandrun.es`). Cambiarla rompería el envío de correos.
+- Textos visibles para clientes, firma de los emails y pie RGPD.
 
-### 3. `supabase/functions/sync-leads-instagram/index.ts` (líneas 12-13)
-- `ADMIN_EMAIL`: `outdoor@shootandrun.es` → `hola@shootandrun.es`
-- `CC_EMAIL`: `info@shootandrun.es` → `fcoasensio@shootandrun.es`
-
-### 4. `supabase/functions/send-suspicious-reservation-alert/index.ts` (línea 9)
-- `CC_EMAIL`: `info@shootandrun.es` → `fcoasensio@shootandrun.es`
-
-### 5. `supabase/functions/send-reservation-notification/index.ts` (línea 9)
-- `CC_EMAIL`: `info@shootandrun.es` → `fcoasensio@shootandrun.es`
-
-### 6. `supabase/functions/send-outdoor-budget-notification/index.ts` (líneas 8-9)
-- `ADMIN_EMAIL`: `outdoor@shootandrun.es` → `hola@shootandrun.es`
-- `CC_EMAIL`: `info@shootandrun.es` → `fcoasensio@shootandrun.es`
-
-## Despliegue
-Tras editar, redesplegar las 6 funciones afectadas para que el cambio esté en producción.
-
-## Notas
-- El remitente `FROM` (`outdoor@web.shootandrun.es`) no se toca: es la dirección técnica de envío verificada en Resend, no un buzón que recibes.
-- `escalar-consulta-chat` ya envía a `hola@shootandrun.es`, no necesita cambios.
+## Verificación
+1. Confirmar con búsqueda (`rg`) que no queda ninguna referencia a `outdoor@shootandrun.es` ni `info@shootandrun.es` en el código.
+2. Redesplegar las 6 funciones afectadas para que el cambio quede activo.
