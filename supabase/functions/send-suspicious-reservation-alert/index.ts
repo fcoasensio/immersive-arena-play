@@ -6,7 +6,7 @@ const resendApiKey = Deno.env.get("RESEND_API_KEY");
 const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 const ADMIN_EMAIL = "reservas@shootandrun.es";
-const CC_EMAIL = "info@shootandrun.es";
+const CC_EMAIL = "fcoasensio@shootandrun.es";
 const ADMIN_URL = "https://shootandrun.es/admin";
 
 const corsHeaders = {

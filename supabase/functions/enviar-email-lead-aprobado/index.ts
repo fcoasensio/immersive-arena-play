@@ -10,7 +10,7 @@ const corsHeaders = {
 };
 
 const FROM = "shootandrun <outdoor@web.shootandrun.es>";
-const REPLY_TO = "outdoor@shootandrun.es";
+const REPLY_TO = "hola@shootandrun.es";
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {

@@ -5,8 +5,8 @@ import { appendGdprFooter } from "../_shared/gdpr-footer.ts";
 const resendApiKey = Deno.env.get("RESEND_API_KEY");
 const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
-const ADMIN_EMAIL = "outdoor@shootandrun.es";
-const CC_EMAIL = "info@shootandrun.es";
+const ADMIN_EMAIL = "hola@shootandrun.es";
+const CC_EMAIL = "fcoasensio@shootandrun.es";
 const LOGO_URL = "https://pbfvhwgnpewmljkvckfw.supabase.co/storage/v1/object/public/email-assets/logo-shootandrun.png";
 
 const corsHeaders = {

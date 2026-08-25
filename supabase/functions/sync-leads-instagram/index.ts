@@ -9,8 +9,8 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const ADMIN_EMAIL = "outdoor@shootandrun.es";
-const CC_EMAIL = "info@shootandrun.es";
+const ADMIN_EMAIL = "hola@shootandrun.es";
+const CC_EMAIL = "fcoasensio@shootandrun.es";
 const FROM = "shootandrun Leads <outdoor@web.shootandrun.es>";
 const GW = "https://connector-gateway.lovable.dev/google_sheets/v4";
 
