@@ -6,7 +6,7 @@ const resendApiKey = Deno.env.get("RESEND_API_KEY");
 const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 const ADMIN_EMAIL = "reservas@shootandrun.es";
-const CC_EMAIL = "info@shootandrun.es";
+const CC_EMAIL = "fcoasensio@shootandrun.es";
 const LOGO_URL = "https://pbfvhwgnpewmljkvckfw.supabase.co/storage/v1/object/public/email-assets/logo-shootandrun.png";
 const MAPS_URL = "https://maps.google.com/?q=Avda.+Fernando+III+El+Santo,+24,+30820+Alcantarilla,+Murcia";
 
