@@ -3,6 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function () {
+        try {
+          var h = (location.hostname || "").toLowerCase();
+          if (h === "shootandrunweb.lovable.app" || h.indexOf("lovable.app") !== -1) {
+            var m = document.createElement("meta");
+            m.name = "robots";
+            m.content = "noindex,nofollow";
+            document.head.appendChild(m);
+          }
+        } catch (e) {}
+      })();
+    </script>
     <!-- TODO: Set the document title to the name of your application -->
     <title>shootandrun</title>
     <meta name="description" content="shootandrun lasertag y vr">
