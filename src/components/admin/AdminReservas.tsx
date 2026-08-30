@@ -42,6 +42,18 @@ type Reserva = {
   google_calendar_event_id: string | null;
   score_sospecha?: number | null;
   motivos_sospecha?: string[] | null;
+  expira_at?: string | null;
+  recordatorio_enviado_at?: string | null;
+  cancelada_motivo?: string | null;
+};
+
+const tiempoRestante = (expiraAt: string): { texto: string; vencido: boolean } => {
+  const ms = new Date(expiraAt).getTime() - Date.now();
+  if (ms <= 0) return { texto: "plazo vencido", vencido: true };
+  const min = Math.floor(ms / 60000);
+  const h = Math.floor(min / 60);
+  const m = min % 60;
+  return { texto: h > 0 ? `quedan ${h}h ${m}min` : `quedan ${m}min`, vencido: false };
 };
 
 const estadoColors: Record<string, string> = {
