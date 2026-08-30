@@ -143,6 +143,22 @@ const AdminReservas = () => {
     setRescheduleOpen(true);
   };
 
+  const [ampliandoPlazo, setAmpliandoPlazo] = useState(false);
+  const ampliarPlazo = async (r: Reserva) => {
+    if (!r.expira_at) return;
+    setAmpliandoPlazo(true);
+    const nueva = new Date(new Date(r.expira_at).getTime() + 5 * 60 * 60 * 1000).toISOString();
+    const { error } = await supabase
+      .from("reservas")
+      .update({ expira_at: nueva, recordatorio_enviado_at: null } as any)
+      .eq("id", r.id);
+    setAmpliandoPlazo(false);
+    if (error) { toast.error("Error ampliando el plazo"); return; }
+    setReservas((prev) => prev.map((x) => x.id === r.id ? { ...x, expira_at: nueva, recordatorio_enviado_at: null } : x));
+    if (selected?.id === r.id) setSelected({ ...r, expira_at: nueva, recordatorio_enviado_at: null });
+    toast.success("Plazo ampliado 5 horas");
+  };
+
   const handleReschedule = async () => {
     if (!selected) return;
     if (!newDate || !newTime) {
