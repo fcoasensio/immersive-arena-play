@@ -119,6 +119,7 @@ const ReservaForm = () => {
   const [step, setStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [expiraAt, setExpiraAt] = useState<string | null>(null);
   const [festivos, setFestivos] = useState<string[]>([]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [checkingAvailability, setCheckingAvailability] = useState(false);
