@@ -8,6 +8,7 @@ Hoy, al crear una reserva se genera el evento en Google Calendar aunque esté en
 - En la pantalla de reserva enviada: mismo aviso con la hora límite concreta (fecha y hora exacta en que expira).
 - En el email de confirmación al cliente: bloque destacado con el importe, el número de Bizum y la hora límite.
 - En el email interno al equipo: se indica también la hora límite.
+- Nuevo aviso interno para ti en cuanto se crea cualquier reserva: email a `hola@shootandrun.es` con el asunto "Nueva reserva pendiente de confirmación (Bizum 50 €)", indicando nombre, teléfono, email, actividad, fecha/hora, importe total, el anticipo de 50 € y la hora límite de expiración, para que estés pendiente de la cuenta del banco. Este aviso también sirve de cabecera del email interno ya existente, asegurando que el "pendiente de Bizum" quede claro y destacado.
 
 ## 2. Recordatorio antes de expirar
 
