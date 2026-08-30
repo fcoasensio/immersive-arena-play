@@ -119,6 +119,7 @@ const ReservaForm = () => {
   const [step, setStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [expiraAt, setExpiraAt] = useState<string | null>(null);
   const [festivos, setFestivos] = useState<string[]>([]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [checkingAvailability, setCheckingAvailability] = useState(false);
@@ -286,6 +287,7 @@ const ReservaForm = () => {
 
       if (error) throw error;
       const insertedReserva = { id: responseData.id };
+      setExpiraAt(responseData.expiraAt || null);
 
       // Si la reserva es sospechosa, no enviamos email al cliente ni creamos evento.
       // El backend ya ha avisado al admin internamente.
@@ -321,6 +323,7 @@ const ReservaForm = () => {
           childAge: data.edad_menor || undefined,
           specialRequests: data.notas || undefined,
           videoInvitationTheme: data.tematica_invitacion || undefined,
+          expiraAt: responseData.expiraAt || undefined,
         },
       });
 
@@ -382,6 +385,14 @@ const ReservaForm = () => {
         <p className="text-muted-foreground max-w-md mx-auto">
           Te hemos enviado un email de confirmación con los detalles de tu reserva. Nos pondremos en contacto contigo para confirmar y gestionar el anticipo de <span className="text-primary font-bold">{config.anticipo}€</span>.
         </p>
+        {expiraAt && (
+          <div className="max-w-md mx-auto bg-destructive/10 border border-destructive/30 rounded-xl p-4 text-sm">
+            <p className="font-semibold text-destructive">⏰ Tu hora queda bloqueada por tiempo limitado</p>
+            <p className="text-muted-foreground mt-1">
+              Tienes hasta las <span className="text-foreground font-medium">{format(new Date(expiraAt), "HH:mm 'del' EEEE d 'de' MMMM", { locale: es })}</span> para hacer el Bizum de {config.anticipo}€ al <span className="text-foreground font-medium">606 323 053</span>. Si no se recibe a tiempo, la reserva se cancelará automáticamente y la hora quedará disponible para otros clientes.
+            </p>
+          </div>
+        )}
         <p className="text-sm text-muted-foreground">
           Si no recibes el email, revisa tu carpeta de spam.
         </p>
@@ -714,6 +725,9 @@ const ReservaForm = () => {
                     <p className="font-medium text-foreground">Pago por Bizum o transferencia</p>
                     <p className="text-muted-foreground mt-1">
                       Tras enviar la reserva recibirás un email con los datos para realizar el anticipo de {config.anticipo}€. La reserva se confirma al recibir el pago.
+                    </p>
+                    <p className="text-destructive mt-2 text-xs font-medium">
+                      ⏰ Importante: tu franja horaria queda bloqueada durante 5 horas. Si en ese plazo no recibimos el Bizum, la reserva se cancelará automáticamente y la hora quedará libre para otros clientes.
                     </p>
                   </div>
                 </div>

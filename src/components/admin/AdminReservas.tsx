@@ -42,6 +42,18 @@ type Reserva = {
   google_calendar_event_id: string | null;
   score_sospecha?: number | null;
   motivos_sospecha?: string[] | null;
+  expira_at?: string | null;
+  recordatorio_enviado_at?: string | null;
+  cancelada_motivo?: string | null;
+};
+
+const tiempoRestante = (expiraAt: string): { texto: string; vencido: boolean } => {
+  const ms = new Date(expiraAt).getTime() - Date.now();
+  if (ms <= 0) return { texto: "plazo vencido", vencido: true };
+  const min = Math.floor(ms / 60000);
+  const h = Math.floor(min / 60);
+  const m = min % 60;
+  return { texto: h > 0 ? `quedan ${h}h ${m}min` : `quedan ${m}min`, vencido: false };
 };
 
 const estadoColors: Record<string, string> = {
@@ -129,6 +141,22 @@ const AdminReservas = () => {
     setNewDate(r.fecha);
     setNewTime(r.hora.slice(0, 5));
     setRescheduleOpen(true);
+  };
+
+  const [ampliandoPlazo, setAmpliandoPlazo] = useState(false);
+  const ampliarPlazo = async (r: Reserva) => {
+    if (!r.expira_at) return;
+    setAmpliandoPlazo(true);
+    const nueva = new Date(new Date(r.expira_at).getTime() + 5 * 60 * 60 * 1000).toISOString();
+    const { error } = await supabase
+      .from("reservas")
+      .update({ expira_at: nueva, recordatorio_enviado_at: null } as any)
+      .eq("id", r.id);
+    setAmpliandoPlazo(false);
+    if (error) { toast.error("Error ampliando el plazo"); return; }
+    setReservas((prev) => prev.map((x) => x.id === r.id ? { ...x, expira_at: nueva, recordatorio_enviado_at: null } : x));
+    if (selected?.id === r.id) setSelected({ ...r, expira_at: nueva, recordatorio_enviado_at: null });
+    toast.success("Plazo ampliado 5 horas");
   };
 
   const handleReschedule = async () => {
@@ -476,6 +504,14 @@ const AdminReservas = () => {
                       ))}
                     </SelectContent>
                   </Select>
+                  {r.estado === "pendiente_pago" && r.expira_at && (
+                    <div className={`text-[10px] mt-1 ${tiempoRestante(r.expira_at).vencido ? "text-neon-red" : "text-yellow-400"}`}>
+                      ⏰ {tiempoRestante(r.expira_at).texto}
+                    </div>
+                  )}
+                  {r.estado === "cancelada" && r.cancelada_motivo === "no_confirmada" && (
+                    <div className="text-[10px] mt-1 text-neon-red">sin Bizum</div>
+                  )}
                 </TableCell>
                 <TableCell>
                   <Button variant="ghost" size="icon" onClick={() => setSelected(r)}>
@@ -542,6 +578,38 @@ const AdminReservas = () => {
                   <p className="text-[11px] text-muted-foreground">
                     No se ha enviado email al cliente ni evento al calendario. Aprueba si es válida o cambia el estado a "Cancelada" para descartarla.
                   </p>
+                </div>
+              )}
+              {selected.estado === "pendiente_pago" && selected.expira_at && (
+                <div className="col-span-2 p-3 rounded-md border border-yellow-500/40 bg-yellow-500/5 space-y-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="text-xs font-bold text-yellow-400 uppercase tracking-wide">
+                      ⏰ Pendiente de Bizum · {tiempoRestante(selected.expira_at).texto}
+                    </div>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="h-7 text-xs border-yellow-500/40 text-yellow-300 hover:bg-yellow-500/10"
+                      onClick={() => ampliarPlazo(selected)}
+                      disabled={ampliandoPlazo}
+                    >
+                      {ampliandoPlazo ? <Loader2 size={12} className="animate-spin" /> : "+5h Ampliar plazo"}
+                    </Button>
+                  </div>
+                  <p className="text-[11px] text-muted-foreground">
+                    Si el Bizum de {selected.anticipo}€ no llega antes de las{" "}
+                    <span className="font-mono text-foreground">
+                      {new Date(selected.expira_at).toLocaleString("es-ES", { timeZone: "Europe/Madrid", day: "numeric", month: "numeric", hour: "2-digit", minute: "2-digit" })}
+                    </span>
+                    , la reserva se cancelará sola y la hora quedará libre.
+                    {selected.recordatorio_enviado_at ? " Recordatorio enviado al cliente." : " Se enviará un recordatorio 1h antes."}
+                  </p>
+                </div>
+              )}
+              {selected.estado === "cancelada" && selected.cancelada_motivo === "no_confirmada" && (
+                <div className="col-span-2 p-3 rounded-md border border-neon-red/40 bg-neon-red/5">
+                  <div className="text-xs font-bold text-neon-red uppercase tracking-wide">❌ Cancelada automáticamente</div>
+                  <p className="text-[11px] text-muted-foreground mt-1">No se recibió el Bizum dentro del plazo. El evento se eliminó del calendario y la hora volvió a quedar libre.</p>
                 </div>
               )}
               <div className="col-span-2 p-3 rounded-md border border-border bg-muted/30 space-y-2">

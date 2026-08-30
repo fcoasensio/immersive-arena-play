@@ -6,6 +6,7 @@ const resendApiKey = Deno.env.get("RESEND_API_KEY");
 const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 const ADMIN_EMAIL = "reservas@shootandrun.es";
+const OWNER_EMAIL = "hola@shootandrun.es";
 const CC_EMAIL = "fcoasensio@shootandrun.es";
 const LOGO_URL = "https://pbfvhwgnpewmljkvckfw.supabase.co/storage/v1/object/public/email-assets/logo-shootandrun.png";
 const MAPS_URL = "https://maps.google.com/?q=Avda.+Fernando+III+El+Santo,+24,+30820+Alcantarilla,+Murcia";
@@ -70,7 +71,19 @@ interface ReservationNotification {
   childAge?: number;
   specialRequests?: string;
   videoInvitationTheme?: string;
+  expiraAt?: string;
 }
+
+const formatExpira = (iso?: string): string => {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return "";
+  return d.toLocaleString("es-ES", {
+    timeZone: "Europe/Madrid",
+    weekday: "long", day: "numeric", month: "long",
+    hour: "2-digit", minute: "2-digit",
+  });
+};
 
 const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 const isValidDate = (date: string) => /^\d{4}-\d{2}-\d{2}$/.test(date);
@@ -103,6 +116,8 @@ function validateInput(data: any): { valid: boolean; error?: string; sanitized?:
   if (childAge !== undefined && childAge !== null && (typeof childAge !== 'number' || childAge < 1 || childAge > 18)) return { valid: false, error: 'Invalid child age' };
   if (specialRequests && (typeof specialRequests !== 'string' || specialRequests.length > 1000)) return { valid: false, error: 'Invalid special requests' };
   if (videoInvitationTheme && (typeof videoInvitationTheme !== 'string' || videoInvitationTheme.length > 200)) return { valid: false, error: 'Invalid video invitation theme' };
+  const expiraAt = data.expiraAt;
+  if (expiraAt !== undefined && (typeof expiraAt !== 'string' || isNaN(new Date(expiraAt).getTime()))) return { valid: false, error: 'Invalid expiraAt' };
   return {
     valid: true,
     sanitized: {
@@ -114,6 +129,7 @@ function validateInput(data: any): { valid: boolean; error?: string; sanitized?:
       childAge: childAge || undefined,
       specialRequests: specialRequests ? sanitizeHtml(specialRequests) : undefined,
       videoInvitationTheme: videoInvitationTheme ? sanitizeHtml(videoInvitationTheme) : undefined,
+      expiraAt: expiraAt || undefined,
     },
   };
 }
@@ -204,11 +220,20 @@ function buildAdminEmail(data: ReservationNotification, formattedDate: string): 
     `;
   }
 
+  const expiraTexto = formatExpira(data.expiraAt);
+  const bizumBlock = `
+      <div style="background:rgba(255,51,102,0.12);border:2px solid #ff3366;border-radius:12px;padding:18px;margin:20px 0;text-align:center">
+        <div style="font-size:15px;font-weight:700;color:#ff3366;text-transform:uppercase;letter-spacing:1px">⏳ Pendiente de confirmación — Bizum 50 €</div>
+        <p style="color:#ccc;font-size:13px;margin:10px 0 0">El cliente debe hacer un <strong style="color:#fff">Bizum de 50 € al 606 323 053</strong>. Revisa la cuenta del banco.</p>
+        ${expiraTexto ? `<p style="color:#ff8095;font-size:13px;margin:8px 0 0">Si no se recibe antes de las <strong>${expiraTexto}</strong> (hora de Madrid), la reserva se cancelará automáticamente y la hora quedará libre.</p>` : ""}
+      </div>`;
+
   return `<!DOCTYPE html><html><head><style>${emailStyles}</style></head><body>
     <div class="container">
       <div class="logo-bar"><img src="${LOGO_URL}" alt="shootandrun" /></div>
       <div class="header"><h1>🎯 Nueva Reserva</h1></div>
       <div class="content">
+        ${bizumBlock}
         <div class="section-title">📋 Datos de la reserva</div>
         ${buildAdminInfoItem('Tipo de reserva', getReservationTypeLabel(data.reservationType))}
         ${buildAdminInfoItem('Actividad', getActivityLabel(data.activityType))}
@@ -290,6 +315,13 @@ function buildCustomerEmail(data: ReservationNotification, formattedDate: string
           </ol>
         </div>
 
+        ${formatExpira(data.expiraAt) ? `
+        <div style="background:rgba(255,51,102,0.10);border:2px solid #ff3366;border-radius:12px;padding:18px;margin:20px 0;text-align:center">
+          <div style="font-size:15px;font-weight:700;color:#ff3366;text-transform:uppercase;letter-spacing:1px">⏰ Importante: tu hora queda bloqueada por tiempo limitado</div>
+          <p style="color:#ccc;font-size:14px;margin:10px 0 0">Tu franja horaria queda reservada hasta las <strong style="color:#fff">${formatExpira(data.expiraAt)}</strong> (hora de Madrid).</p>
+          <p style="color:#ccc;font-size:14px;margin:8px 0 0">Si no recibimos el <strong style="color:#fff">Bizum de 50 € al 606 323 053</strong> antes de esa hora, <strong style="color:#ff8095">la reserva se cancelará automáticamente y la hora quedará disponible para otros clientes</strong>.</p>
+        </div>` : ""}
+
         <div class="contact-box">
           <p style="font-size:15px;color:#fff;font-weight:600;margin-bottom:10px">📍 ¿Dónde estamos?</p>
           <p><a href="${MAPS_URL}" style="color:#00d4ff">Avda. Fernando III El Santo, 24. 30820-Alcantarilla (Murcia)</a></p>
@@ -338,9 +370,9 @@ const handler = async (req: Request): Promise<Response> => {
     // --- Admin Email ---
     const adminEmailResult = await resend.emails.send({
       from: "shootandrun Reservas <reservas@web.shootandrun.es>",
-      to: [ADMIN_EMAIL],
+      to: [ADMIN_EMAIL, OWNER_EMAIL],
       cc: [CC_EMAIL],
-      subject: `🎯 Nueva Reserva - ${data.customerName} - ${formattedDate} - ${getReservationTypeLabel(data.reservationType)}`,
+      subject: `⏳ Nueva reserva PENDIENTE DE CONFIRMACIÓN (Bizum 50 €) - ${data.customerName} - ${formattedDate} - ${getReservationTypeLabel(data.reservationType)}`,
       html: appendGdprFooter(buildAdminEmail(data, formattedDate)),
     });
 

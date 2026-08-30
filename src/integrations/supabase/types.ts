@@ -302,6 +302,7 @@ export type Database = {
         Row: {
           actividad: Database["public"]["Enums"]["actividad"]
           anticipo: number | null
+          cancelada_motivo: string | null
           codigo_postal: string
           created_at: string
           direccion: string
@@ -310,6 +311,7 @@ export type Database = {
           edad_menor: number | null
           email: string
           estado: Database["public"]["Enums"]["estado_reserva"]
+          expira_at: string | null
           fecha: string
           google_calendar_event_id: string | null
           hora: string
@@ -321,6 +323,7 @@ export type Database = {
           num_participantes: number
           precio_base: number | null
           precio_final: number | null
+          recordatorio_enviado_at: string | null
           score_sospecha: number
           telefono: string
           tematica_invitacion: string | null
@@ -329,6 +332,7 @@ export type Database = {
         Insert: {
           actividad: Database["public"]["Enums"]["actividad"]
           anticipo?: number | null
+          cancelada_motivo?: string | null
           codigo_postal: string
           created_at?: string
           direccion: string
@@ -337,6 +341,7 @@ export type Database = {
           edad_menor?: number | null
           email: string
           estado?: Database["public"]["Enums"]["estado_reserva"]
+          expira_at?: string | null
           fecha: string
           google_calendar_event_id?: string | null
           hora: string
@@ -348,6 +353,7 @@ export type Database = {
           num_participantes: number
           precio_base?: number | null
           precio_final?: number | null
+          recordatorio_enviado_at?: string | null
           score_sospecha?: number
           telefono: string
           tematica_invitacion?: string | null
@@ -356,6 +362,7 @@ export type Database = {
         Update: {
           actividad?: Database["public"]["Enums"]["actividad"]
           anticipo?: number | null
+          cancelada_motivo?: string | null
           codigo_postal?: string
           created_at?: string
           direccion?: string
@@ -364,6 +371,7 @@ export type Database = {
           edad_menor?: number | null
           email?: string
           estado?: Database["public"]["Enums"]["estado_reserva"]
+          expira_at?: string | null
           fecha?: string
           google_calendar_event_id?: string | null
           hora?: string
@@ -375,6 +383,7 @@ export type Database = {
           num_participantes?: number
           precio_base?: number | null
           precio_final?: number | null
+          recordatorio_enviado_at?: string | null
           score_sospecha?: number
           telefono?: string
           tematica_invitacion?: string | null
