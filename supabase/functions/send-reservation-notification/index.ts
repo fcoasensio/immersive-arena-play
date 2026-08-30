@@ -70,7 +70,19 @@ interface ReservationNotification {
   childAge?: number;
   specialRequests?: string;
   videoInvitationTheme?: string;
+  expiraAt?: string;
 }
+
+const formatExpira = (iso?: string): string => {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return "";
+  return d.toLocaleString("es-ES", {
+    timeZone: "Europe/Madrid",
+    weekday: "long", day: "numeric", month: "long",
+    hour: "2-digit", minute: "2-digit",
+  });
+};
 
 const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 const isValidDate = (date: string) => /^\d{4}-\d{2}-\d{2}$/.test(date);
