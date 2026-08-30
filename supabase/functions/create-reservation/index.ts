@@ -353,6 +353,8 @@ serve(async (req: Request) => {
         sospechosa: esSospechosa,
         score,
         motivos,
+        expiraAt: esSospechosa ? null : expiraAt,
+        holdHoras,
       }),
       { status: 200, headers }
     );
