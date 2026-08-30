@@ -304,6 +304,7 @@ serve(async (req: Request) => {
         precio_final: precioFinal,
         score_sospecha: score,
         motivos_sospecha: motivos,
+        expira_at: expiraAt,
       } as any)
       .select("id")
       .single();
