@@ -216,6 +216,15 @@ serve(async (req: Request) => {
       if (!isNaN(rv)) recargo = rv;
     }
 
+    // ── Plazo de retención de la reserva sin Bizum ────────────────────
+    let holdHoras = 5;
+    const { data: holdConfig } = await supabase.from("configuracion").select("valor").eq("clave", "reserva_hold_horas").maybeSingle();
+    if (holdConfig) {
+      const hv = typeof holdConfig.valor === "number" ? holdConfig.valor : parseFloat(String(holdConfig.valor));
+      if (!isNaN(hv) && hv > 0 && hv <= 168) holdHoras = hv;
+    }
+    const expiraAt = new Date(Date.now() + holdHoras * 60 * 60 * 1000).toISOString();
+
     const precioBase = precioPorPersona * data.num_participantes;
     const precioFinal = (precioPorPersona + recargo) * data.num_participantes;
 
