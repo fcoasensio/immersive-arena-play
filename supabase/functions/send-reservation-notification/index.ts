@@ -115,6 +115,8 @@ function validateInput(data: any): { valid: boolean; error?: string; sanitized?:
   if (childAge !== undefined && childAge !== null && (typeof childAge !== 'number' || childAge < 1 || childAge > 18)) return { valid: false, error: 'Invalid child age' };
   if (specialRequests && (typeof specialRequests !== 'string' || specialRequests.length > 1000)) return { valid: false, error: 'Invalid special requests' };
   if (videoInvitationTheme && (typeof videoInvitationTheme !== 'string' || videoInvitationTheme.length > 200)) return { valid: false, error: 'Invalid video invitation theme' };
+  const expiraAt = data.expiraAt;
+  if (expiraAt !== undefined && (typeof expiraAt !== 'string' || isNaN(new Date(expiraAt).getTime()))) return { valid: false, error: 'Invalid expiraAt' };
   return {
     valid: true,
     sanitized: {
@@ -126,6 +128,7 @@ function validateInput(data: any): { valid: boolean; error?: string; sanitized?:
       childAge: childAge || undefined,
       specialRequests: specialRequests ? sanitizeHtml(specialRequests) : undefined,
       videoInvitationTheme: videoInvitationTheme ? sanitizeHtml(videoInvitationTheme) : undefined,
+      expiraAt: expiraAt || undefined,
     },
   };
 }
