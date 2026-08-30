@@ -287,6 +287,7 @@ const ReservaForm = () => {
 
       if (error) throw error;
       const insertedReserva = { id: responseData.id };
+      setExpiraAt(responseData.expiraAt || null);
 
       // Si la reserva es sospechosa, no enviamos email al cliente ni creamos evento.
       // El backend ya ha avisado al admin internamente.
@@ -322,6 +323,7 @@ const ReservaForm = () => {
           childAge: data.edad_menor || undefined,
           specialRequests: data.notas || undefined,
           videoInvitationTheme: data.tematica_invitacion || undefined,
+          expiraAt: responseData.expiraAt || undefined,
         },
       });
 
