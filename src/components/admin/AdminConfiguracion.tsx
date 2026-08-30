@@ -24,6 +24,8 @@ const configLabels: Record<string, string> = {
   anticipo: "Anticipo (€)",
   antelacion_horas: "Antelación mínima (horas)",
   horas_disponibles: "Horarios disponibles (JSON)",
+  reserva_hold_horas: "Plazo para confirmar con Bizum (horas)",
+  reserva_recordatorio_minutos: "Recordatorio antes de expirar (minutos)",
 };
 
 const AdminConfiguracion = () => {
