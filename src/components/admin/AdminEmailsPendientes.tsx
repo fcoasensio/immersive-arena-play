@@ -90,6 +90,15 @@ const AdminEmailsPendientes = () => {
     setBusy(null);
   };
 
+  const EmailPreview = ({ html, title }: { html: string; title: string }) => (
+    <iframe
+      title={title}
+      srcDoc={html}
+      sandbox=""
+      className="w-full h-96 border-0 bg-card-foreground"
+    />
+  );
+
   return (
     <div className="space-y-4">
       <Tabs value={statusFilter} onValueChange={setStatusFilter}>
@@ -158,18 +167,20 @@ const AdminEmailsPendientes = () => {
                       {isEditing ? (
                         <>
                           <Input
-                            value={ed!.subject}
-                            onChange={e => setEditing(s => ({ ...s, [d.id]: { ...ed!, subject: e.target.value } }))}
+                            value={ed.subject}
+                            onChange={e => setEditing(s => ({ ...s, [d.id]: { ...ed, subject: e.target.value } }))}
                             placeholder="Asunto"
                           />
                           <Textarea
-                            value={ed!.body_html}
-                            onChange={e => setEditing(s => ({ ...s, [d.id]: { ...ed!, body_html: e.target.value } }))}
+                            value={ed.body_html}
+                            onChange={e => setEditing(s => ({ ...s, [d.id]: { ...ed, body_html: e.target.value } }))}
                             rows={14}
                             className="font-mono text-xs"
                           />
                           <div className="text-xs text-muted-foreground">Vista previa:</div>
-                          <div className="border border-border rounded p-2 bg-background max-h-72 overflow-auto" dangerouslySetInnerHTML={{ __html: ed!.body_html }} />
+                          <div className="border border-border rounded overflow-hidden bg-card-foreground">
+                            <EmailPreview html={ed.body_html} title={`Vista previa de ${d.subject}`} />
+                          </div>
                         </>
                       ) : (
                         <>
@@ -179,7 +190,9 @@ const AdminEmailsPendientes = () => {
                             <summary className="cursor-pointer text-xs text-primary inline-flex items-center gap-1 mt-2">
                               <Eye className="w-3 h-3" /> Ver email completo
                             </summary>
-                            <div className="border border-border rounded p-2 bg-background max-h-96 overflow-auto mt-2" dangerouslySetInnerHTML={{ __html: d.body_html }} />
+                            <div className="border border-border rounded overflow-hidden bg-card-foreground mt-2">
+                              <EmailPreview html={d.body_html} title={`Email para ${d.recipient_nombre}`} />
+                            </div>
                           </details>
                         </>
                       )}

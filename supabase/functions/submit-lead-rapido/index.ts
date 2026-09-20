@@ -141,6 +141,20 @@ function buildLeadDraft(args: {
   const fechaTxt = fecha_orientativa ? `el ${esc(fecha_orientativa)}` : "en la fecha que elijáis";
   const personasTxt = personas ? `${esc(personas)} personas` : "tu grupo";
   const eventoTxt = EVENT_LABELS[tipo_evento]?.replace(/^[^\s]+\s/, "").toLowerCase() || "evento";
+  const datosRecibidos = [
+    personas ? `<strong>${esc(personas)} jugadores aproximadamente</strong>` : "",
+    fecha_orientativa ? `<strong>${esc(fechaTxt)}</strong>` : "",
+  ].filter(Boolean).join(" para ");
+  const resumenRecibido = datosRecibidos
+    ? `<p>Según los datos que nos has facilitado, estáis pensando en ${datosRecibidos}.</p>`
+    : "";
+  const infoComun = `
+    <ul style="padding-left:18px;line-height:1.7">
+      <li>🎯 <strong>Laser Tag:</strong> hasta 16 jugadores simultáneos en pista (a partir de 8 años)</li>
+      <li>🥽 <strong>Realidad Virtual free-roam:</strong> hasta 12 jugadores simultáneos (a partir de 12 años)</li>
+      <li>🏠 El local es cubierto y apto durante todo el año, tanto si hace sol como si llueve o hace viento</li>
+    </ul>
+    <p>Puedes consultar las tarifas actualizadas en nuestra <a href="https://shootandrun.es/#packs" style="color:#0891b2;font-weight:600">sección de packs y precios</a>. El importe final se calcula según los jugadores reales que asistan; el número indicado en el formulario es orientativo.</p>`;
 
   // EMPRESA / TEAM BUILDING
   if (tipo_evento === "empresa") {
@@ -148,14 +162,16 @@ function buildLeadDraft(args: {
     const html = wrap(`
       <p>Hola ${esc(nombre)},</p>
       <p>Gracias por pensar en <strong>shootandrun</strong> para vuestro evento de empresa. Os hemos preparado una propuesta enfocada en lo que de verdad funciona en team building: cooperación bajo presión, decisiones rápidas y mucho que celebrar después.</p>
+      ${resumenRecibido}
       <p><strong>Para vuestro grupo de ${personasTxt} proponemos:</strong></p>
       <ul style="padding-left:18px;line-height:1.7">
-        <li>⚡ Sesión de <strong>laser tag indoor</strong> (90 min) con modos por equipos rotativos</li>
-        <li>🥽 Bloque opcional de <strong>VR free roam multijugador</strong> (sin mareos, hasta 6 simultáneos)</li>
+        <li>⚡ Sesión de <strong>Laser Tag en pista cubierta</strong> (90 min) con modos por equipos rotativos</li>
+        <li>🥽 Bloque opcional de <strong>VR free-roam multijugador</strong></li>
         <li>🍕 Zona privada con catering opcional</li>
         <li>📊 Briefing inicial + entrega del "MVP del día" al final</li>
       </ul>
-      <p>Los precios se ajustan a partir de 15 personas. Reserva de franja con 50€ de Bizum, el resto se factura tras el evento <strong>sobre asistentes reales</strong> (el número orientativo no compromete).</p>
+      ${infoComun}
+      <p>La franja se reserva con 50€ de Bizum y el resto se abona según las condiciones indicadas en nuestros precios.</p>
       <p>¿Cerramos fecha esta semana? Responde a este email o llámanos al <strong>606 32 30 53</strong>.</p>
       <p style="margin-top:28px">Un saludo,<br/>Equipo <strong>shootandrun</strong><br/><span style="color:#888;font-size:13px">Alcantarilla, Murcia · +34 606 32 30 53</span></p>
     `);
@@ -170,13 +186,14 @@ function buildLeadDraft(args: {
       <p>Gracias por dejarnos tus datos — hemos preparado una propuesta para vuestro <strong>${eventoTxt}</strong> de ${personasTxt} ${esc(fechaTxt)}.</p>
       <p>En <strong>shootandrun</strong> no hacemos partidas "de relleno": diseñamos cada experiencia para que cada minuto cuente.</p>
       <ul style="padding-left:18px;line-height:1.7">
-        <li>🎯 <strong>${esc(actividadLabel)}</strong> en arena indoor con equipo profesional</li>
+        <li>🎯 <strong>${esc(actividadLabel)}</strong> en instalaciones cubiertas con equipo profesional</li>
         <li>⚡ Briefing táctico + 3-4 modos de juego adaptados al grupo</li>
         <li>🎁 Zona privada para descanso o picoteo si lo necesitas</li>
       </ul>
-      <p><strong>Reserva con solo 50€ de Bizum</strong> al 606 32 30 53. El resto se paga el día de la actividad y se calcula <strong>sobre los jugadores reales que asistan</strong> (el número de la reserva es solo orientativo).</p>
+      ${infoComun}
+      <p><strong>Reserva con solo 50€ de Bizum</strong> al 606 32 30 53. El resto se paga el día de la actividad.</p>
       <p>Las franjas más demandadas vuelan rápido. Responde a este email o escríbenos por WhatsApp y te confirmo disponibilidad <strong>hoy mismo</strong>.</p>
-      <p style="margin-top:28px">Nos vemos en la arena ⚡<br/>Equipo <strong>shootandrun</strong><br/><span style="color:#888;font-size:13px">Alcantarilla, Murcia · +34 606 32 30 53</span></p>
+      <p style="margin-top:28px">Nos vemos en la pista ⚡<br/>Equipo <strong>shootandrun</strong><br/><span style="color:#888;font-size:13px">Alcantarilla, Murcia · +34 606 32 30 53</span></p>
     `);
     return { subject, html };
   }
@@ -186,13 +203,9 @@ function buildLeadDraft(args: {
   const html = wrap(`
     <p>Hola ${esc(nombre)},</p>
     <p>Gracias por escribirnos. Te paso un resumen rápido para que puedas valorar vuestro <strong>${eventoTxt}</strong> en <strong>shootandrun</strong>:</p>
-    <ul style="padding-left:18px;line-height:1.7">
-      <li>🎯 <strong>Laser Tag</strong> indoor (a partir de 8 años) — el plan más versátil para grupos mixtos</li>
-      <li>🥽 <strong>Realidad Virtual</strong> free-roam (a partir de 12 años) — experiencia tipo arcade premium</li>
-      <li>📍 Estamos en Alcantarilla (Murcia), arena climatizada todo el año</li>
-      <li>💳 Reserva con 50€ de Bizum; el resto se paga el día sobre jugadores reales</li>
-    </ul>
-    <p>Si me confirmas <strong>fecha aproximada y nº de personas</strong>, te paso disponibilidad y precio cerrado.</p>
+    ${resumenRecibido}
+    ${infoComun}
+    <p>La franja se reserva con 50€ de Bizum y el resto se paga el día de la actividad. Responde a este email y comprobaremos la disponibilidad para la fecha que nos has indicado.</p>
     <p>Estoy disponible aquí o por WhatsApp al <strong>606 32 30 53</strong>.</p>
     <p style="margin-top:28px">Un saludo,<br/>Equipo <strong>shootandrun</strong><br/><span style="color:#888;font-size:13px">Alcantarilla, Murcia · +34 606 32 30 53</span></p>
   `);
