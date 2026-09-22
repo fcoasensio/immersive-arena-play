@@ -4,7 +4,7 @@
 Facilitar que asistentes como ChatGPT, Gemini, Claude y buscadores con IA descubran, comprendan y recomienden correctamente los servicios públicos de **shootandrun**, sin exponer el panel de administración ni información privada.
 
 ## Estado comprobado
-- `robots.txt` permite rastrear la web pública y excluye `/admin` y `/admin/login`.
+- `robots.txt` permite rastrear la web pública y excluye `/admin` y `/admin/login` en la regla general, pero sus reglas específicas para algunos rastreadores no repiten esa exclusión.
 - `sitemap.xml` ya incluye la home, reserva, las cuatro páginas comerciales, el blog, sus siete artículos y las páginas legales.
 - La home tiene datos estructurados `LocalBusiness`; las páginas comerciales, preguntas frecuentes y artículos no tienen todavía datos estructurados propios.
 - No existe `llms.txt` ni una versión ampliada para agentes.
@@ -17,7 +17,7 @@ Facilitar que asistentes como ChatGPT, Gemini, Claude y buscadores con IA descub
 - Añadir `/llms.txt` con una descripción breve del negocio, servicios, edades, capacidades, ubicación, contacto, proceso de reserva y enlaces canónicos prioritarios.
 - Añadir `/llms-full.txt` con información pública más detallada: modalidades, públicos, preguntas frecuentes, precios publicados y reglas relevantes.
 - Mantener fuera de ambos archivos el panel, operaciones internas, clientes, reservas, correos administrativos y cualquier dato privado.
-- Referenciar `llms.txt` desde `robots.txt` sin restringir los rastreadores actuales.
+- Simplificar `robots.txt` para que todos los rastreadores reciban la misma exclusión de `/admin` y `/admin/login`, y referenciar `llms.txt` sin limitar las páginas públicas.
 
 ### 2. Ampliar los datos estructurados
 - Centralizar los datos públicos compartidos para evitar contradicciones entre páginas.
@@ -35,6 +35,7 @@ Facilitar que asistentes como ChatGPT, Gemini, Claude y buscadores con IA descub
 ### 4. Reforzar metadatos y coherencia
 - Sustituir los metadatos genéricos del documento base por título, descripción, Open Graph y Twitter específicos de **shootandrun**.
 - Mantener `shootandrun.es` como dominio canónico y conservar `noindex,nofollow` en hosts de prueba.
+- Añadir fechas de modificación al mapa del sitio y dejar una fuente mantenible para evitar que futuras páginas queden fuera.
 - Corregir inconsistencias públicas detectadas mientras se construye la fuente común, sin cambiar precios ni condiciones no confirmadas.
 
 ### 5. Validación
