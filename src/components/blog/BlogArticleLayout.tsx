@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { blogPosts } from '@/pages/Blog';
+import RelatedLinks from '@/components/seo/RelatedLinks';
+import { absoluteUrl, breadcrumbJsonLd, businessData } from '@/lib/siteData';
 
 interface BlogArticleLayoutProps {
   slug: string;
@@ -15,13 +17,46 @@ interface BlogArticleLayoutProps {
 const BlogArticleLayout = ({ slug, children }: BlogArticleLayoutProps) => {
   const post = blogPosts.find((p) => p.slug === slug);
   if (!post) return null;
+  const articleUrl = absoluteUrl(`/blog/${post.slug}`);
+  const relatedPosts = blogPosts
+    .filter((candidate) => candidate.slug !== slug)
+    .sort((a, b) => Number(b.category === post.category) - Number(a.category === post.category))
+    .slice(0, 2)
+    .map((candidate) => ({
+      title: candidate.title,
+      description: candidate.excerpt,
+      to: `/blog/${candidate.slug}`,
+    }));
+  const structuredData = [
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: post.title,
+      description: post.excerpt,
+      datePublished: post.date,
+      dateModified: post.date,
+      mainEntityOfPage: articleUrl,
+      author: { "@type": "Organization", name: businessData.name, url: absoluteUrl('/') },
+      publisher: { "@type": "Organization", name: businessData.name, url: absoluteUrl('/') },
+    },
+    breadcrumbJsonLd([
+      { name: "Inicio", path: "/" },
+      { name: "Blog", path: "/blog" },
+      { name: post.title, path: `/blog/${post.slug}` },
+    ]),
+  ];
 
   return (
     <>
       <Helmet>
         <title>{post.title} | Blog Shoot and Run</title>
         <meta name="description" content={post.excerpt} />
-        <link rel="canonical" href={`https://shootandrun.es/blog/${post.slug}`} />
+        <link rel="canonical" href={articleUrl} />
+        <meta property="og:title" content={post.title} />
+        <meta property="og:description" content={post.excerpt} />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={articleUrl} />
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
       </Helmet>
 
       <div className="min-h-screen bg-background">
@@ -65,6 +100,17 @@ const BlogArticleLayout = ({ slug, children }: BlogArticleLayoutProps) => {
             </motion.div>
           </div>
         </article>
+
+        <RelatedLinks
+          links={[
+            ...relatedPosts,
+            {
+              title: 'Consultar packs y precios',
+              description: 'Compara las experiencias publicadas y elige la que mejor encaja con tu grupo.',
+              to: '/#packs',
+            },
+          ]}
+        />
 
         {/* CTA */}
         <section className="py-12 md:py-16 border-t border-border">

@@ -5,6 +5,9 @@ import { Button } from '@/components/ui/button';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Helmet } from 'react-helmet-async';
+import RelatedLinks from '@/components/seo/RelatedLinks';
+import { absoluteUrl, breadcrumbJsonLd, businessData, publicServices } from '@/lib/siteData';
 
 interface FAQ {
   question: string;
@@ -18,14 +21,46 @@ interface SEOLandingLayoutProps {
   heroImagePosition?: string;
   children: React.ReactNode;
   faqs: FAQ[];
-  metaDescription?: string;
+  serviceName: string;
+  servicePath: string;
 }
 
-const SEOLandingLayout = ({ title, subtitle, heroImage, heroImagePosition = 'center', children, faqs }: SEOLandingLayoutProps) => {
+const SEOLandingLayout = ({ title, subtitle, heroImage, heroImagePosition = 'center', children, faqs, serviceName, servicePath }: SEOLandingLayoutProps) => {
   const navigate = useNavigate();
+  const relatedLinks = publicServices
+    .filter((service) => service.path !== servicePath)
+    .slice(0, 3)
+    .map((service) => ({ title: service.name, description: service.description, to: service.path }));
+  const structuredData = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      name: serviceName,
+      description: subtitle,
+      url: absoluteUrl(servicePath),
+      provider: {
+        "@type": "EntertainmentBusiness",
+        name: businessData.name,
+        url: absoluteUrl('/'),
+        telephone: businessData.telephone,
+        address: { "@type": "PostalAddress", ...businessData.address },
+      },
+      areaServed: { "@type": "AdministrativeArea", name: "Región de Murcia" },
+    },
+    breadcrumbJsonLd([
+      { name: "Inicio", path: "/" },
+      { name: serviceName, path: servicePath },
+    ]),
+  ];
 
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={subtitle} />
+        <meta property="og:url" content={absoluteUrl(servicePath)} />
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      </Helmet>
       <Navbar />
 
       {/* Hero */}
@@ -109,6 +144,8 @@ const SEOLandingLayout = ({ title, subtitle, heroImage, heroImagePosition = 'cen
           </div>
         </div>
       </section>
+
+      <RelatedLinks links={relatedLinks} />
 
       {/* Final CTA */}
       <section className="py-16 md:py-24 relative overflow-hidden">

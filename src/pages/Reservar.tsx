@@ -1,10 +1,36 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ReservaForm from "@/components/reservas/ReservaForm";
+import { Helmet } from "react-helmet-async";
+import { absoluteUrl, breadcrumbJsonLd, businessData } from "@/lib/siteData";
+
+const reservationJsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "Reservar Laser Tag o Realidad Virtual",
+    description: "Formulario oficial de reserva de shootandrun en Alcantarilla, Murcia.",
+    url: absoluteUrl("/reservar"),
+    isPartOf: { "@type": "WebSite", name: businessData.name, url: absoluteUrl("/") },
+  },
+  breadcrumbJsonLd([
+    { name: "Inicio", path: "/" },
+    { name: "Reservar", path: "/reservar" },
+  ]),
+];
 
 const Reservar = () => {
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>Reservar Laser Tag o Realidad Virtual | shootandrun</title>
+        <meta name="description" content="Reserva online tu experiencia de Laser Tag o Realidad Virtual Free Roaming en Alcantarilla, Murcia." />
+        <link rel="canonical" href="https://shootandrun.es/reservar" />
+        <meta property="og:title" content="Reservar Laser Tag o Realidad Virtual | shootandrun" />
+        <meta property="og:description" content="Reserva online tu experiencia de Laser Tag o Realidad Virtual Free Roaming en Alcantarilla, Murcia." />
+        <meta property="og:url" content="https://shootandrun.es/reservar" />
+        <script type="application/ld+json">{JSON.stringify(reservationJsonLd)}</script>
+      </Helmet>
       <Navbar />
 
       <main className="min-h-screen pt-16">

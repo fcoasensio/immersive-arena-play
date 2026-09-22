@@ -37,6 +37,8 @@ const RealidadVirtualMurcia = () => {
       </Helmet>
 
       <SEOLandingLayout
+        serviceName="Realidad Virtual Free Roaming"
+        servicePath="/realidad-virtual-murcia"
         title="Realidad Virtual en Murcia: Experiencias inmersivas para grupos"
         subtitle="Descubre la mejor experiencia de realidad virtual en Murcia con juegos multijugador, escape rooms VR y experiencias únicas para grupos."
         heroImage={heroBg}

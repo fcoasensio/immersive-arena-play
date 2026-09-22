@@ -36,6 +36,8 @@ const CumpleanosLaserTagMurcia = () => {
       </Helmet>
 
       <SEOLandingLayout
+        serviceName="Cumpleaños con Laser Tag"
+        servicePath="/cumpleanos-laser-tag-murcia"
         title="Cumpleaños con Laser Tag en Murcia: Diversión asegurada para niños y adolescentes"
         subtitle="Organiza un cumpleaños diferente en Murcia con una experiencia de laser tag que combina juego, emoción y trabajo en equipo. Nos encargamos de todo para que los niños disfruten mientras tú te despreocupas."
         heroImage={heroBg}

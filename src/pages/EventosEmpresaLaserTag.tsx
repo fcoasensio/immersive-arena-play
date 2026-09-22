@@ -33,6 +33,8 @@ const EventosEmpresaLaserTag = () => {
       </Helmet>
 
       <SEOLandingLayout
+        serviceName="Eventos de empresa y team building"
+        servicePath="/eventos-empresa-laser-tag"
         title="Eventos de empresa en Murcia con Laser Tag: Team Building que funciona"
         subtitle="Si buscas una actividad de team building en Murcia, el laser tag es una opción dinámica que mejora la comunicación, el liderazgo y el trabajo en equipo."
         heroImage={heroBg}

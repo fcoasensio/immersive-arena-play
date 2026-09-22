@@ -11,6 +11,7 @@ import laserEquip from '@/assets/recursos/laser-tag-vs-paintball.jpg';
 import institutosImg from '@/assets/recursos/laser-tag-institutos.jpg';
 import vrNoMarea from '@/assets/recursos/vr-free-roam-no-marea.jpg';
 import vrCatalogo from '@/assets/recursos/vr-variedad-juegos.png';
+import { absoluteUrl, breadcrumbJsonLd, businessData } from '@/lib/siteData';
 
 export interface BlogPost {
   slug: string;
@@ -89,12 +90,47 @@ export const blogPosts: BlogPost[] = [
 ];
 
 const Blog = () => {
+  const structuredData = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Blog",
+      name: "Blog de shootandrun",
+      description: "Guías sobre laser tag, realidad virtual, cumpleaños y eventos en Murcia.",
+      url: absoluteUrl('/blog'),
+      publisher: { "@type": "Organization", name: businessData.name, url: absoluteUrl('/') },
+      blogPost: blogPosts.map((post) => ({
+        "@type": "BlogPosting",
+        headline: post.title,
+        url: absoluteUrl(`/blog/${post.slug}`),
+        datePublished: post.date,
+      })),
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      itemListElement: blogPosts.map((post, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: post.title,
+        url: absoluteUrl(`/blog/${post.slug}`),
+      })),
+    },
+    breadcrumbJsonLd([
+      { name: "Inicio", path: "/" },
+      { name: "Blog", path: "/blog" },
+    ]),
+  ];
+
   return (
     <>
       <Helmet>
         <title>Blog | Shoot and Run - Laser Tag y VR en Murcia</title>
         <meta name="description" content="Blog de Shoot and Run: artículos sobre laser tag, realidad virtual, cumpleaños, eventos de empresa y planes de ocio en Murcia." />
         <link rel="canonical" href="https://shootandrun.es/blog" />
+        <meta property="og:title" content="Blog de shootandrun | Laser Tag y VR en Murcia" />
+        <meta property="og:description" content="Guías sobre laser tag, realidad virtual, cumpleaños y eventos en Murcia." />
+        <meta property="og:url" content="https://shootandrun.es/blog" />
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
       </Helmet>
 
       <div className="min-h-screen bg-background">

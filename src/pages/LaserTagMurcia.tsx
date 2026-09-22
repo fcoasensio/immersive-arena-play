@@ -36,6 +36,8 @@ const LaserTagMurcia = () => {
       </Helmet>
 
       <SEOLandingLayout
+        serviceName="Laser Tag indoor y outdoor"
+        servicePath="/laser-tag-murcia"
         title="Laser Tag en Murcia: La experiencia más realista para grupos y eventos"
         subtitle="Si estás buscando laser tag en Murcia, en Shoot & Run te ofrecemos una experiencia inmersiva diseñada para grupos, cumpleaños y eventos. Nuestro campo combina estrategia, adrenalina y tecnología para que vivas una partida única desde el primer minuto."
         heroImage={heroBg}

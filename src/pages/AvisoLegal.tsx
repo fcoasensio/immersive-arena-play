@@ -1,9 +1,25 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { Helmet } from "react-helmet-async";
+import { absoluteUrl, breadcrumbJsonLd } from "@/lib/siteData";
+
+const legalJsonLd = breadcrumbJsonLd([
+  { name: "Inicio", path: "/" },
+  { name: "Aviso legal", path: "/aviso-legal" },
+]);
 
 const AvisoLegal = () => {
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>Aviso legal | shootandrun</title>
+        <meta name="description" content="Aviso legal y datos identificativos de shootandrun." />
+        <link rel="canonical" href={absoluteUrl("/aviso-legal")} />
+        <meta property="og:title" content="Aviso legal | shootandrun" />
+        <meta property="og:description" content="Aviso legal y datos identificativos de shootandrun." />
+        <meta property="og:url" content={absoluteUrl("/aviso-legal")} />
+        <script type="application/ld+json">{JSON.stringify(legalJsonLd)}</script>
+      </Helmet>
       <Navbar />
       <main className="container mx-auto px-4 py-24 max-w-3xl">
         <h1 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-8">Aviso Legal</h1>
