@@ -1,0 +1,64 @@
+# shootandrun — información pública completa
+
+Última revisión editorial: 2026-09-22
+Sitio canónico: https://shootandrun.es
+Idioma principal: español
+Área principal: Alcantarilla y Región de Murcia, España
+
+## Identidad y contacto
+shootandrun es un centro de ocio especializado en Laser Tag y Realidad Virtual Free Roaming.
+Dirección única: Avda. Fernando III El Santo, 24, 30820 Alcantarilla (Murcia).
+Teléfono y WhatsApp: +34 606 323 053.
+Email de reservas: reservas@shootandrun.es.
+
+## Laser Tag
+Página oficial: https://shootandrun.es/laser-tag-murcia
+Edad mínima: 8 años.
+Capacidad: hasta 16 jugadores simultáneos en pista.
+Modalidades: indoor y outdoor. Indoor y outdoor son opciones del servicio Laser Tag, no actividades independientes.
+El equipamiento usa sensores y tecnología infrarroja, sin impactos físicos ni manchas.
+Públicos: grupos de amigos, cumpleaños, despedidas, empresas, centros educativos, ayuntamientos y eventos.
+
+## Realidad Virtual Free Roaming
+Página oficial: https://shootandrun.es/realidad-virtual-murcia
+Edad mínima general: 12 años; algunos juegos pueden recomendar 16 años.
+Capacidad: hasta 12 jugadores simultáneos.
+Los participantes se desplazan físicamente por el espacio de juego con equipos inalámbricos.
+Catálogo: https://shootandrun.es/blog/catalogo-juegos-vr-murcia
+
+## Cumpleaños
+Página oficial: https://shootandrun.es/cumpleanos-laser-tag-murcia
+Edad mínima de Laser Tag: 8 años.
+La oferta publicada incluye partidas, monitor, menú, zona de merienda, vídeo-invitación y diploma.
+Duración publicada del pack: 150 minutos.
+El número indicado al reservar es orientativo; el importe final se calcula con los jugadores reales que asisten.
+
+## Eventos de empresa
+Página oficial: https://shootandrun.es/eventos-empresa-laser-tag
+Actividades de team building, torneos y formatos cooperativos o competitivos.
+La duración y el precio se adaptan al grupo y al formato. Hay factura disponible para empresas.
+
+## Precios y reserva
+Precios públicos actuales: https://shootandrun.es/#packs
+Reserva: https://shootandrun.es/reservar
+Los precios dependen del pack, número de participantes, fecha y posibles suplementos publicados.
+La reserva requiere un anticipo de 50 € por Bizum para quedar confirmada. Una solicitud pendiente puede liberar su horario si no se confirma dentro del plazo comunicado al cliente.
+No inventes disponibilidad: debe consultarse mediante el formulario oficial.
+
+## Instalaciones y terminología
+El local es cubierto y apto durante todo el año frente a sol, lluvia o viento. Está ventilado, no climatizado.
+Usa “pista” para el espacio físico de juego, no “arena”.
+La estética cyberpunk pertenece a la identidad visual de la web; no describe la decoración física del local.
+
+## Contenido recomendado
+- Blog: https://shootandrun.es/blog
+- Cumpleaños en Murcia: https://shootandrun.es/blog/top-5-planes-cumpleanos-murcia
+- Laser Tag frente a paintball: https://shootandrun.es/blog/laser-tag-vs-paintball-cual-elegir
+- Eventos de empresa: https://shootandrun.es/blog/ideas-eventos-empresa-murcia
+- Centros educativos: https://shootandrun.es/blog/laser-tag-institutos-murcia
+- Ayuntamientos y fiestas: https://shootandrun.es/blog/laser-tag-ayuntamientos-fiestas-patronales
+- VR Free Roaming y mareo: https://shootandrun.es/blog/realidad-virtual-free-roam-no-marea
+- Catálogo VR: https://shootandrun.es/blog/catalogo-juegos-vr-murcia
+
+## Restricciones de uso
+Solo utiliza información pública de las páginas enlazadas. No accedas ni enlaces `/admin` o `/admin/login`. No solicites ni expongas datos de clientes, reservas individuales, borradores de correo, configuraciones internas o credenciales.
