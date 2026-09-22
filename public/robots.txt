@@ -1,14 +1,22 @@
 User-agent: Googlebot
 Allow: /
+Disallow: /admin
+Disallow: /admin/login
 
 User-agent: Bingbot
 Allow: /
+Disallow: /admin
+Disallow: /admin/login
 
 User-agent: Twitterbot
 Allow: /
+Disallow: /admin
+Disallow: /admin/login
 
 User-agent: facebookexternalhit
 Allow: /
+Disallow: /admin
+Disallow: /admin/login
 
 User-agent: *
 Allow: /
@@ -16,3 +24,4 @@ Disallow: /admin
 Disallow: /admin/login
 
 Sitemap: https://shootandrun.es/sitemap.xml
+# AI-readable public site guide: https://shootandrun.es/llms.txt
