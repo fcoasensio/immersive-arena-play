@@ -110,7 +110,7 @@ const RealidadVirtualFreeRoamNoMarea = () => (
       Pruébalo en Murcia
     </h2>
     <p>
-      Estamos en Murcia y nuestra arena de VR Free Roaming es una de las pocas de la
+      Estamos en Murcia y nuestra pista de VR Free Roaming es una de las pocas de la
       región. Si quieres descubrir cómo es la realidad virtual sin mareos, échale un
       vistazo a nuestra{' '}
       <Link to="/realidad-virtual-murcia" className="text-neon-blue hover:underline">

@@ -40,7 +40,7 @@ const CatalogoJuegosVRMurcia = () => (
     </h3>
     <p>
       Para los que buscan adrenalina pura. Equipos enfrentados, objetivos que cumplir,
-      hordas que sobrevivir. Desde batallas tipo arena hasta supervivencia frente a
+      hordas que sobrevivir. Desde batallas en escenarios competitivos hasta supervivencia frente a
       zombies o invasiones futuristas. Si el grupo viene con ganas de marcha, este es el
       camino.
     </p>
@@ -71,7 +71,7 @@ const CatalogoJuegosVRMurcia = () => (
       Hasta 12 jugadores en la misma partida
     </h2>
     <p>
-      Nuestra arena de <strong className="text-foreground">VR Free Roaming</strong>{' '}
+      Nuestra pista de <strong className="text-foreground">VR Free Roaming</strong>{' '}
       permite que hasta 12 personas compartan el mismo mundo virtual a la vez, viéndose
       como avatares y pudiendo interactuar entre ellos. Esto es lo que diferencia una
       experiencia memorable de jugar solo en casa: aquí{' '}
