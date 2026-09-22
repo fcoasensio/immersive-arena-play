@@ -1,9 +1,25 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { Helmet } from "react-helmet-async";
+import { absoluteUrl, breadcrumbJsonLd } from "@/lib/siteData";
+
+const privacyJsonLd = breadcrumbJsonLd([
+  { name: "Inicio", path: "/" },
+  { name: "Política de privacidad", path: "/politica-privacidad" },
+]);
 
 const PoliticaPrivacidad = () => {
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>Política de privacidad | shootandrun</title>
+        <meta name="description" content="Política de privacidad y protección de datos de shootandrun." />
+        <link rel="canonical" href={absoluteUrl("/politica-privacidad")} />
+        <meta property="og:title" content="Política de privacidad | shootandrun" />
+        <meta property="og:description" content="Política de privacidad y protección de datos de shootandrun." />
+        <meta property="og:url" content={absoluteUrl("/politica-privacidad")} />
+        <script type="application/ld+json">{JSON.stringify(privacyJsonLd)}</script>
+      </Helmet>
       <Navbar />
       <main className="container mx-auto px-4 py-24 max-w-3xl">
         <h1 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-8">Política de Privacidad</h1>
