@@ -261,6 +261,52 @@ serve(async (req) => {
       });
     }
 
+    let body: { mode?: string } = {};
+    try { body = await req.json(); } catch { /* no body */ }
+
+    if (body.mode === "status") {
+      // Admin only
+      const token = (req.headers.get("Authorization") || "").replace("Bearer ", "");
+      const { data: u } = await supabase.auth.getUser(token);
+      const uid = u?.user?.id;
+      const { data: isAdmin } = uid
+        ? await supabase.rpc("has_role", { _user_id: uid, _role: "admin" })
+        : { data: false };
+      if (!isAdmin) {
+        return new Response(JSON.stringify({ error: "No autorizado" }), {
+          status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      const cfg = configs[0];
+      const sheetName = cfg.sheet_name || "Leads";
+      const r = await fetch(`${GW}/spreadsheets/${cfg.spreadsheet_id}/values/${sheetName}!A2:H1000`, {
+        headers: { Authorization: `Bearer ${LOVABLE_API_KEY}`, "X-Connection-Api-Key": GOOGLE_SHEETS_API_KEY },
+      });
+      if (!r.ok) {
+        return new Response(JSON.stringify({ ok: false, error: `No se pudo leer la Sheet (${r.status})` }), {
+          status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      const rows: string[][] = (await r.json()).values || [];
+      let total = 0, importados = 0;
+      const sinSincronizar: { fila: number; nombre: string; email: string; motivo: string }[] = [];
+      rows.forEach((row, i) => {
+        if (!row.some((c) => (c || "").trim())) return;
+        total++;
+        const g = (row[6] || "").trim();
+        const base = { fila: i + 2, nombre: row[1] || "", email: row[2] || "" };
+        if (g.startsWith("OK")) importados++;
+        else if (!g) sinSincronizar.push({ ...base, motivo: "Pendiente: se importará en la próxima sincronización" });
+        else if (g.startsWith("SKIP:")) sinSincronizar.push({ ...base, motivo: g.slice(5).trim() });
+        else if (g.startsWith("DUP")) sinSincronizar.push({ ...base, motivo: "Duplicado (mismo email y evento en 24 h)" });
+        else if (g.startsWith("ERROR:")) sinSincronizar.push({ ...base, motivo: g });
+        else sinSincronizar.push({ ...base, motivo: `Columna G con un valor inesperado ("${g.slice(0, 30)}"): probablemente columnas desplazadas` });
+      });
+      return new Response(JSON.stringify({ ok: true, total, importados, sinSincronizar }), {
+        status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const resend = resendKey ? new Resend(resendKey) : null;
     const summary = { procesados: 0, errores: 0, omitidos: 0, sheets: [] as any[] };
 
