@@ -15,6 +15,21 @@
           }
         } catch (e) {}
       })();
+      // Canonical temprana: siempre apunta a https://shootandrun.es + ruta, sin parámetros
+      (function () {
+        try {
+          var p = location.pathname.replace(/\/+$/, "") || "/";
+          var l = document.createElement("link");
+          l.rel = "canonical";
+          l.href = "https://shootandrun.es" + p;
+          l.setAttribute("data-fallback", "1");
+          document.head.appendChild(l);
+          new MutationObserver(function (_, o) {
+            var all = document.head.querySelectorAll('link[rel="canonical"]');
+            if (all.length > 1) { l.remove(); o.disconnect(); }
+          }).observe(document.head, { childList: true });
+        } catch (e) {}
+      })();
     </script>
     <title>shootandrun | Laser Tag y Realidad Virtual en Murcia</title>
     <meta name="description" content="Centro de laser tag y realidad virtual Free Roaming para grupos, cumpleaños y eventos en Alcantarilla, Murcia.">
