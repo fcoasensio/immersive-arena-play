@@ -3,7 +3,30 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
+// Direcciones de la web antigua que Google aún visita → página nueva equivalente
+const legacyRedirects: Record<string, string> = {
+  "/laser-tag-outdoor": "/laser-tag-murcia",
+  "/laser-tag-indoor": "/laser-tag-murcia",
+  "/que-es-laser-tag": "/laser-tag-murcia",
+  "/que-es-laser-tag/normas-de-uso": "/laser-tag-murcia",
+  "/partidas": "/laser-tag-murcia",
+  "/desafios": "/laser-tag-murcia",
+  "/torneo": "/laser-tag-murcia",
+  "/que-es-realidad-virtual": "/realidad-virtual-murcia",
+  "/realidadvirtual": "/realidad-virtual-murcia",
+  "/eventos/promo-realidad-virtual": "/realidad-virtual-murcia",
+  "/eventos/horror": "/realidad-virtual-murcia",
+  "/eventos/tarta-cumpleanos": "/cumpleanos-laser-tag-murcia",
+  "/producto/tarta-cumpleanos": "/cumpleanos-laser-tag-murcia",
+  "/eventos/bandeja_pasteles": "/cumpleanos-laser-tag-murcia",
+  "/eventos": "/eventos-empresa-laser-tag",
+  "/inicio": "/",
+  "/inicio-2-experiencias-lasertag-y-realidad-virtual-en-shootandrun": "/",
+  "/donde-estamos": "/",
+  "/contact": "/",
+};
 import { HelmetProvider } from "react-helmet-async";
 import ScrollToTop from "@/components/ScrollToTop";
 import Index from "./pages/Index";
@@ -62,6 +85,9 @@ const App = () => (
               <Route path="/blog/catalogo-juegos-vr-murcia" element={<CatalogoJuegosVRMurcia />} />
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin" element={<ProtectedAdminRoute><Admin /></ProtectedAdminRoute>} />
+              {Object.entries(legacyRedirects).map(([from, to]) => (
+                <Route key={from} path={from} element={<Navigate to={to} replace />} />
+              ))}
               <Route path="*" element={<NotFound />} />
             </Routes>
             <CookieBanner />
