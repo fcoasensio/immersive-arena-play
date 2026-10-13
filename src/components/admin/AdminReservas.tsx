@@ -380,6 +380,50 @@ const AdminReservas = () => {
     if (selected?.id === id) setSelected({ ...selected, estado, google_calendar_event_id: nextCalendarEventId });
   };
 
+  const [reactivando, setReactivando] = useState(false);
+  const reactivarReserva = async (r: Reserva, estado: "pendiente_pago" | "confirmada") => {
+    setReactivando(true);
+    try {
+      const { data: availData, error: availError } = await supabase.functions.invoke(
+        "check-calendar-availability",
+        { body: { date: r.fecha, time: r.hora.slice(0, 5), duration: "1" } }
+      );
+      if (availError) throw availError;
+      if (availData && (availData as any).available === false) {
+        toast.error("Esa hora ya está ocupada. Reprograma la reserva a otra fecha/hora.");
+        return;
+      }
+      let eventId: string | null = null;
+      try { eventId = await syncCalendarEvent(r); } catch (e) {
+        console.error(e);
+        toast.warning("No se pudo crear el evento en Google Calendar");
+      }
+      const expira = estado === "pendiente_pago"
+        ? new Date(Date.now() + 5 * 60 * 60 * 1000).toISOString()
+        : r.expira_at ?? null;
+      const patch = { estado, cancelada_motivo: null, recordatorio_enviado_at: null, expira_at: expira, google_calendar_event_id: eventId };
+      const { error } = await supabase.from("reservas").update(patch as any).eq("id", r.id);
+      if (error) throw error;
+      supabase.functions.invoke("send-status-change-notification", {
+        body: {
+          customerName: r.nombre_completo, customerEmail: r.email, customerPhone: r.telefono,
+          reservationDate: r.fecha, reservationTime: r.hora, numberOfPeople: r.num_participantes,
+          activityType: r.actividad, reservationType: r.tipo_reserva, duration: r.duracion,
+          priceFinal: r.precio_final, newStatus: estado, previousStatus: "cancelada",
+        },
+      });
+      const updated = { ...r, ...patch } as Reserva;
+      setReservas((prev) => prev.map((x) => x.id === r.id ? updated : x));
+      if (selected?.id === r.id) setSelected(updated);
+      toast.success("Reserva reactivada");
+    } catch (e) {
+      console.error(e);
+      toast.error("No se pudo reactivar la reserva");
+    } finally {
+      setReactivando(false);
+    }
+  };
+
   const filtered = reservas.filter((r) => {
     const matchSearch = !search || 
       r.nombre_completo.toLowerCase().includes(search.toLowerCase()) ||
@@ -604,6 +648,20 @@ const AdminReservas = () => {
                     , la reserva se cancelará sola y la hora quedará libre.
                     {selected.recordatorio_enviado_at ? " Recordatorio enviado al cliente." : " Se enviará un recordatorio 1h antes."}
                   </p>
+                </div>
+              )}
+              {selected.estado === "cancelada" && (
+                <div className="col-span-2 p-3 rounded-md border border-primary/40 bg-primary/5 space-y-2">
+                  <div className="text-xs font-bold text-primary uppercase tracking-wide">♻️ Recuperar reserva</div>
+                  <p className="text-[11px] text-muted-foreground">Se comprobará que la hora sigue libre y se volverá a apuntar en el calendario. Se avisará al cliente por email.</p>
+                  <div className="flex flex-wrap gap-2">
+                    <Button size="sm" variant="outline" disabled={reactivando} onClick={() => reactivarReserva(selected, "pendiente_pago")}>
+                      Reactivar (pendiente de Bizum, +5 h)
+                    </Button>
+                    <Button size="sm" disabled={reactivando} onClick={() => reactivarReserva(selected, "confirmada")}>
+                      Reactivar como confirmada
+                    </Button>
+                  </div>
                 </div>
               )}
               {selected.estado === "cancelada" && selected.cancelada_motivo === "no_confirmada" && (
