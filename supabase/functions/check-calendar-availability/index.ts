@@ -178,13 +178,17 @@ serve(async (req: Request) => {
 
       const durationMinutes = parseInt(duration) || 90;
 
-      // Use Date objects with a known offset for the events.list query (requires RFC3339)
-      // Approximate Spain offset: try +02:00 (CEST Mar-Oct), fall back won't break
-      const startISO = new Date(`${date}T${normalizedTime}:00+02:00`).toISOString();
-      const endMins = parseInt(normalizedTime.split(":")[1]) + durationMinutes;
-      const endH = parseInt(normalizedTime.split(":")[0]) + Math.floor(endMins / 60);
-      const endM = endMins % 60;
-      const endISO = new Date(`${date}T${String(endH).padStart(2, "0")}:${String(endM).padStart(2, "0")}:00+02:00`).toISOString();
+      // Convert Madrid local time to UTC using the real offset for that date
+      // (+01:00 in winter, +02:00 in summer).
+      const madridToUtc = (d: string, t: string) => {
+        const guess = new Date(`${d}T${t}:00Z`);
+        const local = new Date(guess.toLocaleString("en-US", { timeZone: "Europe/Madrid" }));
+        const utcView = new Date(guess.toLocaleString("en-US", { timeZone: "UTC" }));
+        return new Date(guess.getTime() - (local.getTime() - utcView.getTime()));
+      };
+      const start = madridToUtc(date, normalizedTime);
+      const startISO = start.toISOString();
+      const endISO = new Date(start.getTime() + durationMinutes * 60000).toISOString();
 
       const accessToken = await getAccessToken(
         serviceAccount,
