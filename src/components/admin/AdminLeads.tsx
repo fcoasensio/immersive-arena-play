@@ -80,6 +80,16 @@ const AdminLeads = () => {
   const [filterEvento, setFilterEvento] = useState<string>("all");
   const [filterSource, setFilterSource] = useState<string>("all");
   const [selected, setSelected] = useState<Lead | null>(null);
+  const [enviandoOdoo, setEnviandoOdoo] = useState<string | null>(null);
+  const enviarOdoo = async (id: string) => {
+    setEnviandoOdoo(id);
+    const { data, error } = await supabase.functions.invoke("sync-odoo-lead", { body: { leadId: id } });
+    setEnviandoOdoo(null);
+    const { data: row } = await supabase.from("leads_rapidos").select("odoo_lead_id, odoo_error").eq("id", id).single();
+    if (row) setLeads((prev) => prev.map((l) => (l.id === id ? { ...l, ...row } : l)));
+    if (error || !data?.ok) toast.error(`No se pudo enviar a Odoo${row?.odoo_error ? `: ${row.odoo_error}` : ""}`);
+    else toast.success(data.error || "Lead enviado a Odoo");
+  };
 
   const load = async () => {
     setLoading(true);
