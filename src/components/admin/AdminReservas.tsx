@@ -1,3 +1,4 @@
+import { FunctionsHttpError } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -378,11 +379,22 @@ const AdminReservas = () => {
       toast.success("Estado actualizado");
     }
 
+    if (estado === "confirmada") void enviarAOdoo(id);
+
     setReservas((prev) => prev.map((r) => r.id === id ? { ...r, estado, google_calendar_event_id: nextCalendarEventId } : r));
     if (selected?.id === id) setSelected({ ...selected, estado, google_calendar_event_id: nextCalendarEventId });
   };
 
   const [reactivando, setReactivando] = useState(false);
+  const enviarAOdoo = async (id: string) => {
+    const { error } = await supabase.functions.invoke("sync-odoo-cliente", { body: { reservaId: id } });
+    if (error) {
+      const det = error instanceof FunctionsHttpError ? await error.context.text() : error.message;
+      console.error("Odoo:", det);
+      toast.warning("No se pudo crear el cliente en Odoo. Puedes reintentarlo desde el detalle.");
+    } else toast.success("Cliente creado/actualizado en Odoo");
+  };
+
   const reactivarReserva = async (r: Reserva, estado: "pendiente_pago" | "confirmada") => {
     setReactivando(true);
     try {
@@ -418,6 +430,7 @@ const AdminReservas = () => {
       setReservas((prev) => prev.map((x) => x.id === r.id ? updated : x));
       if (selected?.id === r.id) setSelected(updated);
       toast.success("Reserva reactivada");
+      if (estado === "confirmada") void enviarAOdoo(r.id);
     } catch (e) {
       console.error(e);
       toast.error("No se pudo reactivar la reserva");
@@ -589,6 +602,9 @@ const AdminReservas = () => {
               <Detail label="Email" value={selected.email} full />
               <Detail label="DNI/CIF" value={selected.dni_cif} />
               <Detail label="Dirección" value={[selected.direccion, selected.codigo_postal, selected.poblacion, selected.provincia].filter(Boolean).join(", ")} />
+              {selected.estado === "confirmada" && (
+                <Button size="sm" variant="outline" onClick={() => enviarAOdoo(selected.id)}>Enviar cliente a Odoo</Button>
+              )}
               <Detail label="Fecha" value={selected.fecha} />
               <Detail label="Hora" value={selected.hora} />
               <Detail label="Duración" value={`${selected.duracion} min`} />
