@@ -121,12 +121,15 @@ async function dominioTieneMX(domain: string): Promise<boolean> {
 const ReservationSchema = z.object({
   tipo_reserva: z.enum(["cumpleanos", "grupos", "despedida"]),
   actividad: z.enum(["laser_tag", "realidad_virtual", "combinada"]),
-  nombre_completo: z.string().trim().min(2).max(200),
+  nombre_completo: z.string().trim().min(2).max(200).transform(normalizarNombre),
   telefono: z.string().trim().min(6).max(20),
   email: z.string().trim().email().max(255),
-  dni_cif: z.string().trim().min(5).max(20),
+  dni_cif: z.string().trim().min(5).max(20).transform(normalizarDocumento)
+    .refine(validarDocumentoEspanol, "DNI/NIE/CIF no válido"),
   direccion: z.string().trim().min(3).max(300),
-  codigo_postal: z.string().trim().min(4).max(10),
+  codigo_postal: z.string().trim().refine((c) => provinciaDesdeCP(c) !== null, "Código postal no válido"),
+  poblacion: z.string().trim().min(2).max(120),
+  provincia: z.string().trim().max(80).optional(),
   fecha: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   hora: z.string().regex(/^\d{2}:\d{2}$/),
   duracion: z.enum(["90", "150", "270"]).default("90"),
