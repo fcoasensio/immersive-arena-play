@@ -37,6 +37,8 @@ type Lead = {
   score: number;
   categoria: "A" | "B" | "C" | string;
   motivos_score: string[] | null;
+  odoo_lead_id?: number | null;
+  odoo_error?: string | null;
 };
 
 const EVENT_LABELS: Record<string, string> = {
@@ -184,6 +186,13 @@ const AdminLeads = () => {
                           </a>
                         </Button>
                       ) : null}
+                      {l.odoo_lead_id && !l.odoo_error ? (
+                        <Badge variant="outline" title="Ya está en Odoo">Odoo ✓</Badge>
+                      ) : (
+                        <Button size="sm" variant="outline" disabled={enviandoOdoo === l.id} title={l.odoo_error || "Pendiente de Odoo"} onClick={() => enviarOdoo(l.id)}>
+                          {enviandoOdoo === l.id ? <Loader2 className="w-4 h-4 animate-spin" /> : "Enviar a Odoo"}
+                        </Button>
+                      )}
                       <Button size="sm" variant="ghost" onClick={() => setSelected(l)}><Eye className="w-4 h-4" /></Button>
                     </div>
                   </TableCell>
