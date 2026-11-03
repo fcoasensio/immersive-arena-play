@@ -1,3 +1,4 @@
+import { validarDocumentoEspanol, normalizarDocumento, normalizarNombre, provinciaDesdeCP } from "@/lib/validacionEs";
 import { useState, useEffect, useCallback } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useForm } from "react-hook-form";
@@ -78,9 +79,12 @@ function buildSchema(config: ConfigValues) {
       nombre_completo: z.string().trim().min(2, "Nombre requerido").max(200),
       telefono: z.string().trim().min(9, "Teléfono inválido").max(15),
       email: z.string().trim().email("Email inválido"),
-      dni_cif: z.string().trim().min(8, "DNI/CIF requerido").max(20),
+      dni_cif: z.string().trim().min(8, "DNI/NIE/CIF requerido").max(20)
+        .refine(validarDocumentoEspanol, "Documento no válido: revisa números y letra"),
       direccion: z.string().trim().min(5, "Dirección requerida").max(300),
-      codigo_postal: z.string().trim().min(4, "Código postal requerido").max(10),
+      codigo_postal: z.string().trim().refine((c) => provinciaDesdeCP(c) !== null, "Código postal no válido (5 cifras)"),
+      poblacion: z.string().trim().min(2, "Población requerida").max(120),
+      provincia: z.string().trim().min(2, "Provincia requerida"),
       fecha: z.date({ required_error: "Selecciona una fecha" }).refine(
         (d) => d >= minDate, `La reserva debe hacerse con al menos ${config.antelacion_horas}h de antelación`
       ),
@@ -188,6 +192,8 @@ const ReservaForm = () => {
       dni_cif: "",
       direccion: "",
       codigo_postal: "",
+      poblacion: "",
+      provincia: "",
       hora: "",
       notas: "",
       nombre_menor: "",
@@ -195,6 +201,22 @@ const ReservaForm = () => {
     },
   });
 
+  const [poblaciones, setPoblaciones] = useState<string[]>([]);
+  const onCpChange = async (cp: string) => {
+    const prov = provinciaDesdeCP(cp);
+    form.setValue("provincia", prov ?? "", { shouldValidate: !!prov });
+    setPoblaciones([]);
+    if (!prov) return;
+    try {
+      const r = await fetch(`https://api.zippopotam.us/es/${cp.trim()}`);
+      if (!r.ok) return;
+      const j = await r.json();
+      const lista: string[] = Array.from(new Set<string>((j.places || []).map((p: any) => String(p["place name"]).toLocaleUpperCase("es-ES"))));
+      setPoblaciones(lista);
+      if (lista.length === 1) form.setValue("poblacion", lista[0], { shouldValidate: true });
+      else if (lista.length > 1) form.setValue("poblacion", "");
+    } catch { /* el cliente la escribe a mano */ }
+  };
   const watchAll = form.watch();
   const precioPorPersona = packPrices[watchAll.tipo_reserva] || packPrices.grupos;
   const precio = calcularPrecio(watchAll.fecha, watchAll.num_participantes || 10, config, festivos, precioPorPersona);
@@ -205,7 +227,7 @@ const ReservaForm = () => {
       return await form.trigger(["fecha", "hora", "duracion", "num_participantes"]);
     }
     if (step === 2) {
-      const fields: (keyof ReservaValues)[] = ["nombre_completo", "telefono", "email", "dni_cif", "direccion", "codigo_postal"];
+      const fields: (keyof ReservaValues)[] = ["nombre_completo", "telefono", "email", "dni_cif", "direccion", "codigo_postal", "poblacion", "provincia"];
       if (watchAll.tipo_reserva === "cumpleanos") fields.push("nombre_menor", "edad_menor");
       return await form.trigger(fields);
     }
@@ -260,7 +282,13 @@ const ReservaForm = () => {
   };
   const prev = () => setStep((s) => Math.max(s - 1, 0));
 
-  const onSubmit = async (data: ReservaValues) => {
+  const onSubmit = async (raw: ReservaValues) => {
+    const data = {
+      ...raw,
+      nombre_completo: normalizarNombre(raw.nombre_completo),
+      dni_cif: normalizarDocumento(raw.dni_cif),
+      poblacion: raw.poblacion.trim().toLocaleUpperCase("es-ES"),
+    };
     setIsSubmitting(true);
     try {
       // Create reservation via secure edge function with rate limiting
@@ -274,6 +302,8 @@ const ReservaForm = () => {
           dni_cif: data.dni_cif,
           direccion: data.direccion,
           codigo_postal: data.codigo_postal,
+          poblacion: data.poblacion,
+          provincia: data.provincia,
           fecha: format(data.fecha, "yyyy-MM-dd"),
           hora: data.hora,
           duracion: data.duracion,
@@ -309,7 +339,7 @@ const ReservaForm = () => {
           customerEmail: data.email,
           customerPhone: data.telefono,
           customerDni: data.dni_cif,
-          customerAddress: data.direccion,
+          customerAddress: `${data.direccion}, ${data.poblacion} (${data.provincia})`,
           customerPostalCode: data.codigo_postal,
           reservationDate: format(data.fecha, "yyyy-MM-dd"),
           reservationTime: data.hora,
@@ -670,9 +700,26 @@ const ReservaForm = () => {
                     <FormItem className="sm:col-span-2"><FormLabel>Dirección</FormLabel><FormControl><Input placeholder="Calle Mayor 1, Murcia" {...field} /></FormControl><FormMessage /></FormItem>
                   )} />
                 </div>
-                <FormField control={form.control} name="codigo_postal" render={({ field }) => (
-                  <FormItem className="max-w-[160px]"><FormLabel>Código Postal</FormLabel><FormControl><Input placeholder="30001" {...field} /></FormControl><FormMessage /></FormItem>
-                )} />
+                <div className="grid sm:grid-cols-3 gap-4">
+                  <FormField control={form.control} name="codigo_postal" render={({ field }) => (
+                    <FormItem><FormLabel>Código Postal</FormLabel><FormControl><Input inputMode="numeric" maxLength={5} placeholder="30820" {...field} onChange={(e) => { field.onChange(e); onCpChange(e.target.value); }} /></FormControl><FormMessage /></FormItem>
+                  )} />
+                  <FormField control={form.control} name="poblacion" render={({ field }) => (
+                    <FormItem><FormLabel>Población</FormLabel><FormControl>
+                      {poblaciones.length > 1 ? (
+                        <select className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm" value={field.value} onChange={field.onChange}>
+                          <option value="">Elige población</option>
+                          {poblaciones.map((p) => <option key={p} value={p}>{p}</option>)}
+                        </select>
+                      ) : (
+                        <Input placeholder="Alcantarilla" {...field} />
+                      )}
+                    </FormControl><FormMessage /></FormItem>
+                  )} />
+                  <FormField control={form.control} name="provincia" render={({ field }) => (
+                    <FormItem><FormLabel>Provincia</FormLabel><FormControl><Input readOnly placeholder="Se rellena con el CP" {...field} /></FormControl><FormMessage /></FormItem>
+                  )} />
+                </div>
 
                 {watchAll.tipo_reserva === "cumpleanos" && (
                   <div className="border-t border-border pt-5 space-y-4">

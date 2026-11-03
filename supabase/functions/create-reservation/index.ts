@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { z } from "https://esm.sh/zod@3.23.8";
+import { validarDocumentoEspanol, normalizarDocumento, normalizarNombre, provinciaDesdeCP } from "../_shared/validacion-es.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -55,47 +56,6 @@ function isLikelyValidName(name: string): boolean {
   return words.every((w) => w.length >= 2 && /[aeiouáéíóúü]/i.test(w));
 }
 
-// Validación oficial DNI/NIE/CIF español
-function validarDocumentoEspanol(doc: string): boolean {
-  const d = doc.trim().toUpperCase().replace(/[\s-]/g, "");
-  // DNI: 8 dígitos + letra
-  const dniRe = /^(\d{8})([A-Z])$/;
-  // NIE: X|Y|Z + 7 dígitos + letra
-  const nieRe = /^([XYZ])(\d{7})([A-Z])$/;
-  // CIF: letra + 7 dígitos + dígito/letra
-  const cifRe = /^([ABCDEFGHJKLMNPQRSUVW])(\d{7})([0-9A-J])$/;
-  const letras = "TRWAGMYFPDXBNJZSQVHLCKE";
-
-  if (dniRe.test(d)) {
-    const [, num, letra] = d.match(dniRe)!;
-    return letras[parseInt(num, 10) % 23] === letra;
-  }
-  if (nieRe.test(d)) {
-    const [, prefix, num, letra] = d.match(nieRe)!;
-    const mapping: Record<string, string> = { X: "0", Y: "1", Z: "2" };
-    return letras[parseInt(mapping[prefix] + num, 10) % 23] === letra;
-  }
-  if (cifRe.test(d)) {
-    const [, , num, ctrl] = d.match(cifRe)!;
-    let sumPar = 0;
-    let sumImpar = 0;
-    for (let i = 0; i < 7; i++) {
-      const n = parseInt(num[i], 10);
-      if (i % 2 === 0) {
-        const x = n * 2;
-        sumImpar += Math.floor(x / 10) + (x % 10);
-      } else {
-        sumPar += n;
-      }
-    }
-    const total = sumPar + sumImpar;
-    const ctrlDigit = (10 - (total % 10)) % 10;
-    const ctrlLetter = "JABCDEFGHI"[ctrlDigit];
-    return ctrl === String(ctrlDigit) || ctrl === ctrlLetter;
-  }
-  return false;
-}
-
 function looksSpanishPhone(tel: string): boolean {
   const t = tel.replace(/[\s-]/g, "");
   return /^(\+34)?[6-9]\d{8}$/.test(t);
@@ -121,12 +81,15 @@ async function dominioTieneMX(domain: string): Promise<boolean> {
 const ReservationSchema = z.object({
   tipo_reserva: z.enum(["cumpleanos", "grupos", "despedida"]),
   actividad: z.enum(["laser_tag", "realidad_virtual", "combinada"]),
-  nombre_completo: z.string().trim().min(2).max(200),
+  nombre_completo: z.string().trim().min(2).max(200).transform(normalizarNombre),
   telefono: z.string().trim().min(6).max(20),
   email: z.string().trim().email().max(255),
-  dni_cif: z.string().trim().min(5).max(20),
+  dni_cif: z.string().trim().min(5).max(20).transform(normalizarDocumento)
+    .refine(validarDocumentoEspanol, "DNI/NIE/CIF no válido"),
   direccion: z.string().trim().min(3).max(300),
-  codigo_postal: z.string().trim().min(4).max(10),
+  codigo_postal: z.string().trim().refine((c) => provinciaDesdeCP(c) !== null, "Código postal no válido"),
+  poblacion: z.string().trim().min(2).max(120),
+  provincia: z.string().trim().max(80).optional(),
   fecha: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   hora: z.string().regex(/^\d{2}:\d{2}$/),
   duracion: z.enum(["90", "150", "270"]).default("90"),
@@ -250,11 +213,6 @@ serve(async (req: Request) => {
     }
 
     // DNI: solo penalizar si el teléfono parece español
-    const phoneEs = looksSpanishPhone(data.telefono);
-    if (phoneEs && !validarDocumentoEspanol(data.dni_cif)) {
-      score += 30;
-      motivos.push("DNI/NIE/CIF español inválido");
-    }
 
     // Repeticiones en otros campos
     const camposExtra: Array<[string, string]> = [
@@ -290,6 +248,8 @@ serve(async (req: Request) => {
         dni_cif: data.dni_cif,
         direccion: data.direccion,
         codigo_postal: data.codigo_postal,
+        poblacion: data.poblacion.toLocaleUpperCase("es-ES"),
+        provincia: provinciaDesdeCP(data.codigo_postal),
         fecha: data.fecha,
         hora: data.hora,
         duracion: data.duracion,

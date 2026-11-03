@@ -321,8 +321,11 @@ export type Database = {
           nombre_menor: string | null
           notas: string | null
           num_participantes: number
+          odoo_partner_id: number | null
+          poblacion: string | null
           precio_base: number | null
           precio_final: number | null
+          provincia: string | null
           recordatorio_enviado_at: string | null
           score_sospecha: number
           telefono: string
@@ -351,8 +354,11 @@ export type Database = {
           nombre_menor?: string | null
           notas?: string | null
           num_participantes: number
+          odoo_partner_id?: number | null
+          poblacion?: string | null
           precio_base?: number | null
           precio_final?: number | null
+          provincia?: string | null
           recordatorio_enviado_at?: string | null
           score_sospecha?: number
           telefono: string
@@ -381,8 +387,11 @@ export type Database = {
           nombre_menor?: string | null
           notas?: string | null
           num_participantes?: number
+          odoo_partner_id?: number | null
+          poblacion?: string | null
           precio_base?: number | null
           precio_final?: number | null
+          provincia?: string | null
           recordatorio_enviado_at?: string | null
           score_sospecha?: number
           telefono?: string

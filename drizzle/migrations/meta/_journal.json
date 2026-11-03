@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1793693812646,
+      "tag": "0000_reservas_poblacion_provincia_odoo",
+      "breakpoints": true
+    }
+  ]
+}

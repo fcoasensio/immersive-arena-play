@@ -1,0 +1,1 @@
+ALTER TABLE public.reservas ADD COLUMN IF NOT EXISTS poblacion text, ADD COLUMN IF NOT EXISTS provincia text, ADD COLUMN IF NOT EXISTS odoo_partner_id integer;

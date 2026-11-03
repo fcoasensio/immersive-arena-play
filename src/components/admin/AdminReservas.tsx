@@ -28,6 +28,8 @@ type Reserva = {
   dni_cif: string;
   direccion: string;
   codigo_postal: string;
+  poblacion?: string | null;
+  provincia?: string | null;
   fecha: string;
   hora: string;
   duracion: string;
@@ -586,7 +588,7 @@ const AdminReservas = () => {
               <Detail label="Teléfono" value={selected.telefono} />
               <Detail label="Email" value={selected.email} full />
               <Detail label="DNI/CIF" value={selected.dni_cif} />
-              <Detail label="Dirección" value={`${selected.direccion}, ${selected.codigo_postal}`} />
+              <Detail label="Dirección" value={[selected.direccion, selected.codigo_postal, selected.poblacion, selected.provincia].filter(Boolean).join(", ")} />
               <Detail label="Fecha" value={selected.fecha} />
               <Detail label="Hora" value={selected.hora} />
               <Detail label="Duración" value={`${selected.duracion} min`} />
