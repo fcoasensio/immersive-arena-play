@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { z } from "https://esm.sh/zod@3.23.8";
+import { validarDocumentoEspanol, normalizarDocumento, normalizarNombre, provinciaDesdeCP } from "../_shared/validacion-es.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -53,47 +54,6 @@ function isLikelyValidName(name: string): boolean {
   const words = trimmed.split(/\s+/).filter(Boolean);
   if (words.length < 2) return false;
   return words.every((w) => w.length >= 2 && /[aeiouáéíóúü]/i.test(w));
-}
-
-// Validación oficial DNI/NIE/CIF español
-function validarDocumentoEspanol(doc: string): boolean {
-  const d = doc.trim().toUpperCase().replace(/[\s-]/g, "");
-  // DNI: 8 dígitos + letra
-  const dniRe = /^(\d{8})([A-Z])$/;
-  // NIE: X|Y|Z + 7 dígitos + letra
-  const nieRe = /^([XYZ])(\d{7})([A-Z])$/;
-  // CIF: letra + 7 dígitos + dígito/letra
-  const cifRe = /^([ABCDEFGHJKLMNPQRSUVW])(\d{7})([0-9A-J])$/;
-  const letras = "TRWAGMYFPDXBNJZSQVHLCKE";
-
-  if (dniRe.test(d)) {
-    const [, num, letra] = d.match(dniRe)!;
-    return letras[parseInt(num, 10) % 23] === letra;
-  }
-  if (nieRe.test(d)) {
-    const [, prefix, num, letra] = d.match(nieRe)!;
-    const mapping: Record<string, string> = { X: "0", Y: "1", Z: "2" };
-    return letras[parseInt(mapping[prefix] + num, 10) % 23] === letra;
-  }
-  if (cifRe.test(d)) {
-    const [, , num, ctrl] = d.match(cifRe)!;
-    let sumPar = 0;
-    let sumImpar = 0;
-    for (let i = 0; i < 7; i++) {
-      const n = parseInt(num[i], 10);
-      if (i % 2 === 0) {
-        const x = n * 2;
-        sumImpar += Math.floor(x / 10) + (x % 10);
-      } else {
-        sumPar += n;
-      }
-    }
-    const total = sumPar + sumImpar;
-    const ctrlDigit = (10 - (total % 10)) % 10;
-    const ctrlLetter = "JABCDEFGHI"[ctrlDigit];
-    return ctrl === String(ctrlDigit) || ctrl === ctrlLetter;
-  }
-  return false;
 }
 
 function looksSpanishPhone(tel: string): boolean {
@@ -253,11 +213,6 @@ serve(async (req: Request) => {
     }
 
     // DNI: solo penalizar si el teléfono parece español
-    const phoneEs = looksSpanishPhone(data.telefono);
-    if (phoneEs && !validarDocumentoEspanol(data.dni_cif)) {
-      score += 30;
-      motivos.push("DNI/NIE/CIF español inválido");
-    }
 
     // Repeticiones en otros campos
     const camposExtra: Array<[string, string]> = [
@@ -293,6 +248,8 @@ serve(async (req: Request) => {
         dni_cif: data.dni_cif,
         direccion: data.direccion,
         codigo_postal: data.codigo_postal,
+        poblacion: data.poblacion.toLocaleUpperCase("es-ES"),
+        provincia: provinciaDesdeCP(data.codigo_postal),
         fecha: data.fecha,
         hora: data.hora,
         duracion: data.duracion,
