@@ -1,0 +1,1 @@
+ALTER TABLE public.leads_rapidos ADD COLUMN IF NOT EXISTS odoo_lead_id integer, ADD COLUMN IF NOT EXISTS odoo_error text;
