@@ -378,11 +378,22 @@ const AdminReservas = () => {
       toast.success("Estado actualizado");
     }
 
+    if (estado === "confirmada") void enviarAOdoo(id);
+
     setReservas((prev) => prev.map((r) => r.id === id ? { ...r, estado, google_calendar_event_id: nextCalendarEventId } : r));
     if (selected?.id === id) setSelected({ ...selected, estado, google_calendar_event_id: nextCalendarEventId });
   };
 
   const [reactivando, setReactivando] = useState(false);
+  const enviarAOdoo = async (id: string) => {
+    const { error } = await supabase.functions.invoke("sync-odoo-cliente", { body: { reservaId: id } });
+    if (error) {
+      const det = error instanceof FunctionsHttpError ? await error.context.text() : error.message;
+      console.error("Odoo:", det);
+      toast.warning("No se pudo crear el cliente en Odoo. Puedes reintentarlo desde el detalle.");
+    } else toast.success("Cliente creado/actualizado en Odoo");
+  };
+
   const reactivarReserva = async (r: Reserva, estado: "pendiente_pago" | "confirmada") => {
     setReactivando(true);
     try {
