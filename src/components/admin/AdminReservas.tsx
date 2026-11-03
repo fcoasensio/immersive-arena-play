@@ -430,6 +430,7 @@ const AdminReservas = () => {
       setReservas((prev) => prev.map((x) => x.id === r.id ? updated : x));
       if (selected?.id === r.id) setSelected(updated);
       toast.success("Reserva reactivada");
+      if (estado === "confirmada") void enviarAOdoo(r.id);
     } catch (e) {
       console.error(e);
       toast.error("No se pudo reactivar la reserva");
