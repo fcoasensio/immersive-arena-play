@@ -1,3 +1,4 @@
+import { FunctionsHttpError } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -600,6 +601,9 @@ const AdminReservas = () => {
               <Detail label="Email" value={selected.email} full />
               <Detail label="DNI/CIF" value={selected.dni_cif} />
               <Detail label="Dirección" value={[selected.direccion, selected.codigo_postal, selected.poblacion, selected.provincia].filter(Boolean).join(", ")} />
+              {selected.estado === "confirmada" && (
+                <Button size="sm" variant="outline" onClick={() => enviarAOdoo(selected.id)}>Enviar cliente a Odoo</Button>
+              )}
               <Detail label="Fecha" value={selected.fecha} />
               <Detail label="Hora" value={selected.hora} />
               <Detail label="Duración" value={`${selected.duracion} min`} />
