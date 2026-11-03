@@ -37,6 +37,8 @@ type Lead = {
   score: number;
   categoria: "A" | "B" | "C" | string;
   motivos_score: string[] | null;
+  odoo_lead_id?: number | null;
+  odoo_error?: string | null;
 };
 
 const EVENT_LABELS: Record<string, string> = {
@@ -78,6 +80,16 @@ const AdminLeads = () => {
   const [filterEvento, setFilterEvento] = useState<string>("all");
   const [filterSource, setFilterSource] = useState<string>("all");
   const [selected, setSelected] = useState<Lead | null>(null);
+  const [enviandoOdoo, setEnviandoOdoo] = useState<string | null>(null);
+  const enviarOdoo = async (id: string) => {
+    setEnviandoOdoo(id);
+    const { data, error } = await supabase.functions.invoke("sync-odoo-lead", { body: { leadId: id } });
+    setEnviandoOdoo(null);
+    const { data: row } = await supabase.from("leads_rapidos").select("odoo_lead_id, odoo_error").eq("id", id).single();
+    if (row) setLeads((prev) => prev.map((l) => (l.id === id ? { ...l, ...row } : l)));
+    if (error || !data?.ok) toast.error(`No se pudo enviar a Odoo${row?.odoo_error ? `: ${row.odoo_error}` : ""}`);
+    else toast.success(data.error || "Lead enviado a Odoo");
+  };
 
   const load = async () => {
     setLoading(true);
@@ -184,6 +196,13 @@ const AdminLeads = () => {
                           </a>
                         </Button>
                       ) : null}
+                      {l.odoo_lead_id && !l.odoo_error ? (
+                        <Badge variant="outline" title="Ya está en Odoo">Odoo ✓</Badge>
+                      ) : (
+                        <Button size="sm" variant="outline" disabled={enviandoOdoo === l.id} title={l.odoo_error || "Pendiente de Odoo"} onClick={() => enviarOdoo(l.id)}>
+                          {enviandoOdoo === l.id ? <Loader2 className="w-4 h-4 animate-spin" /> : "Enviar a Odoo"}
+                        </Button>
+                      )}
                       <Button size="sm" variant="ghost" onClick={() => setSelected(l)}><Eye className="w-4 h-4" /></Button>
                     </div>
                   </TableCell>

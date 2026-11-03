@@ -8,6 +8,13 @@
       "when": 1793693812646,
       "tag": "0000_reservas_poblacion_provincia_odoo",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1793694401077,
+      "tag": "0001_leads_odoo",
+      "breakpoints": true
     }
   ]
 }

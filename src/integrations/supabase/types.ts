@@ -177,6 +177,8 @@ export type Database = {
           motivos_score: Json
           nombre: string
           num_personas: string | null
+          odoo_error: string | null
+          odoo_lead_id: number | null
           page_url: string | null
           presupuesto: string | null
           score: number
@@ -205,6 +207,8 @@ export type Database = {
           motivos_score?: Json
           nombre: string
           num_personas?: string | null
+          odoo_error?: string | null
+          odoo_lead_id?: number | null
           page_url?: string | null
           presupuesto?: string | null
           score?: number
@@ -233,6 +237,8 @@ export type Database = {
           motivos_score?: Json
           nombre?: string
           num_personas?: string | null
+          odoo_error?: string | null
+          odoo_lead_id?: number | null
           page_url?: string | null
           presupuesto?: string | null
           score?: number
