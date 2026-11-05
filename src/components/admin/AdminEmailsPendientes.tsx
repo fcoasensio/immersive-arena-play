@@ -101,6 +101,9 @@ const AdminEmailsPendientes = () => {
 
   return (
     <div className="space-y-4">
+      <p className="text-xs text-muted-foreground border border-border rounded-md p-3">
+        Se envía desde outdoor@web.shootandrun.es · respuestas a hola@shootandrun.es · copia oculta a fcoasensio@shootandrun.es. Los enviados quedan guardados en la pestaña "Enviados".
+      </p>
       <Tabs value={statusFilter} onValueChange={setStatusFilter}>
         <TabsList>
           <TabsTrigger value="pendiente_aprobacion">Pendientes</TabsTrigger>

@@ -89,6 +89,7 @@ serve(async (req) => {
       from: FROM,
       to: [draft.recipient_email],
       reply_to: REPLY_TO,
+      bcc: ["fcoasensio@shootandrun.es"],
       subject: finalSubject,
       html: appendGdprFooter(finalHtml),
     });
