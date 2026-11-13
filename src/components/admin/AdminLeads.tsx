@@ -81,6 +81,21 @@ const AdminLeads = () => {
   const [filterSource, setFilterSource] = useState<string>("all");
   const [selected, setSelected] = useState<Lead | null>(null);
   const [enviandoOdoo, setEnviandoOdoo] = useState<string | null>(null);
+  const [conBorrador, setConBorrador] = useState<Set<string>>(new Set());
+  const [creandoBorrador, setCreandoBorrador] = useState<string | null>(null);
+  const crearBorrador = async (id: string) => {
+    setCreandoBorrador(id);
+    const { data, error } = await supabase.functions.invoke("crear-borrador-lead", { body: { leadId: id } });
+    setCreandoBorrador(null);
+    if (error || !data?.ok) {
+      let msg = data?.error;
+      try { msg = msg || (await (error as any)?.context?.json())?.error; } catch { /* ignore */ }
+      toast.error(`No se pudo crear el borrador${msg ? `: ${msg}` : ""}`);
+      return;
+    }
+    setConBorrador((prev) => new Set(prev).add(id));
+    toast.success("Borrador creado. Revísalo en Emails pendientes.");
+  };
   const enviarOdoo = async (id: string) => {
     setEnviandoOdoo(id);
     const { data, error } = await supabase.functions.invoke("sync-odoo-lead", { body: { leadId: id } });
@@ -102,6 +117,8 @@ const AdminLeads = () => {
       .limit(500);
     if (error) toast.error("Error cargando leads");
     setLeads((data || []) as Lead[]);
+    const { data: drafts } = await supabase.from("lead_emails_pendientes").select("lead_id");
+    setConBorrador(new Set((drafts || []).map((d) => d.lead_id)));
     setLoading(false);
   };
 
@@ -196,6 +213,11 @@ const AdminLeads = () => {
                           </a>
                         </Button>
                       ) : null}
+                      {l.email && !conBorrador.has(l.id) && (
+                        <Button size="sm" variant="outline" disabled={creandoBorrador === l.id} onClick={() => crearBorrador(l.id)}>
+                          {creandoBorrador === l.id ? <Loader2 className="w-4 h-4 animate-spin" /> : "Crear borrador"}
+                        </Button>
+                      )}
                       {l.odoo_lead_id && !l.odoo_error ? (
                         <Badge variant="outline" title="Ya está en Odoo">Odoo ✓</Badge>
                       ) : (
