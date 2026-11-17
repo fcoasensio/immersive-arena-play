@@ -117,7 +117,11 @@ const AdminLeads = () => {
       .limit(500);
     if (error) toast.error("Error cargando leads");
     setLeads((data || []) as Lead[]);
-    const { data: drafts } = await supabase.from("lead_emails_pendientes").select("lead_id");
+    // Solo los borradores que esperan aprobación; los descartados o enviados permiten crear uno nuevo
+    const { data: drafts } = await supabase
+      .from("lead_emails_pendientes")
+      .select("lead_id")
+      .eq("status", "pendiente_aprobacion");
     setConBorrador(new Set((drafts || []).map((d) => d.lead_id)));
     setLoading(false);
   };

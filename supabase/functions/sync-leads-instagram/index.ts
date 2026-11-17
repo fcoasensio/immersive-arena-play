@@ -250,6 +250,9 @@ serve(async (req) => {
 
     const supabase = createClient(supabaseUrl, serviceKey);
 
+    let body: { mode?: string } = {};
+    try { body = await req.json(); } catch { /* no body */ }
+
     // Load active sync configs
     const { data: configs, error: cfgErr } = await supabase
       .from("instagram_sync_config")
@@ -257,13 +260,15 @@ serve(async (req) => {
       .eq("active", true);
     if (cfgErr) throw new Error(`config read: ${cfgErr.message}`);
     if (!configs || configs.length === 0) {
+      if (body.mode === "status") {
+        return new Response(JSON.stringify({ ok: false, error: "No hay ninguna Google Sheet configurada y activa" }), {
+          status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
       return new Response(JSON.stringify({ ok: true, message: "Sin configuración activa" }), {
         status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
-
-    let body: { mode?: string } = {};
-    try { body = await req.json(); } catch { /* no body */ }
 
     if (body.mode === "status") {
       // Admin only

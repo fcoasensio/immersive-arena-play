@@ -184,12 +184,12 @@ const AdminInstagramSync = () => {
             <div className="text-xs text-muted-foreground">Filas en la Sheet</div>
           </div>
           <div className="rounded-md border border-border p-3">
-            <div className="text-2xl font-bold text-destructive">{status?.sinSincronizar.length ?? "—"}</div>
+            <div className="text-2xl font-bold text-destructive">{status?.sinSincronizar?.length ?? "—"}</div>
             <div className="text-xs text-muted-foreground">Sin sincronizar</div>
           </div>
         </div>
         {statusError && <p className="text-sm text-destructive">{statusError}</p>}
-        {status && status.sinSincronizar.length > 0 && (
+        {status && (status.sinSincronizar?.length ?? 0) > 0 && (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
@@ -199,7 +199,7 @@ const AdminInstagramSync = () => {
                 </tr>
               </thead>
               <tbody>
-                {status.sinSincronizar.map((r) => (
+                {(status.sinSincronizar ?? []).map((r) => (
                   <tr key={r.fila} className="border-b border-border/50">
                     <td className="py-2 pr-2">{r.fila}</td>
                     <td className="py-2 pr-2">{r.nombre || "—"}</td>
