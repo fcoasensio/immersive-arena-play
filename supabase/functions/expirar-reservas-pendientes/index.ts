@@ -202,20 +202,20 @@ serve(async (req: Request) => {
 
         // 3. Email al cliente
         const htmlCliente = baseEmail(
-          "Reserva cancelada por falta de confirmación",
+          "Tu reserva ha sido cancelada",
           `
-          <p style="font-size:18px;margin-top:0">Hola ${r.nombre_completo},</p>
-          <p style="color:#ccc">No hemos recibido el Bizum de 50 € dentro del plazo, por lo que tu reserva ha sido <strong style="color:#ff8095">cancelada automáticamente</strong> y la hora ha quedado disponible para otros clientes.</p>
+          <p style="font-size:18px;margin-top:0">¡Hola ${r.nombre_completo}! Gracias por pensar en shootandrun.</p>
+          <p style="color:#ccc">Como no hemos recibido el Bizum de 50 € dentro del plazo, hemos <strong style="color:#ff8095">cancelado tu reserva</strong>. Así la franja horaria no permanece ocupada y queda disponible para otros clientes.</p>
           ${resumenReserva(r)}
-          <p style="color:#ccc">Si sigues interesado/a, puedes hacer una nueva reserva (sujeta a disponibilidad):</p>
-          <p style="text-align:center"><a class="cta" href="https://shootandrun.es/#reservas">Volver a reservar</a></p>
-          <p style="color:#888;font-size:13px;margin-top:18px">Si ya hiciste el Bizum o crees que es un error, llámanos al <a href="tel:+34606323053" style="color:#00d4ff">+34 606 323 053</a>.</p>`
+          <p style="color:#ccc">Si todavía te apetece venir, estaremos encantados de recibirte. Puedes elegir una nueva fecha y hacer otra reserva, sujeta a disponibilidad:</p>
+          <p style="text-align:center"><a class="cta" href="https://shootandrun.es/#reservas">Elegir una nueva fecha</a></p>
+          <p style="color:#888;font-size:13px;margin-top:18px">Si ya hiciste el Bizum o crees que puede tratarse de un error, llámanos al <a href="tel:+34606323053" style="color:#00d4ff">+34 606 323 053</a> y lo revisamos contigo.</p>`
         );
 
         const { error: sendErr1 } = await resend.emails.send({
           from: FROM_EMAIL,
           to: [r.email],
-          subject: "Tu reserva en shootandrun ha sido cancelada por falta de confirmación",
+          subject: "Tu reserva en shootandrun ha sido cancelada",
           html: appendGdprFooter(htmlCliente),
         });
         if (sendErr1) console.error("Error email cliente cancelación:", sendErr1);
