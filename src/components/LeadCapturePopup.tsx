@@ -60,7 +60,7 @@ type FormData = z.infer<typeof schema>;
 type Status = "idle" | "loading" | "success" | "error";
 
 const isAdminRoute = (pathname: string) =>
-  pathname.startsWith("/admin") || pathname.startsWith("/reservar");
+  pathname.startsWith("/admin") || pathname.startsWith("/reservar") || pathname.startsWith("/tag-zombi");
 
 const FormBody = ({ onClose }: { onClose: () => void }) => {
   const [status, setStatus] = useState<Status>("idle");
