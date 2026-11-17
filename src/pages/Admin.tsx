@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LogOut, CalendarCheck, Settings, CalendarDays, Package, MessageCircle, Flame, Mail, Instagram } from "lucide-react";
+import { LogOut, CalendarCheck, Settings, CalendarDays, Package, MessageCircle, Flame, Mail, Instagram, Ticket } from "lucide-react";
 import AdminReservas from "@/components/admin/AdminReservas";
 import AdminConfiguracion from "@/components/admin/AdminConfiguracion";
 import AdminFestivos from "@/components/admin/AdminFestivos";
@@ -11,6 +11,7 @@ import AdminPacks from "@/components/admin/AdminPacks";
 import AdminChatbotStats from "@/components/admin/AdminChatbotStats";
 import AdminLeads from "@/components/admin/AdminLeads";
 import AdminEmailsPendientes from "@/components/admin/AdminEmailsPendientes";
+import AdminCanjes from "@/components/admin/AdminCanjes";
 import AdminInstagramSync from "@/components/admin/AdminInstagramSync";
 
 const Admin = () => {
@@ -60,6 +61,9 @@ const Admin = () => {
             <TabsTrigger value="chatbot" className="gap-2">
               <MessageCircle size={16} /> Chatbot
             </TabsTrigger>
+            <TabsTrigger value="canjes" className="gap-2">
+              <Ticket size={16} /> Canjes
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="reservas">
@@ -82,6 +86,9 @@ const Admin = () => {
           </TabsContent>
           <TabsContent value="festivos">
             <AdminFestivos />
+          </TabsContent>
+          <TabsContent value="canjes">
+            <AdminCanjes />
           </TabsContent>
           <TabsContent value="chatbot">
             <AdminChatbotStats />

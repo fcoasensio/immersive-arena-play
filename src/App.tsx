@@ -47,6 +47,7 @@ const CookieBanner = lazy(() => import("./components/CookieBanner"));
 const ChatWidget = lazy(() => import("./components/chat/ChatWidget"));
 const LeadCapturePopup = lazy(() => import("./components/LeadCapturePopup"));
 const Blog = lazy(() => import("./pages/Blog"));
+const TagZombi = lazy(() => import("./pages/TagZombi"));
 const TopPlanesCumpleanosMurcia = lazy(() => import("./pages/blog/TopPlanesCumpleanosMurcia"));
 const LaserTagVsPaintball = lazy(() => import("./pages/blog/LaserTagVsPaintball"));
 const IdeasEventosEmpresaMurcia = lazy(() => import("./pages/blog/IdeasEventosEmpresaMurcia"));
@@ -83,6 +84,7 @@ const App = () => (
               <Route path="/blog/laser-tag-ayuntamientos-fiestas-patronales" element={<LaserTagAyuntamientosFiestas />} />
               <Route path="/blog/realidad-virtual-free-roam-no-marea" element={<RealidadVirtualFreeRoamNoMarea />} />
               <Route path="/blog/catalogo-juegos-vr-murcia" element={<CatalogoJuegosVRMurcia />} />
+              <Route path="/tag-zombi" element={<TagZombi />} />
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin" element={<ProtectedAdminRoute><Admin /></ProtectedAdminRoute>} />
               {Object.entries(legacyRedirects).map(([from, to]) => (

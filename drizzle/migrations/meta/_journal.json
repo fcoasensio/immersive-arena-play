@@ -15,6 +15,13 @@
       "when": 1793694401077,
       "tag": "0001_leads_odoo",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794929863131,
+      "tag": "0002_create_canjes_tag_zombi",
+      "breakpoints": true
     }
   ]
 }

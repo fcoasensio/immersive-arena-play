@@ -14,6 +14,27 @@ export type Database = {
   }
   public: {
     Tables: {
+      canjes_tag_zombi: {
+        Row: {
+          canjeado_at: string
+          canjeado_por: string | null
+          codigo: string
+          puntos: number
+        }
+        Insert: {
+          canjeado_at?: string
+          canjeado_por?: string | null
+          codigo: string
+          puntos: number
+        }
+        Update: {
+          canjeado_at?: string
+          canjeado_por?: string | null
+          codigo?: string
+          puntos?: number
+        }
+        Relationships: []
+      }
       chat_eventos: {
         Row: {
           created_at: string
