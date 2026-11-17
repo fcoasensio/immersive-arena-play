@@ -25,7 +25,7 @@ const AdminCanjes = () => {
   const check = async (e: React.FormEvent) => {
     e.preventDefault();
     const r = parseCode(code);
-    if (!r.ok) return setV({ tone: "bad", state: "No válido", text: r.why });
+    if (r.ok === false) return setV({ tone: "bad", state: "No válido", text: r.why });
     const facts: [string, string][] = [["Código", r.id], ["Puntos", r.score.toLocaleString("es-ES")], ["Emitido", dayLabel(r.day)]];
     if (r.age < 0) return setV({ tone: "bad", state: "No válido", text: "La fecha del código es futura.", facts });
     if (r.age > VALID_DAYS) return setV({ tone: "warn", state: "Caducado", text: `Se emitió hace ${r.age} días. El límite es ${VALID_DAYS}.`, facts });
