@@ -22,6 +22,20 @@
       "when": 1794929863131,
       "tag": "0002_create_canjes_tag_zombi",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1794932732440,
+      "tag": "0003_create_tag_zombi_codes",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1794932851846,
+      "tag": "0004_fix_tag_zombi_month_check",
+      "breakpoints": true
     }
   ]
 }

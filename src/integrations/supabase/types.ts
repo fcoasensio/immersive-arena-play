@@ -56,6 +56,30 @@ export type Database = {
         }
         Relationships: []
       }
+      codigos_tag_zombi: {
+        Row: {
+          codigo: string
+          email: string
+          emitido_at: string
+          mes: string
+          puntos: number
+        }
+        Insert: {
+          codigo: string
+          email: string
+          emitido_at?: string
+          mes: string
+          puntos: number
+        }
+        Update: {
+          codigo?: string
+          email?: string
+          emitido_at?: string
+          mes?: string
+          puntos?: number
+        }
+        Relationships: []
+      }
       configuracion: {
         Row: {
           clave: string

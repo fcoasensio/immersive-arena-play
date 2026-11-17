@@ -58,6 +58,11 @@ p strong{color:var(--ink)}
 .code{display:flex;flex-direction:column;gap:10px;border:1px solid var(--gold);border-radius:12px;padding:14px;background:#2a230a55}
 .code .c{font:700 26px var(--display);letter-spacing:.08em;color:var(--gold);user-select:text;-webkit-user-select:text;word-break:break-all}
 .code .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.code form{display:flex;flex-direction:column;gap:10px}
+.code label{font-size:13px;color:var(--ink);line-height:1.4}
+.code input{width:100%;box-sizing:border-box;border:1px solid #39406a;border-radius:8px;padding:12px;background:var(--night);color:var(--ink);font:14px var(--body)}
+.code .btn{width:100%;font-size:15px;padding:11px 14px}
+.code input:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 .small{font-size:12.5px;color:var(--muted);line-height:1.45}
 .handle{color:var(--ink);font-weight:600;user-select:text;-webkit-user-select:text}
 @media (max-height:640px){h1{font-size:34px}.card{gap:12px;padding:18px}}
@@ -83,7 +88,7 @@ p strong{color:var(--ink)}
         <li><span class="dot" style="background:var(--blue);box-shadow:0 0 8px var(--blue)"></span>Superviviente de tu equipo. No le dispares.<span class="pts">−200</span></li>
         <li><span class="dot" style="background:var(--gold);box-shadow:0 0 8px var(--gold)"></span>Orbe de energía<span class="pts">+5 s</span></li>
       </ul>
-      <div class="prize">Haz <b id="thr1">2.000 puntos</b> y te llevas un código de <b id="pz1">5% de descuento</b> en la partida de laser tag de un jugador.<br><span class="small">No acumulable a otras promociones. Válido 30 días.</span></div>
+      <div class="prize">Haz <b id="thr1">2.000 puntos</b> y te llevas un código de <b id="pz1">5% de descuento</b> en la partida de laser tag de un jugador.<br><span class="small">Un código por persona y mes. No acumulable a otras promociones. Válido 30 días.</span></div>
       <button class="btn" id="play" type="button">Jugar</button>
       <p class="small">Encadena aciertos para multiplicar puntos. Si fallas el disparo, pierdes el combo.</p>
     </div>
@@ -109,11 +114,8 @@ const CONFIG = {
   threshold: 2000,                       // points needed for the discount code
   prize: "5% de descuento",              // what the code gives
   validDays: 30,                         // code validity
-  salt: "SR-MURCIA-2026",                // must match the staff validator
   duration: 60
 };
-const ALPH = "23456789ABCDEFGHJKMNPQRSTUVWXYZ";
-const EPOCH = Date.UTC(2026,0,1);
 
 const $ = id => document.getElementById(id);
 const fmt = n => n.toLocaleString("es-ES");
@@ -125,15 +127,24 @@ const store = {
   set(k,v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
 };
 
-/* ---------- Prize code ---------- */
-function fnv(str){ let h=0x811c9dc5; for(let i=0;i<str.length;i++){ h^=str.charCodeAt(i); h=Math.imul(h,0x01000193); } return h>>>0; }
-function enc(n,len){ let s=""; for(let i=0;i<len;i++){ s=ALPH[n%31]+s; n=Math.floor(n/31); } return s; }
-function today(){ return Math.floor((Date.now()-EPOCH)/86400000); }
-function makeCode(score){
-  const day=today(), rnd=Math.floor(Math.random()*29791);
-  const chk=fnv(score+"."+day+"."+rnd+"."+CONFIG.salt)%29791;
-  const tail=enc(day,2)+enc(rnd,3)+enc(chk,3);
-  return "SR-"+score+"-"+tail.slice(0,4)+"-"+tail.slice(4);
+/* ---------- Prize code: issued by the website backend ---------- */
+const codePending=new Map();
+window.addEventListener("message",e=>{
+  if(e.origin!==location.origin||e.source!==window.parent) return;
+  const d=e.data;
+  if(!d||d.type!=="tag-zombi:codigo-resultado"||typeof d.requestId!=="string") return;
+  const pending=codePending.get(d.requestId);
+  if(!pending) return;
+  codePending.delete(d.requestId);clearTimeout(pending.timeout);pending.resolve(d);
+});
+function requestCode(email,score){
+  if(window.parent===window) return Promise.reject(new Error("Abre el juego desde la página de shootandrun para conseguir el código."));
+  const requestId=Date.now().toString(36)+Math.random().toString(36).slice(2);
+  return new Promise((resolve,reject)=>{
+    const timeout=setTimeout(()=>{codePending.delete(requestId);reject(new Error("La solicitud está tardando demasiado. Inténtalo de nuevo."));},20000);
+    codePending.set(requestId,{resolve,reject,timeout});
+    window.parent.postMessage({type:"tag-zombi:emitir-codigo",requestId,email,score},location.origin);
+  });
 }
 
 /* ---------- Audio ---------- */
@@ -468,28 +479,48 @@ function finish(reason){
   $("stAcc").textContent=(g.shots?Math.round(g.hits/g.shots*100):0)+"%";
   $("stBest").textContent=fmt(best);
   const box=$("prizeBox");box.replaceChildren();
-  const key="sr_code_"+today();
-  let saved=store.get(key);
-  if(g.score>=CONFIG.threshold&&!saved){saved={code:makeCode(g.score),score:g.score};store.set(key,saved);}
-  if(saved){
+  if(g.score>=CONFIG.threshold){
     const wrap=document.createElement("div");wrap.className="code";
-    const h=document.createElement("h2");h.textContent=g.score>=CONFIG.threshold?"¡Premio desbloqueado!":"Tu código de hoy";
-    const c=document.createElement("div");c.className="c";c.textContent=saved.code;
-    const d=document.createElement("div");d.className="small";
-    d.textContent=CONFIG.prize+" en la partida de laser tag de un jugador. Enséñalo en recepción o dínoslo al reservar. Válido "+CONFIG.validDays+" días, un solo uso, no acumulable a otras promociones.";
-    const row=document.createElement("div");row.className="row";
-    const b=document.createElement("button");b.className="ghost";b.type="button";b.id="copy";b.textContent="Copiar código";
-    b.addEventListener("click",()=>{
-      const done=()=>{b.textContent="Copiado";};
-      try{navigator.clipboard.writeText(saved.code).then(done,()=>selectText(c));}catch(e){selectText(c);}
+    const h=document.createElement("h2");h.textContent="¡Premio desbloqueado!";
+    const explanation=document.createElement("p");explanation.className="small";
+    explanation.textContent="Indica tu email para recibir el código. Solo permitimos un código por persona y mes natural. Lo usaremos únicamente para gestionar esta promoción.";
+    const form=document.createElement("form");
+    const label=document.createElement("label");label.textContent="Tu email";
+    const input=document.createElement("input");input.type="email";input.required=true;input.maxLength=150;input.autocomplete="email";input.placeholder="tu@email.com";input.value=store.get("sr_prize_email")||"";
+    const submit=document.createElement("button");submit.className="btn";submit.type="submit";submit.textContent="Conseguir mi código";
+    const status=document.createElement("p");status.className="small";status.setAttribute("role","status");
+    label.append(input);form.append(label,submit,status);wrap.append(h,explanation,form);box.append(wrap);
+    form.addEventListener("submit",async e=>{
+      e.preventDefault();
+      const email=input.value.trim().toLowerCase();
+      if(!input.checkValidity()){input.reportValidity();return;}
+      submit.disabled=true;status.textContent="Comprobando el límite mensual…";
+      try{
+        const result=await requestCode(email,g.score);
+        if(result.error||!result.code) throw new Error(result.error||"No se pudo emitir el código.");
+        store.set("sr_prize_email",email);box.replaceChildren();renderPrizeCode(box,result);
+      }catch(error){status.textContent=error instanceof Error?error.message:"No se pudo emitir el código. Inténtalo de nuevo.";submit.disabled=false;}
     });
-    row.append(b);wrap.append(h,c,d,row);box.append(wrap);
   }else{
     const p=document.createElement("p");
     p.innerHTML="Te han faltado <strong>"+fmt(CONFIG.threshold-g.score)+" puntos</strong> para el código de "+CONFIG.prize+". ¡Otra!";
     box.append(p);
   }
   setTimeout(()=>{$("end").hidden=false;$("again").focus();},500);
+}
+function renderPrizeCode(box,result){
+  const wrap=document.createElement("div");wrap.className="code";
+  const h=document.createElement("h2");h.textContent=result.alreadyIssued?"Ya tienes tu código de este mes":"¡Premio desbloqueado!";
+  const c=document.createElement("div");c.className="c";c.textContent=result.code;
+  const d=document.createElement("div");d.className="small";
+  d.textContent=CONFIG.prize+" en la partida de laser tag de un jugador. Enséñalo en recepción o dínoslo al reservar. Válido "+CONFIG.validDays+" días, un solo uso, no acumulable a otras promociones. Un código por persona y mes.";
+  const row=document.createElement("div");row.className="row";
+  const b=document.createElement("button");b.className="ghost";b.type="button";b.id="copy";b.textContent="Copiar código";
+  b.addEventListener("click",()=>{
+    const done=()=>{b.textContent="Copiado";};
+    try{navigator.clipboard.writeText(result.code).then(done,()=>selectText(c));}catch(e){selectText(c);}
+  });
+  row.append(b);wrap.append(h,c,d,row);box.append(wrap);
 }
 function selectText(el){const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);}
 
