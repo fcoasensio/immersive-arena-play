@@ -51,6 +51,8 @@ p strong{color:var(--ink)}
 .prize b{color:var(--gold)}
 .btn{appearance:none;border:0;border-radius:10px;padding:15px 18px;font:700 18px var(--display);letter-spacing:.08em;text-transform:uppercase;cursor:pointer;background:var(--red);color:#fff;box-shadow:0 0 24px #ff3b5c66}
 .btn:focus-visible,#mute:focus-visible,.ghost:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+#fire{position:absolute;right:max(18px,env(safe-area-inset-right,0px));bottom:calc(22px + env(safe-area-inset-bottom,0px));width:88px;height:88px;border-radius:50%;border:2px solid #ff9aac;background:var(--red);color:#fff;font:700 16px var(--display);letter-spacing:.08em;box-shadow:0 0 24px #ff3b5c99;touch-action:none;z-index:5;cursor:pointer}
+#fire:active{transform:scale(.94)}
 .ghost{appearance:none;background:transparent;border:1px solid #39406a;color:var(--ink);border-radius:8px;padding:9px 12px;font:600 14px var(--body);cursor:pointer}
 .score{font:700 64px/1 var(--display);font-variant-numeric:tabular-nums}
 .stats{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
@@ -90,10 +92,11 @@ p strong{color:var(--ink)}
       </ul>
       <div class="prize">Haz <b id="thr1">2.000 puntos</b> y te llevas un código de <b id="pz1">5% de descuento</b> en la partida de laser tag de un jugador.<br><span class="small">Un código por persona y mes. No acumulable a otras promociones. Válido 30 días.</span></div>
       <button class="btn" id="play" type="button">Jugar</button>
-      <p class="small">Encadena aciertos para multiplicar puntos. Si fallas el disparo, pierdes el combo.</p>
+      <p class="small">Encadena aciertos para multiplicar puntos. Si fallas el disparo, pierdes el combo.<br>Móvil: desliza un dedo para apuntar y pulsa FUEGO para disparar.</p>
     </div>
   </div>
 
+  <button id="fire" type="button" hidden aria-label="Disparar">FUEGO</button>
   <div class="overlay" id="end" hidden>
     <div class="card">
       <div class="eyebrow" id="endTitle">Fin de la partida</div>
@@ -506,7 +509,7 @@ function finish(reason){
     p.innerHTML="Te han faltado <strong>"+fmt(CONFIG.threshold-g.score)+" puntos</strong> para el código de "+CONFIG.prize+". ¡Otra!";
     box.append(p);
   }
-  setTimeout(()=>{$("end").hidden=false;$("again").focus();},500);
+  setTimeout(()=>{$("fire").hidden=true;$("end").hidden=false;$("again").focus();},500);
 }
 function renderPrizeCode(box,result){
   const wrap=document.createElement("div");wrap.className="code";
@@ -526,15 +529,46 @@ function selectText(el){const r=document.createRange();r.selectNodeContents(el);
 
 function start(){
   try{if(!AC){AC=new (window.AudioContext||window.webkitAudioContext)();}if(AC.state==="suspended")AC.resume();}catch(e){AC=null;}
-  $("start").hidden=true;$("end").hidden=true;$("hud").hidden=false;
+  $("start").hidden=true;$("end").hidden=true;$("hud").hidden=false;$("fire").hidden=false;
   newGame();
 }
 $("play").addEventListener("click",start);
 $("again").addEventListener("click",start);
 
 function pos(e){const r=cvs.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top];}
-cvs.addEventListener("pointerdown",e=>{e.preventDefault();const [x,y]=pos(e);aimX=x;aimY=y;shoot(x,y);});
-cvs.addEventListener("pointermove",e=>{const [x,y]=pos(e);aimX=x;aimY=y;});
+/* Aim: one finger slides the cannon; touching figures does NOT shoot. Fire only with the FUEGO button (mouse click / Space on desktop). */
+let aimPid=null;
+function fire(){
+  if(!game||game.over) return;
+  const bx=W/2, by=H+U*.15;
+  const ang=aimX==null?-Math.PI/2:Math.atan2(aimY-by,aimX-bx);
+  const dx=Math.cos(ang), dy=Math.sin(ang);
+  let hx=bx+dx*U*1.2, hy=by+dy*U*1.2, hitPt=null;
+  for(let d=U*1.2; d<W+H; d+=4){
+    const x=bx+dx*d, y=by+dy*d;
+    if(x<0||x>W||y<0) break;
+    hx=x;hy=y;
+    if(hitTest(x,y)){hitPt=[x,y];break;}
+  }
+  shoot(hitPt?hitPt[0]:hx, hitPt?hitPt[1]:hy);
+}
+cvs.addEventListener("pointerdown",e=>{
+  e.preventDefault();
+  if(e.pointerType==="mouse"){const [x,y]=pos(e);aimX=x;aimY=y;fire();return;}
+  if(aimPid!==null) return; // only one finger aims
+  aimPid=e.pointerId;const [x,y]=pos(e);aimX=x;aimY=y;
+});
+cvs.addEventListener("pointermove",e=>{
+  if(e.pointerType!=="mouse"&&e.pointerId!==aimPid) return;
+  const [x,y]=pos(e);aimX=x;aimY=y;
+});
+const endAim=e=>{if(e.pointerId===aimPid)aimPid=null;};
+cvs.addEventListener("pointerup",endAim);cvs.addEventListener("pointercancel",endAim);
+let fireLock=false;
+$("fire").addEventListener("pointerdown",e=>{e.preventDefault();e.stopPropagation();if(fireLock)return;fireLock=true;fire();});
+const unlock=()=>{fireLock=false;};
+$("fire").addEventListener("pointerup",unlock);$("fire").addEventListener("pointercancel",unlock);$("fire").addEventListener("pointerleave",unlock);
+window.addEventListener("keydown",e=>{if(e.code==="Space"&&game&&!game.over){e.preventDefault();if(!e.repeat)fire();}});
 
 resize();
 // idle demo state behind the start screen: a couple of figures standing up
